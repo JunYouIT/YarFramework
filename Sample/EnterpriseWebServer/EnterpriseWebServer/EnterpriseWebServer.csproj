@@ -1228,6 +1228,7 @@
     <Content Include="System\Enterprise\PortalNode.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="System\Enterprise\Sql\InitScript.sql" />
     <Content Include="System\Enterprise\YarSystem.xml">
       <SubType>Designer</SubType>
     </Content>
