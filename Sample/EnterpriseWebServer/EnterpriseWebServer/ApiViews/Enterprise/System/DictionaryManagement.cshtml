@@ -1,0 +1,258 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+
+<div class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+    <div class="row" style="display: block;">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        字典配置查询列表
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">字典编码</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" data-bind="value:displaydata.DictCode">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">字典名称</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" data-bind="value:displaydata.DictName">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">状态</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="easyui-combobox" data-bind="comboboxValue:displaydata.State,dataSource:dataSources.dsStates" data-options="valueField:'ID',textField:'Name'" style="width:100%;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">创建人</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" data-bind="value:displaydata.CreaterName">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="float: right; display: inline-block;">
+                                        <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+                                        <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnAdd"><i class="fa fa-plus-circle"></i> 添加 </a>
+                                        <a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnDeleteAll"><i class="fa fa-trash-o"></i> 删除 </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:5px;text-align:center" id="griddiv">
+                        <table data-bind="grid:uiSources.gridList" id="gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ContentInit" src="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    Pagecom = (function () {
+        function Pagecom() { }
+        return Pagecom;
+    })();
+
+    var ViewModel = function (data) {
+        var self = this;
+
+        self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+        var displaydata = { DictCode: '', DictName: '', State: '', CreaterName: ''};
+        self.displaydata = ko.mapping.fromJS(displaydata);
+        self.dataSources = data.dataSources;
+
+        self.uiSources = {
+            gridList: {
+                ops: {
+                    ClientPage: false,
+                    ele: "#gridlist",
+                    SizeOpt: {
+                        pid: "#griddiv",
+                        top: 360
+                    }
+                },
+                sops: {
+                    url: self.ViewTool.GetActionUrl("Post", "GetResourceList"),
+                    fitColumns:true,
+                    selectOnCheck: false,
+                    checkOnSelect: false,
+                    onLoadSuccess:function(){ $("[data-toggle='tooltip']").tooltip(); },
+                    columns: [[
+                    { field: 'ck', checkbox:true },
+                    { field: 'DictCode', title: '字典编码', sortable: true, width: 200},
+                    { field: 'DictName', title: '字典名称', sortable: true, width: 100},
+                    { field: 'IsEnable', title: '状态', width: 50,halign:'center',align:'center', formatter: function(value, row, index){
+                        if(value){
+                            return '<a title="启用"><i class="fa fa-check font-green" style="font-size:18px;"></i></a>';
+                        } else {
+                            return '<a title="禁用"><i class="fa fa-ban font-red" style="font-size:18px;"></i></a>';
+                        }
+                       
+                    }},
+                    { field: 'IsCache', title: '是否缓存',halign:'center',align:'center', formatter: function(value, row, index){
+                        if(value){
+                            return '<i class="fa fa-check font-green" style="font-size:18px;"></i>';
+                        } else {
+                            return '<i class="fa fa-ban font-red" style="font-size:18px;"></i>';
+                        }
+                       
+                    }},
+                    { field: 'CreateUser', title: '创建人', sortable: true, width: 100},
+                    { field: 'CreateTime', title: '创建时间', sortable: true, width: 100},
+                    { field: 'Id', title: '功能',
+                        formatter: function(value, row, index){
+                            var str = String.format('<a href="#" title="编辑" onclick="Pagecom.ViewModel.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.Id);
+                            if(row.IsEnable==="启用")
+                                str+=String.format(' <a href="#" title="禁用" onclick="Pagecom.ViewModel.OnDisable(\'{0}\')"><i class="fa fa-pause"></i></a>',row.Id);
+                            else
+                                str+=String.format(' <a href="#" title="启用" onclick="Pagecom.ViewModel.OnDisable(\'{0}\')"><i class="fa fa-play"></i></a>',row.Id);
+                            return str;
+                        }
+                    }]]
+                }
+            }
+        };
+
+        self.OnEdit = function(DictId){
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditView", { resId: DictId }), { ViewModel: self, data: {} },
+            function (data) {
+                self.OnRefresh();
+            });
+        };
+
+        self.OnDisable = function(DictId){
+            url = self.ViewTool.GetActionUrl("Get", "DisableItem", { DictId: DictId });
+            YarClient.AjaxGet(url, {
+                IsWarning: true,
+                success: function (returnData) {
+                    self.OnRefresh();
+                }
+            });
+        };
+
+        self.OnRefresh=function(){
+            var data = {
+                DictCode:self.displaydata.DictCode(),
+                DictName:self.displaydata.DictName(),
+                State:self.displaydata.State(),
+                CreaterName:self.displaydata.CreaterName()
+            };
+            $('#gridlist').datagrid('load', data);
+        };
+
+        self.OnAdd = function(){
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateView", { resId: '' }), { ViewModel: self, data: {} },
+            function (data) {
+                self.OnRefresh();
+            });
+        };
+
+        self.OnDeleteAll = function(){
+            var rows = $("#gridlist").datagrid('getChecked');
+            var array = [];
+            var txt = '';
+            if(rows && rows.length > 0){
+                rows.each(function (value, index) {
+                    array.push(value.Id);
+                    txt += value['DictName'] + '\n';
+                });
+
+                swal({
+                    title: "你是否确认删除如下信息?",
+                    text: txt,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的, 删除!",
+                    closeOnConfirm: false
+                },
+                function(){
+                    YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAll",{ ids: array.join(';') }), {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            self.OnRefresh();
+                            if(returnData.Message!=null)
+                            {
+                                swal(JSON.stringify(returnData.Message), "已被引用，不可删除.", "warning");
+                            }
+                            else
+                            {
+                                swal("删除成功!", "已删除.", "success");   
+                            }
+                        }
+                    });
+                });
+            }
+            else{
+                swal({
+                    title:"请选择需要删除的信息！",
+                    type: "warning"
+                });
+            }
+        };
+    };
+
+    var data = @this.Raw(Model.Data);
+    var viewModel = new ViewModel(data);
+    Pagecom.ViewModel = viewModel;
+    ko.applyBindings(viewModel);
+    viewModel.OnRefresh();
+</script>
+
+<script id="ContentInitCss" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload.css")']
+</script>
+
+<script id="ContentInitScript" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")', 
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.zh-CN.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.ui.widget.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload-process.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload-validate.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.iframe-transport.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/UploadHelper.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	
+</script>

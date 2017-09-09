@@ -1,0 +1,127 @@
+﻿@{
+ 
+  Yar.Service.BusinessContext context = Model.Context;
+  var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+}
+<div class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        日志列表
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="reload" title="刷新" data-bind="click:OnRefresh"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body" style="">
+                    <ul id="fileTree"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        日志信息
+                        <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnDownload"> 显示 </a>
+                    </div>
+                    
+                </div>
+                <div class="portlet-body" style="">
+                    <div>
+                        <div id="scriptContent" style="height:0px;">
+
+                        </div>
+                        <div id="resultContent">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+<script id="ContentInit" type="text/javascript" src="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+    function BizViewModel() {
+        var self = this;
+        self.ViewTool = new YarClient.ViewModel("_BizSysLog", "@tokenId");
+        self.Init = function () {
+            $('#fileTree').tree({
+                url: self.ViewTool.GetActionUrl("Post", "BizSystemLogFiles"),
+                onLoadSuccess: function (node, data) {
+
+                }
+            });
+        };
+        self.OnRefresh = function () {
+            $('#fileTree').tree({ url: self.ViewTool.GetActionUrl("Post", "BizSystemLogFiles") });
+        };
+        self.OnDownload = function () {
+            var node = $('#fileTree').tree('getSelected');
+            if (node) {
+                YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "GetLogFileContent", { fileName: node.id }), {
+                    IsWarning: false,
+                    success: function (data) {
+                        $('#resultContent').html(data.Message);
+                    },
+                    failed: function (data) {
+                        $('#resultContent').html(data.Message);
+                    }
+                });
+            }
+
+        };
+        self.OnRunAll = function () {
+            YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "ExecAllScriptFile"), {
+                IsWarning: false,
+                success: function (data) {
+                    $('#resultContent').html(data.Message);
+                },
+                failed: function (data) {
+                    $('#resultContent').html(data.Message);
+                }
+            });
+
+        };
+
+        self.OnRunIncrement = function () {
+            YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "ExecIncrementScriptFile"), {
+                IsWarning: false,
+                success: function (data) {
+                    $('#resultContent').html(data.Message);
+                },
+                failed: function (data) {
+                    $('#resultContent').html(data.Message);
+                }
+            });
+
+        };
+
+        self.Init();
+    };
+    var viewModel = new BizViewModel();
+    ko.applyBindings(viewModel);
+</script>
+<script id="ContentInitCss" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")'
+   ]   
+</script>
+
+<script id="ContentInitScript" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")', 
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	
+</script>

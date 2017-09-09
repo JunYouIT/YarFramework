@@ -1,0 +1,224 @@
+﻿@{
+Yar.Service.BusinessContext context = Model.Context;
+var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+var resid = Model.RawData.form.ResId;
+var bizId = Model.BizId;
+}
+
+<div id="printPage" style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row ">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">上级法人公司</label>
+                        <div class="col-md-8">
+                            <div type="text" data-bind="text:formdata.ParentName" class="form-control-static"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">企业类型</label>
+                        <div class="col-md-8">
+                            <div type="text" data-bind="text:formdata.EnterpriseTypeName" class="form-control-static"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">公司编码</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.LegalEntityCode" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">公司名称</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.LegalEntityName" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">法人代表/负责人</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.LegalRepresentativeName" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">统一社会信用代码</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.UnifiedCreditRecord" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">有效期开始日期</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.BizBeginDate" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">有效期结束日期</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.BizEndDate" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">所属地区</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.Area" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">邮编</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.PostNumber" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">营业场所地址</label>
+                        <div class="col-md-10">
+                            <span type="text" data-bind="text:formdata.BusinessAddress" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">电话号码(总机)</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.TelNumber" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">传真</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.FaxNumber" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">网址</label>
+                        <div class="col-md-10">
+                            <span type="text" data-bind="text:formdata.Website" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">经营范围</label>
+                        <div class="col-md-10">
+                            <span type="text" data-bind="text:formdata.BizScope" class="form-control-static form-control-static-multi"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">备注</label>
+                        <div class="col-md-10">
+                            <span type="text" data-bind="text:formdata.Description" class="form-control-static form-control-static-multi"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+            self.Action = 'new';
+            //debugger;
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+                self.Action = 'edit';
+            }
+            self.ResId = data.form.ResId;
+            self.formdata = ko.mapping.fromJS(data.form);
+            self.dataSources = data.dataSources;
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+
+            self.Init = function()
+            {
+            };
+            self.OnSave = function (finishcall) {
+                debugger;
+                var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+                if(MainApp.FormValidate())
+                {
+                    var url = '';
+                    if(self.Action == 'new'){
+                        url = self.ViewTool.GetActionUrl("Post", "Create",{resId:data.form.ResId});
+                    } else {
+                        url = self.ViewTool.GetActionUrl("Post", "Edit",{resId:data.form.ResId});
+                    }
+                    YarClient.AjaxPost(url,postdata, {
+                        IsWarning: true,
+                        success : function(returnData) {
+                            finishcall(returnData,callback);
+                        }
+                    });
+                }
+                else {
+
+                }
+            };
+
+            self.print = function () {
+               window.open(MainApp.GetUrl("BizEmployee", "Get", "LegalEntityPreviewView",{resId:self.ResId}));
+           };
+
+       };
+       var data = @this.Raw(Model.Data);
+       var viewModel = new ViewModel(data);
+
+       ko.applyBindings(viewModel, $(eleId)[0]);
+       viewModel.Init();
+       MainApp.DialogCustomButton(eleId, '查看法人信息', 900, 600, [{ text: '关闭', cancel: true }]);
+       // MainApp.DialogCustomButton(eleId, '查看法人实体信息', 900, 600, [{ text: '关闭', cancel: true },
+       //     {text:'打印',click: function(){viewModel.print();}}]);
+
+    })(eleId, context, callback);
+</script>

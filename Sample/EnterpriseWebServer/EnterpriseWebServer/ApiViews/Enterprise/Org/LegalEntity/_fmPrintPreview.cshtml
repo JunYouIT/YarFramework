@@ -1,0 +1,116 @@
+﻿@{
+Yar.Service.BusinessContext context = Model.Context;
+var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+var bizId = Model.BizId;
+}
+<title>法人公司信息</title>
+<link rel="stylesheet" type="text/css" href="../../ApiViews/Portal/AdminBoostrap/Content/bootstrap.min.css">
+<style type="text/css">
+
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Microsoft YaHei;
+        font-size: 12px;
+    }
+
+    td{
+
+        vertical-align: middle !important;
+        height: 30px !important;
+        padding: 4px;
+    }
+
+    @@media print {
+        .noprint{
+            display:none;
+        }
+
+    }
+
+
+</style>
+
+<div >
+    <div id="printPage" contenteditable="false">
+        <table class="table table-bordered" style="table-layout: fixed; text-align:left;word-break:break-all;">
+            <caption style="text-align: center;">
+                <h1>法人公司信息</h1>
+            </caption>
+            <tr>
+                <td width="50%" style="height: 60px !important;">上级法人公司:<span data-bind="text:basicData.ParentName"></span></td>
+                <td width="50%">企业类型:<span data-bind="text:basicData.EnterpriseType"></span></td>
+            </tr>
+            <tr>
+                <td width="50%" style="height: 60px !important;">公司编码:<span data-bind="text:basicData.LegalEntityCode"></span></td>
+                <td width="50%">公司名称:<span data-bind="text:basicData.LegalEntityName"></span></td>
+            </tr>
+            <tr>
+                <td width="50%" style="height: 60px !important;">法人代表/负责人:<span data-bind="text:basicData.LegalRepresentativeName"></span></td>
+                <td width="50%">统一社会信用代码:<span data-bind="text:basicData.UnifiedCreditRecord"></span></td>
+            </tr>
+            <tr>
+                <td width="50%" style="height: 60px !important;">有效期开始日期:<span data-bind="text:basicData.BizBeginDate"></span></td>
+                <td width="50%">有效期结束日期:<span data-bind="text:basicData.BizEndDate"></span></td>
+            </tr>
+            <tr>
+                <td width="50%" style="height: 60px !important;">所属地区:<span data-bind="text:basicData.City"></span></td>
+                <td width="50%">邮编:<span data-bind="text:basicData.PostNumber"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="vertical-align:middle;">营业场所地址:<span data-bind="text:basicData.BusinessAddress"></span></td>
+            </tr>
+            <tr>
+                <td width="50%" style="height: 60px !important;">电话号码(总机):<span data-bind="text:basicData.TelNumber"></span></td>
+                <td width="50%">传真:<span data-bind="text:basicData.FaxNumber"></span></td>
+            </tr>
+            <tr>
+                <td  colspan="2"style="vertical-align:middle;">网址:<span data-bind="text:basicData.Website"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="vertical-align:middle;">经营范围:<span data-bind="text:basicData.BizScope"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="height: 240px !important;vertical-align:middle;">
+                 备注:<span data-bind="text:basicData.Description"></span>
+
+             </td>
+         </tr>
+     </table>
+
+ </div>
+
+
+ <div style="text-align: center;">
+    <button data-bind="click:print" class="btn btn-primary noprint">打印</button>
+</div>
+</div>
+<script type="text/javascript" src="../../ApiViews/Scripts/knockout-2.2.1.js"></script>
+<script type="text/javascript" src="../../ApiViews/Scripts/knockout.mapping.js"></script>
+<script type="text/javascript">
+
+    (function(){
+
+        var ViewModel = function(data){
+            var self = this;
+            self.resId          = data.resId;
+
+            self.basicData      = ko.mapping.fromJS(data.basicData);
+
+            self.print = function(){
+                window.print(); 
+
+            };
+        };
+
+        var
+        resId        = "@Model.ResId",
+        basicData    = @this.Raw(Model.BasicInfo),
+        viewModel    = new ViewModel({resId:resId,basicData:basicData});
+                    // 绑定ko
+                    ko.applyBindings(viewModel);
+
+                })();
+            </script>

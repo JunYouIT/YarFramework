@@ -1,0 +1,167 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">组织单元编码</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.OrganizationCode" class="form-control-static" style="width: 100%; height: 34px;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">上级机构</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.ParentName" class="form-control-static" style="width: 100%; height: 34px;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">组织单元名称</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.OrganizationName" class="form-control-static" style="width: 100%; height: 34px;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">组织类型</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.PositionTypeName" class="form-control-static" style="width: 100%; height: 34px;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">排序序列</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.Sequence" class="form-control-static" style="width: 100%;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">所属法人</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.LegalEntityName" class="form-control-static" style="width: 100%; height: 34px;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">组织单元职位</label>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <span type="text" data-bind="text:formdata.AllPositionName" class="form-control-static" style="width: 100%; height: 34px;"></span>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">负责人职位</label>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <span type="text" data-bind="text:formdata.LeadPosName" class="form-control-static" style="width: 100%; height: 34px;"></span>                           
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                @*<div class="col-md-6">
+                    <div class="col-md-12">
+                        <input type="checkbox" data-bind="checked:formdata.IsIndependentAccounting"> 独立核算
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">账套编码</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.AccountBookNumber" class="form-control-static" style="width: 100%; height: 34px;"></span>
+                        </div>
+                    </div>
+                </div>*@
+                
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">组织单元说明</label>
+                        <div class="col-md-10">
+                            <span type="text" data-bind="text:formdata.Description" data-options="validType:'length[0,500]',multiline:true" class="form-control-static" style="width: 100%; height: 34px;"></span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+      //debugger;
+      $.parser.parse(eleId);
+
+      var ViewModel = function (data) {
+      var self = this;
+      self.Action = 'new';
+          //debugger;
+        if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+		self.Action = 'edit';
+	  }
+      self.formdata = ko.mapping.fromJS(data.form);
+	  self.dataSources = data.dataSources;
+      self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+	  var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist",{id:data.form.ResId});
+	  //debugger;
+		var valid = String.format("cremote['{0}','name','名称已存在']", checkUrl);
+		$("#legalname1").textbox({
+		  required: true,
+		  validType: ['length[0,100]',valid]
+		});
+      self.Init = function()
+      {
+      };
+      self.OnSave = function (finishcall) {
+        debugger;
+        var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+        if(MainApp.FormValidate())
+        {
+			var url = '';
+			if(self.Action == 'new'){
+				url = self.ViewTool.GetActionUrl("Post", "Create",{resId:data.form.ResId});
+			} else {
+				url = self.ViewTool.GetActionUrl("Post", "Edit",{resId:data.form.ResId});
+			}
+            YarClient.AjaxPost(url,postdata, {
+                IsWarning: true,
+                success : function(returnData) {
+                    finishcall(returnData,callback);
+                }
+            });
+        }
+        else {
+
+        }
+      };
+	  };
+      var data = @this.Raw(Model.Data);
+      var viewModel = new ViewModel(data);
+
+      ko.applyBindings(viewModel, $(eleId)[0]);
+	  viewModel.Init();
+	  MainApp.DialogCustomButton(eleId, '查看组织机构信息', 900, 370, [{ text: '关闭', cancel: true }]);
+
+    })(eleId, context, callback);
+</script>

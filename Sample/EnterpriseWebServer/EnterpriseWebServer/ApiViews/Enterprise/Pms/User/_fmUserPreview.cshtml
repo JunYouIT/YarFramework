@@ -1,0 +1,189 @@
+﻿
+    <div class="form form-horizontal" style="width:800px;">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">姓名</label>
+                <div class="col-md-4">
+                    <input type="text" id="name" data-bind="textboxValue:formdata.Name" class="easyui-textbox" style="width: 100%;" />
+                </div>
+                <label class="control-label col-md-2 bold">账号</label>
+                <div class="col-md-4">
+                    <input type="text" id="loginname" data-bind="textboxValue:formdata.LoginName" class="easyui-textbox" data-options="" style="width: 100%;" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">员工号</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="textboxValue:formdata.EmployeeNo" class="easyui-textbox" style="width: 100%;" />
+                </div>
+                <label class="control-label col-md-2 bold">邮件</label>
+                <div class="col-md-4">
+                    <input type="text" id="email" data-bind="textboxValue:formdata.Email" class="easyui-textbox" style="width: 100%;" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">类型</label>
+                <div class="col-md-4">
+                    <input type="text" id="usertype" data-bind="textboxValue:formdata.UserType" class="easyui-textbox" style="width: 100%;" />
+                </div>
+                <label class="control-label col-md-2 bold">来源</label>
+                <div class="col-md-4">
+                    <input type="text" id="datasource" data-bind="textboxValue:formdata.DataSource" class="easyui-textbox" style="width: 100%;" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">角色</label>
+                <div class="col-md-10">
+                    <input type="text" data-bind="textboxValue:formdata.RoleList" class="easyui-textbox" style="width: 100%;" />
+                </div>
+            </div>
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        职位
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div>
+                        <table data-bind="grid:uiSources.gridList" id="userpreview_positionlist" style="width:100%; height:auto;"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        系统功能
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div>
+                        <table id="userpreview_applist" style="width:100%;height:auto;"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        业务功能和数据权限
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div>
+                        <table data-bind="grid:uiSources.gridbizfunList" id="userpreview_bizfunlist" style="width:100%; height:auto;"></table>
+                    </div>
+                </div>
+            </div>
+            @*<div style="margin: 1px;">
+                <table data-bind="grid:uiSources.gridList" id="userpreview_positionlist" style="width:100%; height:auto;"></table>
+            </div>
+            <div style="margin: 1px;">
+                <table id="userpreview_applist" style="width:100%;height:auto;"></table>
+            </div>*@
+        </div>
+    </div>
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+      //debugger;
+      $.parser.parse(eleId);
+
+      var ViewModel = function (data) {
+		  var self = this;
+		  self.Action = 'new';
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000' ){
+                self.Action = 'edit';
+            }
+
+            self.formdata = ko.mapping.fromJS(data.form);
+            self.dataSources = data.dataSources;
+            self.ViewTool = context.ViewModel.ViewTool;
+            self.uiSources = {
+                gridList: {
+                    ops: {
+                        ClientPage: true,
+                        ele: "#userpreview_positionlist",
+                    },
+                    sops: {
+                        pagination:false,
+                        fitColumns: true,
+                        rownumbers : true,
+                        columns: [[
+                            { field: 'Legal', title: '法人', width: 200,formatter:YarGrid.StringContentFormatter },
+                          { field: 'OrganizationName', title: '部门', width: 100,formatter:YarGrid.StringContentFormatter },
+                          { field: 'PositionName', title: '职位', width: 150,formatter:YarGrid.StringContentFormatter },
+                          { field: 'RoleList', title: '角色', width: 200,formatter:YarGrid.StringContentFormatter },
+                        ]]
+                    }
+                },
+                gridbizfunList: {
+                    ops: {
+                        ClientPage: true,
+                        ele: "#userpreview_bizfunlist",
+                    },
+                    sops: {
+                        remoteSort:false,
+                        pagination:false,
+                        fitColumns: true,
+                        rownumbers : true,
+                        columns: [[
+                            { field: 'BizId', title: '业务Id', sortable: true, width: 200,formatter:YarGrid.StringContentFormatter },
+                          { field: 'BizName', title: '业务名称', sortable: true, width: 200,formatter:YarGrid.StringContentFormatter },
+                          { field: 'Role', title: '角色', sortable: true, width: 150,formatter:YarGrid.StringContentFormatter },
+                          { field: 'BizFun', title: '业务功能', width: 250,formatter:YarGrid.StringContentFormatter },
+                          { field: 'BizData', title: '数据权限', width: 200,formatter:YarGrid.StringContentFormatter },
+                        ]]
+                    }
+                }
+            };
+            self.Init = function() {
+                if(self.Action == 'edit' && data.form.UserType== 'employee'){
+                    $("#usertype").combobox({disabled:true});
+                }
+                $('#userpreview_positionlist').datagrid('loadData',self.dataSources.dsPosition);
+                $('#userpreview_bizfunlist').datagrid('loadData',self.dataSources.dbBizFuns);
+
+                YarGrid.CreateTree({
+                    ele: "#userpreview_applist"
+                }, {
+                    rownumbers : false,
+                    idField:'ResID',
+                    treeField:'Name',
+                    singleSelect: true,
+                    fitColumns:true,
+                    data:self.dataSources.dsAppFuns,
+                    border: false,
+                    columns: [[
+                { field: 'Name', title: '名称', width: 200},
+                { field: 'UrlPath', title: 'Url', width: 100},
+                    ]]
+                });
+            };
+	  };
+      var data = @this.Raw(Model.Data);
+      var viewModel = new ViewModel(data);
+
+      
+
+      
+      $.Yar.Dialog.ShowCustom(eleId, '查看用户信息', 800, 480, [{ text: '关闭', cancel: true }], function (dialogRef) {
+          ko.applyBindings(viewModel, $(eleId)[0]);
+          viewModel.Init();
+          //alert(viewModel.Action);
+      });
+        //MainApp.DialogCustomButton
+      //MainApp.DialogCustomButton(eleId, '查看用户信息', 800, 480, [{ text: '关闭', cancel: true }]);
+
+    })(eleId, context, callback);
+</script>

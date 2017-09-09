@@ -1,0 +1,380 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+    string OrgId = context.Request["OrgId"];
+}
+
+<div class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+    <div class="row" style="display: block;">
+        <div class="col-md-3">
+            <div class="portlet box blue" style="margin-bottom:2px;">
+                <div class="portlet-title">
+                    <div class="caption">
+                        组织机构
+                    </div>
+                </div>
+                <div class="portlet-body" style="overflow:auto;max-height:700px">
+                    <ul id="hr_position_position_orgTree"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-gift"></i>职位管理
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"> </a>
+
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">职位名称</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="textboxValue:displaydata.name" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">职位类型</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="comboboxValue:displaydata.type,dataSource:dataSources.dsType" style="width: 100%; height: 34px;" class="easyui-combobox" data-options="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div style="float: right;display: inline-block;">
+                                        @*<a href="javascript:;" class="btn btn-sm btn-success" data-bind="click:OnCheckOrg"><i class="fa fa-plus-circle"></i> 查看组织单元 </a>*@
+                                        <a class="gt2_btn_search" href="javascript:;" data-bind="click:OnSearch"><i class="fa fa-refresh"></i> 搜索 </a>
+                                        <a id="btnAdd" class="gt2_btn_add" href="javascript:;" data-bind="click:OnCreate" data-toggle="tooltip" data-placement="top" title="新增职位"><i class="fa fa-plus-circle"></i> 新增 </a>
+                                        <a class="gt2_btn_delete" href="javascript:;" data-bind="click:OnDeleteall"><i class="fa fa-remove"></i> 删除 </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:5px;" id="griddiv">
+                        <table data-bind="grid:uiSources.gridList" id="gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ContentInit" type="text/javascript" src="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+    $.ajaxSetup({
+        cache: false
+    });
+    Pagecom = (function () {
+        function Pagecom() {
+        };
+        Pagecom.DetailLink = function (value, rowData, rowIndex) {
+            return String.format("<a href='#' onclick='Pagecom.ViewModel.DetailLink(\"{0}\")'>{1}</a>", rowData.ResId,value);
+        };
+        Pagecom.FormatterDateTime = function (value, row, index) {
+            if (value && value != null) {
+                var t = new Date(Date.parse(value.replace(/-/g, "/")));
+                return t.Format("M/d/yyyy");
+            }
+            return value;
+        };
+        return Pagecom;
+    })();
+    var ViewModel = function (data) {
+        var self = this;
+        self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+        var displaydata = { name: '',type:'' };
+        self.displaydata = ko.mapping.fromJS(displaydata);
+        self.dataSources = data.dataSources;
+        self.uiSources = {
+            gridList: {
+                ops: {
+                    ClientPage: false,
+                    ele: "#gridlist",
+                    SizeOpt: {
+                        pid: "#griddiv",
+                        top: 340
+                    }
+                },
+                sops: {
+                    url: self.ViewTool.GetActionUrl("Post", "GetResourceList"),
+                    fitColumns:true,
+                    striped:true,
+                    selectOnCheck: false,
+                    checkOnSelect: false,
+                    columns: [[
+                    { field: 'ck', checkbox:true },
+                    { field: 'PositionCode', title: '编码', sortable:true, width: 200, formatter: function(value, row, index){
+                        return String.format('<span title="{0}" data-toggle="tooltip">{0}</span>', value);
+                    } },
+                    { field: 'PositionName', title: '名称',sortable:true, width: 260 ,formatter: function(value, row, index){
+                        var n = String.format('<a class="" href="#" title="{1}" data-toggle="tooltip" data-placement="top" onclick="Pagecom.ViewModel.OnView(\'{0}\')">{1}</a>',row.PositionID,value)
+                        return n;
+                    }},
+                    { field: 'LeadEmpPosName', title: '上级职位名称',sortable:true, width: 200 },
+                    { field: 'JobName', title: '职务',sortable:true, width: 200 },
+                    { field: 'OrgName', title: '组织单元', sortable:true, width: 200, formatter: function(value, row, index){
+                        return String.format('<span title="{0}" data-toggle="tooltip">{0}</span>', value);
+                    } },
+                    //{ field: 'Headcount', title: '剩余定员数',sortable:true, width: 200 },
+                    {
+                        field: 'IsFunctionPosition', title: '职位类型', sortable: true, width: 200, formatter: function (value, row, index) {
+                            if (value) return '职能类';
+                            return '非职能类';                            
+                        }
+                    },
+                    { field: 'IsDisabled', title: '状态',sortable:true, width: 200, formatter: function(value, row, index){
+                        var s = String.format('<a class="btn btn-xs btn-success" onclick="Pagecom.ViewModel.OnModifyIsDisableState(\'{0}\')">{1}</a>',row.PositionID,value);
+                        if(value=='禁用')
+                            s = String.format('<a class="btn btn-xs btn-default" onclick="Pagecom.ViewModel.OnModifyIsDisableState(\'{0}\')">{1}</a>',row.PositionID,value);
+                        return  s;
+                    } },
+                    { field: 'PositionID', title: '功能',formatter: function(value, row, index){
+
+                        var s =
+                        @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnView(\'{0}\')"><i class="fa fa-eye"></i></a>',row.PositionID)+*@
+                        String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.PositionID);
+                        @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnDelete(\'{0}\')"><i class="fa fa-trash-o"></i></a>',row.PositionID)+*@
+                        @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnModifyIsDisableState(\'{0}\')">{1}</a>',row.PositionID,row.Disabled);*@
+
+
+                        return s;
+                    }
+                    }
+                    ]]
+                }
+            }
+        };
+
+        self.Init = function () {
+            $('#hr_position_position_orgTree').tree({
+                url: self.ViewTool.GetActionUrl("Post", "GetOrgTree"),
+                onLoadSuccess: function (node, data) {
+                    var root = $('#hr_position_position_orgTree').tree("getRoot");
+                    if (root) {
+                        $('#hr_position_position_orgTree').tree("select", root.target);
+                        var data = {
+                            name: Pagecom.ViewModel.displaydata.name(),
+                            type:Pagecom.ViewModel.displaydata.type(),
+                            parentId:root.id
+                        };
+                        $('#gridlist').datagrid('load', data);
+                    }
+
+                },
+                onSelect: function (node) {
+                    debugger;
+                    var data = {
+                        name: Pagecom.ViewModel.displaydata.name(),
+                        type:Pagecom.ViewModel.displaydata.type(),
+                        parentId:node.id
+                    };
+                    $('#gridlist').datagrid('load', data);
+                }
+            });
+            //$(window).resize(self.OnResize);
+            //self.OnResize();
+        };
+        self.OnResize = function () {
+            var th = $('#hr_position_position_orgTree').parent().height();
+            var gh = $('#griddiv').height() + 110;
+
+            $('#hr_position_position_orgTree').parent().css({ height: gh + "px" });
+        };
+        self.OnRefresh = function () {
+            var OrgId = '@OrgId';
+            $('#hr_position_position_orgTree').tree({
+                url: self.ViewTool.GetActionUrl("Post", "GetOrgTree"),
+                onLoadSuccess: function (node, data) {
+                    debugger;
+
+                    if(OrgId)
+                    {
+                        var node = $('#hr_position_position_orgTree').tree('find', OrgId);
+                        $('#hr_position_position_orgTree').tree('select', node.target);
+                    }
+
+                    var node = $('#hr_position_position_orgTree').tree('getSelected');
+                    if (node) {
+                        var data = {
+                            name: Pagecom.ViewModel.displaydata.name(),
+                            type:Pagecom.ViewModel.displaydata.type(),
+                            parentId:node.id
+                        };
+                        $('#gridlist').datagrid('load', data);
+                    }
+                    else
+                    {
+                        debugger;
+                        var root = $('#hr_position_position_orgTree').tree("getRoot");
+                        if (root) {
+                            $('#hr_position_position_orgTree').tree("select", root.target);
+                        }
+                    }
+
+                },
+
+            });
+        };
+
+        self.OnRefreshExceptTree = function () {
+            var node = $('#hr_position_position_orgTree').tree('getSelected');
+            if (node) {
+                var data = {
+                    name: Pagecom.ViewModel.displaydata.name(),
+                    type:Pagecom.ViewModel.displaydata.type(),
+                    parentId:node.id
+                };
+                $('#gridlist').datagrid('load', data);
+            }
+            else
+            {
+                debugger;
+                var root = $('#hr_position_position_orgTree').tree("getRoot");
+                if (root) {
+                    $('#hr_position_position_orgTree').tree("select", root.target);
+                }
+            }
+        };
+
+        self.OnSearch = function () {
+                var data = {
+                    name: Pagecom.ViewModel.displaydata.name(),
+                    type:Pagecom.ViewModel.displaydata.type(),
+                };
+                $('#gridlist').datagrid('load', data);
+        };
+
+        self.OnCheckOrg = function () {
+            var node = $('#hr_position_position_orgTree').tree('getSelected');
+            if (node) {
+                global.OpenWindow('/Admin/ORG_ORGUNIT?OrgId=' + node.id);
+            }
+        };
+
+        self.OnCreate = function () {
+            var node = $('#hr_position_position_orgTree').tree('getSelected');
+            if (node) {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateView",{ code: node.code,idTreeNode:node.id }), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefreshExceptTree();
+                });
+            }
+            else
+            {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateView"), { ViewModel: self, data: {} },
+                    function (data) {
+                        self.OnRefresh();
+                    });
+            }
+        };
+
+        self.OnView = function (companyId) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "PreviewView", { resId: companyId }), { ViewModel: self, data: {} },
+            function (data) {
+                //self.OnRefresh();
+            });
+        };
+        self.OnEdit = function (companyId) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditView", { resId: companyId }), { ViewModel: self, data: {} },
+            function (data) {
+                self.OnRefreshExceptTree();
+            });
+        };
+
+        self.OnDeleteall = function () {
+            var rows = $("#gridlist").datagrid('getChecked');
+            var array = [];
+            var names = '';
+            if(rows && rows.length > 0){
+                rows.each(function (value, index) {
+                    array.push(value.PositionID);
+                    if(names!='')
+                        names +='\r\n';
+                    names += value.PositionName;
+                });
+                swal({
+                    title: "你是否确认删除如下信息?",
+                    text: names,
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false
+                }, function() {
+                    YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAll",{ ids: array.join(';') }), {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            debugger;
+                            if(returnData.Result != null && returnData.Result.status == 'warning')
+                            {
+                                swal(returnData.Result.message, "", "warning");
+                                return;
+                            }
+                            swal("删除成功", "", "success");
+                            self.OnRefreshExceptTree();
+                        }
+                    });
+                });
+            }
+            else{
+                swal("请选择需要删除的信息", "", "warning");
+            }
+        };
+
+        self.OnModifyIsDisableState = function (companyId) {
+            $.ajax({
+                url: self.ViewTool.GetActionUrl("Get", "ModifyIsDisableState", { resId: companyId }),
+                success: function (text) {
+                    if(text.indexOf('Error')!=-1)
+                    {
+                        swal("当前职位下存在成员,无法禁用!", "", "warning");
+                        return;
+                    }
+                    self.OnRefreshExceptTree();
+                },
+                error: function () {
+                }
+            });
+        };
+    };
+
+    var data = @this.Raw(Model.Data);
+    //var data = {};
+    var viewModel = new ViewModel(data);
+    Pagecom.ViewModel = viewModel;
+    ko.applyBindings(viewModel);
+    viewModel.Init();
+    //viewModel.OnRefresh();
+
+</script>
+
+<script id="ContentInitCss" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")']
+</script>
+
+<script id="ContentInitScript" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']
+</script>
+

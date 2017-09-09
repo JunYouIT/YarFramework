@@ -1,0 +1,171 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<div id="job" style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2"><i class="fa fa-req" />组织机构</label>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <input id="txtOrganizationName" type="text" readonly="readonly" class="form-control" data-bind="value:formdata.OrganizationName" data-options="required:true" style="height: 34px; width: 100%; text-align: left;" placeholder=""/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" data-bind="click:onSelectOrgUnit" type="button">选择组织</button>
+                                </span>
+                                <input id="txtOrganizationID" type="hidden" data-bind="value:formdata.OrganizationID"/>
+                                <input id="txtOrgLegalId" type="hidden" data-bind="value:formdata.LegalEntityID" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><i class="fa fa-req" />职位</label>
+                        <div class="col-md-8">
+                            <input type="text" id="txtPositionID" data-bind="comboboxValue:formdata.PositionID,dataSource:dataSources.dsPositionID" data-options="required:true" class="easyui-textbox" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><i class="fa fa-req" />任职开始日期</label>
+                        <div class="col-md-8">
+                            <input id="txtOfficeBeginDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.OfficeBeginDate" data-options="required:true" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">任职结束日期</label>
+                        <div class="col-md-8">
+                            <input id="txtOfficeEndDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.OfficeEndDate" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+      //debugger;
+      $.parser.parse(eleId);
+
+      var ViewModel = function (data) {
+      var self = this;
+      self.Action = 'new';
+          //debugger;
+      if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+		    self.Action = 'edit';
+      }
+          if (data.form.PositionID == '00000000-0000-0000-0000-000000000000')
+              data.form.PositionID = '';
+        data.form.IsFP = data.form.IsFP.toString();
+	  self.formdata = ko.mapping.fromJS(data.form);
+
+	  self.dataSources = data.dataSources;
+	  self.ViewTool = context.ViewModel.ViewTool;//new YarClient.ViewModel("@bizId", "@tokenId");
+      self.SubBizId = '@bizId';
+      self.Init = function()
+      {
+
+          self.formdata.OfficeBeginDate.subscribe(function(val){
+              $('#txtOfficeEndDate').datepicker('setStartDate',val==""?false:val);
+          });
+
+          self.formdata.OfficeEndDate.subscribe(function(val){
+              $('#txtOfficeBeginDate').datepicker('setEndDate',val==""?false:val);
+          });
+
+          $('#txtOfficeEndDate').datepicker('setStartDate',self.formdata.OfficeBeginDate()==""?false:self.formdata.OfficeBeginDate());
+          $('#txtOfficeBeginDate').datepicker('setEndDate',self.formdata.OfficeEndDate()==""?false:self.formdata.OfficeEndDate());
+          //self.formdata.PositionID("");
+          self.OnNeedRefreshJobPositionList();
+      };
+      self.OnSave = function (finishcall) {
+        //debugger;
+        var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+        if(MainApp.FormValidate(job))
+        {
+			var url = '';
+			if(self.Action == 'new'){
+			    url = self.ViewTool.GetActionUrl("Post", self.SubBizId + ".Create",{empId:data.form.empId,legalId: data.form.legalId});
+			} else {
+			    url = self.ViewTool.GetActionUrl("Post", self.SubBizId + ".Edit",{resId:data.form.ResId});
+			}
+            YarClient.AjaxPost(url,postdata, {
+                IsWarning: true,
+                success : function(returnData) {
+                    finishcall(returnData,callback);
+                }
+            });
+        }
+        else {
+
+        }
+      };
+
+      self.OnRefresh = function () {
+          var data = {
+          };
+      };
+
+      self.onSelectOrgUnit = function () {
+          MainApp.ShowDialog(MainApp.GetUrl("_BizOrganizationService", "Get", "Biz_Select_OrgUnit.OrgView",{notLimitLegal:'1'}), {}, function (data) {
+              self.formdata.OrganizationName(data[0].Name);
+              self.formdata.LegalEntityID(data[0].LegalEntityID);
+              self.formdata.OrganizationID(data[0].Id);
+              //self.OnRefresh();
+              //alert(JSON.stringify(data));
+          });
+      };
+
+      self.OnNeedRefreshJobPositionList = function() {
+              var orgId = self.formdata.OrganizationID();
+              if(orgId && orgId != "00000000-0000-0000-0000-000000000000"){
+                  //debugger;
+                  var url = self.ViewTool.GetActionUrl("Get", self.SubBizId + ".GetJobPositionList", {legal: self.formdata.LegalEntityID(), orgId: self.formdata.OrganizationID(), isFP: self.formdata.IsFP()});
+
+                  YarClient.AjaxGet(url,{
+                      IsWarning: true,
+                      success: function(returnData) {
+                          //debugger;
+                          $("#txtPositionID").combobox('loadData', returnData.Result);
+                      }
+                  });
+              }
+
+          }
+
+	  };
+      var data = @this.Raw(Model.Data);
+      var viewModel = new ViewModel(data);
+
+      ko.applyBindings(viewModel, $(eleId)[0]);
+      viewModel.Init();
+
+      viewModel.formdata.OrganizationID.subscribe(function (newValue) {
+          viewModel.formdata.PositionID('');
+            viewModel.OnNeedRefreshJobPositionList();
+        });     
+
+        MainApp.DialogModel(eleId,viewModel.Action == "new"? '新增用户任职信息' : '编辑用户任职信息',750,200,viewModel.OnSave);
+
+    })(eleId, context, callback);
+</script>

@@ -1,0 +1,277 @@
+﻿@using Yar.Service;
+@{
+    //var model = Model.Data as Yar.BizModule.Permission.Model.BusinessGroup[];
+    var context = (Yar.Service.BusinessContext)Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.Data.BizId;
+    string orgId = Model.Data.OrgId;
+    var appUrl = context.GetAppUrl();
+}
+<div id="pgcontent" class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+
+    <div class="row" style="display: block;">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        用户管理
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+								<div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">姓名</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="textboxValue:displaydata.name" style="width: 100%; height: 34px;" class="easyui-textbox" data-options="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">账号</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="textboxValue:displaydata.loginname" style="width: 100%; height: 34px;" class="easyui-textbox" data-options="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="float: right;display: inline-block;">
+                                        <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-refresh"></i> 搜索 </a>
+                                        <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnCreate"><i class="fa fa-plus-circle"></i> 新增 </a>  
+                                        <a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnDeleteall"><i class="fa fa-remove"></i> 删除 </a>
+                                        @if (context.Credential.IsSysAdmin())
+                                        {
+                                            @*<a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnFixPwd"> 修复密码 </a>*@         
+                                        }
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:5px;" id="griddiv">
+                        <table data-bind="grid:uiSources.gridList" id="gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>           
+     </div>
+</div>
+<script id="ContentInit" type="text/javascript" src="">
+  MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+      MainApp.Token = '@tokenId';
+  Pagecom = (function () {
+          function Pagecom() {
+          };
+          return Pagecom;
+      })();
+	  
+  function BizViewModel() {
+      var self = this;
+      self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+      var displaydata = { resId: '', name: '', loginname: ''};
+      self.displaydata = ko.mapping.fromJS(displaydata);
+            self.uiSources = {
+                gridList: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#gridlist",
+                        SizeOpt: {
+                            pid: "#griddiv",
+                            top: 312
+                        }
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", "GetResourceList"),
+                        fitColumns: true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                    striped:true,
+                        columns: [[  
+                    { field: 'ck', checkbox:true },
+                    {
+                        field: 'Name', title: '姓名', width: 100, sortable: true, formatter: function (value, rowData, rowIndex) {
+                            return String.format("<a href='#' title='{1}' data-bind='click:function (data) {OnExplorer(\"{0}\")}' >{1}</a>", rowData.ResId, value);
+                        }
+                    },
+                    { field: 'LoginName', title: '账号', sortable: true, width: 100 },
+                    { field: 'rolename', title: '角色', width: 150 },
+                    { field: 'Email', title: '邮件', sortable: true, width: 150 },
+                    { field: 'userTypeName', title: '类型', sortable: true, width: 80, align: 'center' },
+                    { field: 'stateName', title: '状态', sortable: true, width: 60, align: 'center' },
+                    {
+                        field: 'ResId', title: '相关操作',align:'center',
+                        formatter: function (value, row, index) {
+                            var f = String.format('<a href="#" class="btn_default" title="编辑" data-bind="click:function (data) {OnEdit(\'{0}\')}"><i class="fa fa-edit"></i></a>', row.ResId);
+                            @if (UIHelper.HasBizFunction(context,bizId, "ChangePassword"))
+                            {
+                                <text>
+                                f += String.format('<a href="#" class="btn btn-xs btn-success" title="改变密码" data-bind="click:function (data) {OnChangePassword(\'{0}\')}">{1}</a>', row.ResId, '密码');
+                                </text>
+
+                            }
+                            f += row.UserType == 'employee' ? "" : String.format('<a href="#" class="btn btn-xs btn-success" title="角色" data-bind="click:function (data) {OnSettingRole(\'{0}\')}" >{1}</a>', row.ResId, '角色');
+                            if (row.ResState == 0) {
+                                f += String.format('<a href="#" class="btn btn-xs btn-success" title="禁用" data-bind="click:function (data) {OnSettingState(\'{0}\',1)}">{1}</a>', row.ResId, '禁用');
+                            } else {
+                                f += String.format('<a href="#" class="btn btn-xs red" title="启用" data-bind="click:function (data) {OnSettingState(\'{0}\',0)}">{1}</a>', row.ResId, '启用');
+                            }
+                            return f;
+                        }
+                    }
+                        ]],                        
+                        onLoadSuccess: function (data) {
+                            ko.applyBindings(self, $('#griddiv .datagrid-btable')[0]);
+                        }
+                    }
+                }
+            };
+      self.Init = function () {
+      };
+      self.OnRefresh = function (reload) {
+          var data = {
+              name: Pagecom.ViewModel.displaydata.name(),
+              loginname: Pagecom.ViewModel.displaydata.loginname(),
+
+          };
+          if (reload) {
+              $('#gridlist').datagrid('reload', data);
+          } else {
+              $('#gridlist').datagrid('load', data);
+          }
+          
+      };
+      self.OnCreate = function () {			
+			MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateView"), { ViewModel: self, data: { } },
+                  function (data) {
+                      self.OnRefresh(true);
+                  });
+      };
+      self.OnExplorer = function (resId) {
+          MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "PreviewView", { resId: resId }), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefresh(true);
+                });
+      };
+      self.OnEdit = function (resId) {
+          MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditView", { resId: resId }), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefresh(true);
+                });
+      };
+      self.OnSettingState = function (resId, state) {
+          if (resId && (state == 1 || state == 0)) {
+              YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "UpdateState", { resId: resId, state: state }), {
+                  IsWarning: true,
+                  success: function (data) {
+                      self.OnRefresh(true);
+                  },
+                  failed: function (data) {
+                      self.OnRefresh(true);
+                  }
+              });
+          }
+          
+      };
+	  self.OnSettingRole = function (resId) {
+	      if (resId) {
+	          MainApp.ShowPartialView('rolelistview', self.ViewTool.GetActionUrl("Get", "RoleSettingView"), { ViewModel: self.ViewTool, resId: resId },
+              function (data) {
+                  self.OnRefresh(true);
+              });
+	      }
+	  };
+	  self.OnChangePassword = function (resId) {
+	      if (resId) {
+	          MainApp.ShowPartialView('ChangePasswordView', self.ViewTool.GetActionUrl("Get", "ChangePasswordView"), { ViewModel: self.ViewTool, resId: resId },
+              function (data) {
+                  self.OnRefresh(true);
+              });
+	      }
+	  }
+	  self.OnFixPwd = function (resId) {
+	      YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "FixPassword"), {
+	          IsWarning: true,
+	          success: function (data) {
+	              self.OnRefresh(true);
+	          },
+	          failed: function (data) {
+	              self.OnRefresh(true);
+	          }
+	      });
+	  };
+
+	  self.OnDeleteall = function () {
+	      var rows = $("#gridlist").datagrid('getChecked');
+	      var array = [];
+
+	      if (rows && rows.length > 0) {
+	          rows.each(function (value, index) {
+	              array.push(value.ResId);
+	          });
+	          $.messager.confirm('确认', '你确定想删除此数据?', function (r) {
+	              if (r) {
+	                  var url = self.ViewTool.GetActionUrl("Post", "DeleteAll", { ids: array.join(';') });
+	                  YarClient.AjaxPost(url, null, {
+	                      IsWarning: true,
+	                      success: function (returnData) {
+	                          self.OnRefresh();
+	                          $.messager.alert('Message', '更新成功', 'info');
+	                      }
+	                  });
+	              }
+	          });
+	      }
+	      else
+	      {
+	          swal("删除失败!", "请选择需要删除的用户", "warning");
+	      }
+	  };
+    };
+
+    var viewModel = new BizViewModel();
+        Pagecom.ViewModel = viewModel;
+      viewModel.Init();
+      ko.applyBindings(viewModel,$('#pgcontent')[0]);
+      viewModel.OnRefresh();
+</script>
+
+<script id="ContentInitCss" type="text">
+	['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/jquery.validator.css")',
+	'@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/icon.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-table/bootstrap-table.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-table/bootstrap-table-extend.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload.css")']     
+</script>
+
+<script id="ContentInitScript" type="text">
+	['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
+	'@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
+	'@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',   
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/jquery.validator.js?local=zh-CN")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-table/bootstrap-table.js")',  
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-table/locale/bootstrap-table-zh-CN.min.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.ui.widget.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload-process.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload-validate.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.iframe-transport.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/UploadHelper.js?v=1")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.zh-CN.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/jquery.base64.js")',
+	'@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
+	'@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']   	
+</script>

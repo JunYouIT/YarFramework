@@ -1,0 +1,313 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<style>
+    .modalContainer {
+        margin: 10px 10px 0 10px;
+    }
+</style>
+
+<div style="padding:10px;background-color: #fff;height:650px">
+    <div class="modalContainer">
+        <div class="form form-horizontal">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4 bold"><span class="importantitem">*</span>字典编码</label>
+                            <div class="col-md-8">
+                                <input type="text" id="ExchangeModeName" data-bind="textboxValue:formdata.DictCode" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" data-options="required:true,validType:'length[0,36]'" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4 bold"><span class="importantitem">*</span>字典名称</label>
+                            <div class="col-md-8">
+                                <input type="text" id="ExchangeModeName" data-bind="textboxValue:formdata.DictName" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" data-options="required:true,validType:'length[0,256]'" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4 bold"><span class="importantitem">*</span>字典类别</label>
+                            <div class="col-md-8">
+                                <input type="text" class="easyui-combobox" data-bind="comboboxValue:formdata.DictType,dataSource:dataSources.dsDictTypes" data-options="valueField:'ID',textField:'Name',required:true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2 bold">备注</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control easyui-validatebox" rows="5" data-bind="value:formdata.Remark" data-options="validType:'length[0,512]'"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4 bold">状态</label>
+                            <div class="col-md-8">
+                                <input type="text" class="easyui-combobox" data-bind="comboboxValue:formdata.State,dataSource:dataSources.dsStates" data-options="valueField:'ID',textField:'Name',required:true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-4 bold">是否缓存</label>
+                            <div class="col-md-8">
+                                <input type="checkbox" id="isPrincipal" data-ontext="是" data-offtext="否" data-bind="SwitchValue: formdata.IsCache" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form form-horizontal">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-5 bold">字典项编码</label>
+                            <div class="col-md-7">
+                                <input type="text" id="ExchangeModeName" data-bind="textboxValue:displayData.ItemCode" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label col-md-5 bold">字典项名称</label>
+                            <div class="col-md-7">
+                                <input type="text" id="ExchangeModeName" data-bind="textboxValue:displayData.ItemName" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div style="float: right; display: inline-block;">
+                            <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+                            <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnAdd"><i class="fa fa-plus-circle"></i> 添加 </a>
+                            <a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnDeleteAll"><i class="fa fa-trash-o"></i> 删除 </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="margin-top:5px;text-align:center;width:850px" id="griddivDicItem">
+                        <table data-bind="grid:uiSources.gridList" id="gridlistDicItem" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script type="text/javascript">
+        (function (eleId, context, callback) {
+            $.parser.parse(eleId);
+
+            // guid函数
+            function uuid() {
+                var s = [];
+                var hexDigits = "0123456789abcdef";
+                for (var i = 0; i < 36; i++) {
+                    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+                }
+                s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+                s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+                s[8] = s[13] = s[18] = s[23] = "-";
+
+                var uuid = s.join("");
+                return uuid;
+            }
+
+            var ViewModel = function (data) {
+                var self = this;
+                self.Action = 'new';
+
+                if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000' ){
+                    self.Action = 'edit';
+                    self.ResId = data.form.ResId;
+                }
+                else
+                {
+                    self.ResId = data.form.ResId = uuid();
+                }
+
+                self.formdata = ko.mapping.fromJS(data.form);
+                var displayData = { ItemCode: '', ItemName: ''};
+                self.displayData = ko.mapping.fromJS(displayData);
+                self.dataSources = data.dataSources;
+                self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+                self.uiSources = {
+                    gridList: {
+                        ops: {
+                            ClientPage: false,
+                            ele: "#gridlistDicItem",
+                            SizeOpt: {
+                                pid: "#griddivDicItem",
+                                top: 0
+                            }
+                        },
+                        sops: {
+                            url: self.ViewTool.GetActionUrl("Post", "GetDicItemList"),
+                            fitColumns:true,
+                            selectOnCheck: false,
+                            checkOnSelect: false,
+                            onLoadSuccess:function(){ $("[data-toggle='tooltip']").tooltip(); },
+                            columns: [[
+                            { field: 'ck', checkbox:true },
+                            { field: 'ItemCode', title: '字典项编码', sortable: true,width:100},
+                            { field: 'ItemName', title: '字典项名称', sortable: true,width:100},
+                            { field: 'ItemValue', title: '字典项值', sortable: true,width:100},
+                            //{ field: 'ParentCode', title: '父级编码', sortable: true,width:100},
+                            { field: 'Sequence', title: '排序', sortable: true,width:100},
+                            { field: 'State', title: '状态',width:100,halign:'center',align:'center', formatter: function(value, row, index){
+                                if(value == '启用'){
+                                    return '<a title="启用"><i class="fa fa-check font-green" style="font-size:18px;"></i></a>';
+                                } else {
+                                    return '<a title="禁用"><i class="fa fa-ban font-red" style="font-size:18px;"></i></a>';
+                                }
+                       
+                            }},
+                            { field: 'Id', title: '功能',
+                                formatter: function(value, row, index){
+                                    var str = String.format('<a href="#" title="编辑" onclick="Pagecom.ViewModel2.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.Id);
+                                    str+=String.format(' <a href="#" title="更改字典项范围" onclick="Pagecom.ViewModel2.OnChangeScope(\'{0}\')"><i class="fa fa-refresh"></i></a>',row.Id);
+                                    return str;
+                                }
+                            }]]
+                        }
+                    }
+                };
+
+                self.OnRefresh = function(){
+                    var data = {
+                        DictId: self.ResId,
+                        ItemCode: self.displayData.ItemCode(),
+                        ItemName: self.displayData.ItemName()
+                    };
+                    $('#gridlistDicItem').datagrid('load', data);
+                };
+
+                self.OnAdd = function(){
+                    MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "AddDictItemView", { resId: self.ResId }), { ViewModel: self, data: {} },
+                    function (data) {
+                        self.OnRefresh();
+                    });
+                };
+
+                self.OnDeleteAll = function(){
+                    var rows = $("#gridlistDicItem").datagrid('getChecked');
+                    var array = [];
+                    var txt = '';
+                    if(rows && rows.length > 0){
+                        rows.each(function (value, index) {
+                            array.push(value.Id);
+                            txt += value['ItemName'] + '\n';
+                        });
+
+                        swal({
+                            title: "你是否确认删除如下信息?",
+                            text: txt,
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "是的, 删除!",
+                            closeOnConfirm: false
+                        },
+                        function(){
+                            YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAllDictItems",{ ids: array.join(';') }), {
+                                IsWarning: true,
+                                success: function (returnData) {
+                                    self.OnRefresh();
+                                    if(returnData.Message!=null)
+                                    {
+                                        swal(JSON.stringify(returnData.Message), "已被引用，不可删除.", "warning");
+                                    }
+                                    else
+                                    {
+                                        swal("删除成功!", "已删除.", "success");
+                                    }
+                                }
+                            });
+                        })  ;
+                    }
+                    else{
+                        swal({
+                            title:"请选择需要删除的信息！",
+                            type: "warning"
+                        });
+                    }
+                };
+
+                self.Init = function() {
+                    self.OnRefresh();
+                };
+
+                self.OnSave = function () {
+                    var postdata = { formdata: MainApp.GetDataChange(self.formdata, data.form, true) };
+                    if (MainApp.FormValidate()) {
+                        var url = '';
+                        url = self.ViewTool.GetActionUrl("Post", "SaveDict", { resId: data.form.ResId,action: self.Action });
+                        YarClient.AjaxPost(url, postdata, {
+                            IsWarning: true,
+                            success: function (returnData) {
+                                if(self.Action == 'new')
+                                    swal("操作成功!", "新的字典已经添加", "success");
+                                else
+                                    swal("操作成功!", "字典已经修改成功", "success");
+                                $(eleId).window('destroy');
+                                callback();
+                            }
+                        });
+                    }
+                    else {
+                    }
+                };
+
+                self.OnClose = function(){
+                    $(eleId).window('destroy');
+                };
+
+                self.OnChangeScope = function(DictItemId){
+                    MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "ChangeItemScopeView", { resId: DictItemId }), { ViewModel: self, data: {} },
+                    function (data) {
+                    });
+                };
+
+                self.OnEdit = function(DictItemId){
+                    MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditDictItemView", { resId: DictItemId }), { ViewModel: self, data: {} },
+                    function (data) {
+                        self.OnRefresh();
+                    });
+                };
+            };
+            var data = @this.Raw(Model.Data);
+            var viewModel = new ViewModel(data);
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+            Pagecom.ViewModel2 = viewModel;
+
+            MainApp.DialogCustomButton(eleId, viewModel.Action == "new" ? '添加业务字典信息' : '编辑业务字典信息', 900, 600,
+            [{ text: viewModel.Action == "new" ? '创建' : '保存', click: function()
+            {
+                viewModel.OnSave();
+            }
+            },
+            { text: "关闭", cancel: true,click:function()
+            {
+                viewModel.OnClose();
+            }
+            }]
+            );
+        })(eleId, context, callback);
+    </script>

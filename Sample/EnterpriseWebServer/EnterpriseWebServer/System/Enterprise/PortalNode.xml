@@ -1,0 +1,22 @@
+<Site>
+	<Nodes>
+    <Node id="AdminBoostrap" Template="Portal\AdminBoostrap\IndexWeb.cshtml">
+      <Content>
+        <Item id="SEO">
+          <Item id="title" DataType="string" value="钧优企业管理平台" ></Item>
+          <Item id="description" DataType="string" ></Item>
+          <Item id="keywords" DataType="string" ></Item>
+        </Item>
+        <Item id="Header">
+          <Item id="headertitle" DataType="string" value="钧优企业管理平台" ></Item>
+        </Item>
+        <Item id="Footer">
+          <Item id="Address" DataType="string" ></Item>
+          <Item id="Copyright" DataType="string" value="Copyright © 2014-2017 itwiseonline, inc. All rights reserved."></Item>
+        </Item>
+        <Item id="defaultpage" DataType="string" value="Portal\AdminBoostrap\PageFrame.cshtml" ></Item>
+        <Item id="masterInterval" DataType="string" value="180" ></Item>
+      </Content>
+    </Node>
+	</Nodes>	
+</Site>

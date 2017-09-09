@@ -1,0 +1,22 @@
+<DataDict>
+  <DataCategory ResId="SYS_UserType" Name="用户类型">
+    <DictItem ResId="legal" Name="用户" />
+    <DictItem ResId="employee" Name="员工" />
+  </DataCategory>
+  <DataCategory ResId="SYS_MessageType" Name="消息类型">
+    <DictItem ResId="OnlineMessage" Name="站内消息" Value="0" />
+    <DictItem ResId="Sms" Name="短信" Value="1"/>
+    <DictItem ResId="Email" Name="邮件" Value="2"/>
+  </DataCategory>
+  <DataCategory ResId="SYS_MessagePriority" Name="消息优先级">
+    <DictItem ResId="Normal" Name="一般" Value="0" />
+    <DictItem ResId="Important" Name="重要" Value="1"/>
+    <DictItem ResId="Urgency" Name="紧急" Value="2"/>
+  </DataCategory>
+  <DataCategory ResId="SYS_MessageSendStatus" Name="消息发送状态">
+    <DictItem ResId="NotSend" Name="未推送" Value="0" />
+    <DictItem ResId="WaittingRetry" Name="待重试" Value="1"/>
+    <DictItem ResId="SendSuccess" Name="推送成功" Value="2"/>
+    <DictItem ResId="SendFail" Name="推送失败" Value="3"/>
+  </DataCategory>
+</DataDict>

@@ -1,0 +1,258 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var bizAction = (string)context.Params["BusinessAction"];
+}
+<form id="editform" class="form form-horizontal" style="width:700px;" data-validator-option="{focusCleanup:true,theme:'yellow_right'}">
+                        <div class="form-body">	
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 bold">姓名</label>
+                                        <div class="col-md-8">
+                                            <input class="form-control" type="text" data-bind="value:formdata.Name" placeholder="please input name" data-rule="required;length(0~50)" data-timely="3" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 bold">账号</label>
+                                        <div class="col-md-8">
+                                            <input type="text" id="loginname" data-bind="textboxValue:formdata.LoginName" class="easyui-textbox" data-options="required:true,validateOnCreate:false,validType:'length[1,50]'" style="width:100%;" placeholder="please input name" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 bold">初始密码</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="textboxValue:formdata.InitPassword" class="easyui-textbox" data-options="required:true,validType:'length[0,20]'" style="width:100%;" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 bold">来源</label>
+                                        <div class="col-md-8">
+                                            <input type="text" id="datasource" data-bind="textboxValue:formdata.DataSource" class="easyui-textbox" data-options="validType:'length[0,20]'" style="width:100%;" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label col-md-4 bold">头像</label>
+                                    <div class="col-md-6">
+                                        <div style="text-align: center;">
+                                            <img data-bind="attr:{src:formdata.photoUrl}" style="height:145px;" onerror="this.src = '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Content/images/noman.gif")'" />
+                                        </div>
+                                        <div style="text-align: center; padding-top: 5px;padding-bottom:5px;">
+                                            <a class="gt2_btn_add" style="position: relative; overflow: hidden;">
+                                                <span class="fileinput-button"><span>上传照片</span><input id="photoupload" type="file" name="file"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">邮件</label>
+                                <div class="col-md-4">
+                                    <input type="text" id="email" data-bind="textboxValue:formdata.Email" class="easyui-textbox" data-options="validType:'length[0,50]'" style="width:100%;" />
+                                </div>
+                                <label class="control-label col-md-2 bold">类型</label>
+                                <div class="col-md-4">
+                                    <input type="text" id="usertype" data-bind="comboboxValue:formdata.UserType,dataSource:dataSources.dsUserTypes" class="easyui-combobox" data-options="required:true" style="width:100%;" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">代理用户</label>
+                                <div class="col-md-4">
+                                    <input type="text" id="email" data-bind="textboxValue:formdata.LoginId" class="easyui-textbox" data-options="validType:'length[0,50]'" style="width:100%;" />
+                                </div>
+                                
+                            </div>
+                            @if (bizAction == "EditView")
+                            {
+                                <div class="portlet box blue">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="icon-tag"></i>
+                                            职位
+                                        </div>
+                                        <div class="tools">
+                                            <a href="javascript:;" class="collapse"> </a>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body">                                        
+                                        <div class="col-md-12">
+                                            <div style="float: right;display: inline-block;">
+                                                <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnPosCreate"><i class="fa fa-plus-circle"></i> 新增 </a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <table data-bind="grid:uiSources.gridList" id="useredit_positionlist" style="height:auto;width:100%;"></table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            
+
+                         </div>
+</form>
+<script type="text/javascript">
+    Page_UserEdit = (function () {
+        function Page_UserEdit() {
+        };
+        return Page_UserEdit;
+    })();
+    (function (eleId, context, callback) {
+      //debugger;
+        $.parser.parse(eleId);
+      var ViewModel = function (data) {
+		  var self = this;
+		  self.Action = 'new';
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000' ){
+                self.Action = 'edit';
+            }
+
+            self.formdata = ko.mapping.fromJS(data.form);
+            self.dataSources = data.dataSources;
+            self.ViewTool = context.ViewModel.ViewTool;
+            self.uiSources = {
+                gridList: {
+                    ops: {
+                        ClientPage: true,
+                        ele: "#useredit_positionlist",
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", "Biz_UserPostion.GetResourceList",{ResId:data.form.ResId}),
+                        initLoader:true,
+                        pagination:false,
+                        fitColumns: true,
+                        rownumbers : true,
+                        columns: [[
+                            { field: 'PositionCode', title: '职位编号',sortable:true, width: 200 },
+                  { field: 'LegalEntityName', title: '法人公司',sortable:true, width: 200 },
+                  { field: 'OrganizationName', title: '部门',sortable:true, width: 200 },
+                  { field: 'PositionName', title: '职位',sortable:true, width: 200 },
+                  { field: 'OfficeBeginDate', title: '开始日期',sortable:true, width: 200 },
+                  { field: 'OfficeEndDate', title: '结束日期',sortable:true, width: 200 },
+                  { field: 'Main', title: '兼职',sortable:true, width: 200, formatter: function(value, row, index){
+                      var s = String.format('<a class="btn btn-xs btn-success" disabled="disabled" onclick="Pagecom.ViewModel.OnModifyIsMainState(\'{0}\',\'{2}\')">{1}</a>',row.PostInformationID,value,data.form.ResId);
+                      if(value=='非主职位')
+                          s = String.format('<a class="btn btn-xs btn-default" title="点击设为主职位" data-toggle="tooltip" onclick="Page_UserEdit.ViewModel.OnModifyIsMainState(\'{0}\',\'{2}\')">{1}</a>',row.PostInformationID,value,data.form.ResId);
+                      return  s;
+                  } } ,{
+                      field: 'PostInformationID',
+                      title: '功能',
+                      formatter: function(value, row, index) {
+
+                          var s = String.format('<a class="btn_default" href="#" title="编辑" data-toggle="tooltip" onclick="Page_UserEdit.ViewModel.OnPosEdit(\'{0}\')"><i class="fa fa-edit fa-grid"></i></a>', row.PostInformationID);
+                          if(!row.IsMain)
+                              s +=  String.format('<a class="btn_default" href="#" title="删除" data-toggle="tooltip" onclick="Page_UserEdit.ViewModel.OnPosDelete(\'{0}\')"><i class="fa fa-trash-o fa-grid"></i></a>', row.PostInformationID);
+                              
+                          return s;
+                      }
+                  }
+                        ]]
+                    }
+                }
+            };
+            self.formdata.photoUrl = ko.computed(function() {
+                if(self.formdata.UserPhotoId() && self.formdata.UserPhotoId()!='00000000-0000-0000-0000-000000000000')
+                    return global.GetActionUrl("_BizAttachmentService", "GetAttachment", {AttachmentId:self.formdata.UserPhotoId()});
+                else {
+                    return '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Content/images/noman.gif")';
+                }
+            });
+
+            self.Init = function() {
+                var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist",{id:data.form.ResId});
+                var valid = String.format("cremote['{0}','name','登陆名已存在']", checkUrl);
+                $("#loginname").textbox({
+                    required: true,
+                    validType: ['length[0,50]',valid]
+                });
+                if(self.Action == 'edit' && data.form.UserType== 'employee'){
+                    //$("#name").textbox({disabled:true});
+                    $("#email").textbox({disabled:true});
+                    $("#usertype").combobox({disabled:true});
+                    $("#datasource").textbox({disabled:true});
+                }
+                $.Yar.Attachement.AttachmentUpload($('#photoupload'), data.form.LegalId, data.form.UserId, '', 'Att034', function (result) {
+                    //$.messager.alert('Message', JSON.stringify(result), 'info');
+                    self.formdata.UserPhotoId(result.Result.AttachementID);
+                });
+
+            };
+            self.OnRefreshPos = function(){
+                $('#useredit_positionlist').datagrid('load', {});
+            };
+            self.OnPosCreate = function() {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "Biz_UserPostion.CreateView", { empId: data.form.ResId,legalId: data.form.legalId}), { ViewModel: self, data: {} },
+                  function (data) {
+                      self.OnRefreshPos();
+                  });
+            };
+            self.OnPosEdit = function(resId) {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "Biz_UserPostion.EditView", {resId:resId, empId: data.form.ResId,legalId: data.form.legalId}), { ViewModel: self, data: {} },
+                  function (data) {
+                      self.OnRefreshPos();
+                  });
+            };
+            self.OnModifyIsMainState = function(resId,userId) {     
+                var url = self.ViewTool.GetActionUrl("Post", "Biz_UserPostion.OnModifyIsMainState", { resId: resId,userId:userId});
+                YarClient.AjaxPost(url, null, {
+                    IsWarning: true,
+                    success: function (returnData) {
+                        self.OnRefreshPos();
+                    }
+                });
+            };
+            
+            self.OnPosDelete = function(resId) {
+                $.messager.confirm('确认', '你确定想删除此数据?', function (r) {
+                    if (r) {
+                        var url = self.ViewTool.GetActionUrl("Post", "Biz_UserPostion.Delete", { resId: resId, logicDeletes: 1 });
+                        YarClient.AjaxPost(url, null, {
+                            IsWarning: true,
+                            success: function (returnData) {
+                                self.OnRefreshPos();
+                                $.messager.alert('Message', '更新成功', 'info');
+                            }
+                        });
+                    }
+                });
+            };
+
+		  self.OnSave = function (finishcall) {
+			debugger;
+
+              var postdata = { formdata: MainApp.GetDataChange(self.formdata, data.form, true) };
+              var rel = $('#editform').isValid();
+			if(MainApp.FormValidate())
+			{
+				var url = '';
+				if(self.Action == 'new'){
+					url = self.ViewTool.GetActionUrl("Post", "Create",{resId:data.form.ResId});
+				} else {
+					url = self.ViewTool.GetActionUrl("Post", "Edit",{resId:data.form.ResId});
+				}
+				YarClient.AjaxPost(url,postdata, {
+					IsWarning: true,
+					success : function(returnData) {
+						finishcall(returnData,callback);
+					}
+				});
+			}
+			else {
+
+			}
+		  };
+	  };
+      var data = @this.Raw(Model.Data);
+      var viewModel = new ViewModel(data);
+
+      Page_UserEdit.ViewModel = viewModel;     
+      $.Yar.Dialog.Show(eleId, viewModel.Action == "new" ? '新增用户管理' : '编辑用户管理', 700, viewModel.Action == "new" ?310:450, viewModel.OnSave,null,function (dialogRef) {
+          ko.applyBindings(viewModel, $(eleId)[0]);
+          viewModel.Init();
+          //alert(viewModel.Action);
+      });
+
+    })(eleId, context, callback);
+</script>

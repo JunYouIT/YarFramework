@@ -1,0 +1,145 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<style>
+    .modalContainer {
+        margin: 10px 10px 0 10px;
+    }
+</style>
+
+<div style="padding:10px;background-color: #fff;height:400px">
+    <div class="modalContainer">
+        <div class="form form-horizontal">
+            <div class="form-body">
+                <div class="row">
+                    <div style="margin-top:0px;text-align:center;width:400px" id="griddivDicItemScope">
+                        <table data-bind="grid:uiSources.gridList" id="gridlistDicItemScope" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function (eleId, context, callback) {
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+            self.Action = 'new';
+
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000' ){
+                self.Action = 'edit';
+            }
+
+            self.formdata = ko.mapping.fromJS(data.form);
+
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+            self.uiSources = {
+                gridList: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#gridlistDicItemScope",
+                        SizeOpt: {
+                            pid: "#griddivDicItemScope",
+                            top: 0
+                        }
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", "GetDicItemScopeList"),
+                        fitColumns:true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                        onLoadSuccess:function(){ $("[data-toggle='tooltip']").tooltip(); },
+                        columns: [[
+                        { field: 'VisibleLECode', title: '法人公司编码', sortable: true},
+                        { field: 'VisibleLEName', title: '法人公司名称', sortable: true},
+                        { field: 'State', title: '状态', sortable: true,
+                            formatter: function(value, row, index){
+                                var str;
+                                debugger;
+                                if(value==="启用")
+                                    str = String.format('<a href="#" title="启用" onclick="Pagecom.ViewModel4.OnDisabled(\'{0}\')">启用</a>',row.Id);
+                                else
+                                    str = String.format('<a href="#" title="禁用" onclick="Pagecom.ViewModel4.OnEnabled(\'{0}\')">禁用</a>',row.Id);
+                                return str;
+                            }}
+                        ]]
+                    }
+                }
+            };
+
+            self.OnDisabled = function(ScopeID){
+                var url = self.ViewTool.GetActionUrl("Get", "DisableScope",{ScopeID:ScopeID,resId: self.formdata.ResId()});
+                YarClient.AjaxGet(url,{
+                    IsWarning: true,
+                    success: function (returnData) {
+                        self.OnRefresh();
+                    }
+                });
+            };
+
+            self.OnEnabled = function(ScopeID){
+                var url = self.ViewTool.GetActionUrl("Get", "EnableScope",{ScopeID:ScopeID,resId: self.formdata.ResId()});
+                YarClient.AjaxGet(url,{
+                    IsWarning: true,
+                    success: function (returnData) {
+                        self.OnRefresh();
+                    }
+                });
+            };
+
+            self.OnRefresh = function(){
+                var data = {
+                    resId :self.formdata.ResId
+                };
+                $('#gridlistDicItemScope').datagrid('load', data);
+            };
+
+            self.OnSave = function () {
+                var rows = $("#gridlistDicItemScope").datagrid('getData').rows;
+                var array = [];
+                debugger;
+                if(rows && rows.length > 0){
+                    rows.each(function (value, index) {
+                        if(value.State==="启用")
+                        {
+                            array.push(value.Id);
+                        }
+                    });
+                }
+                var url = '';
+                url = self.ViewTool.GetActionUrl("Post", "SaveDictItemScope", { legalIds: array.join(';'),resId: self.formdata.ResId() });
+                YarClient.AjaxPost(url, {}, {
+                    IsWarning: true,
+                    success: function (returnData) {
+                        swal("操作成功!", "DictItemScope已经修改成功", "success");
+                        $(eleId).window('destroy');
+                        callback();
+                    }
+                });
+            };
+
+            self.OnClose = function(){
+                $(eleId).window('destroy');
+            };
+        };
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+        ko.applyBindings(viewModel, $(eleId)[0]);
+        viewModel.OnRefresh();
+        Pagecom.ViewModel4 = viewModel;
+        MainApp.DialogCustomButton(eleId,'编辑字典项范围', 500, 420,
+        [{ text: "关闭", cancel: true,click:function()
+        {
+            viewModel.OnClose();
+        }
+        }]
+        );
+    })(eleId, context, callback);
+</script>

@@ -1,0 +1,314 @@
+
+body {
+    font-family: Tahoma, Verdana;
+    font-size: 12px;
+    margin: 0;
+}
+
+#container {
+    margin: 0px;
+    width: 100%;
+    background: #F2F8FC;
+}
+
+#mainContent {
+    height: 100%;
+    background: #F2F8FC;
+    padding: 0px 0px;
+    margin: 0px;
+}
+
+#Content {
+    float: left;
+    background: #F2F8FC;
+    margin: 5px 0 0 5px;
+}
+
+#cl {
+    clear: both;
+}
+
+#headermenu {
+    float: left;
+    margin: 9px 0 0 10px;
+    width: 600px;
+}
+
+    #headermenu a {
+        float: left;
+        margin: 0 10px 0 0;
+    }
+
+body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.headerfun {
+    height: 40px;
+    font-size: 18px;
+    vertical-align: middle;
+    line-height: 40px;
+    background-color: #F2F2F2;
+    border-bottom: 1px solid #D4D4D4;
+}
+
+.funblock {
+    border: 1px solid #909aa6;
+}
+
+table {
+    margin: 0;
+    padding: 0;
+    border-spacing: 0;
+    font-size: 12px;
+    border: 0;
+}
+
+tr {
+    vertical-align: top;
+}
+
+td, th {
+    vertical-align: middle;
+    padding: 0;
+}
+
+input, button, select, textarea {
+    outline: none;
+}
+
+
+
+
+.loading {
+    background: url(images/loading.gif) no-repeat 50% 50%;
+}
+
+.easyui-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 1px auto 0;
+}
+
+    .easyui-list ul li {
+        margin: 0 auto;
+        padding: 1px;
+        height: 28px;
+        line-height: 28px;
+        width: 100%;
+        cursor: pointer;
+        text-align: left;
+        color: #444;
+        border-radius: 0px;
+        font-size: 15px;
+    }
+
+        .easyui-list ul li:hover {
+            background-color: #E6E6E6;
+        }
+
+        .easyui-list ul li.selected {
+            background-color: #CCE6FF;
+        }
+
+
+.container60 {
+}
+
+.container6 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 420px;
+}
+
+.container10 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+}
+
+.container60 .grid1,
+.container60 .grid2,
+.container60 .grid3,
+.container60 .grid4,
+.container60 .grid5,
+.container60 .grid6,
+.container60 .grid7,
+.container60 .grid8,
+.container60 .grid9,
+.container60 .grid10 {
+    display: inline;
+    float: left;
+    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.container60 .grid1 {
+    width: 60px;
+}
+
+.container60 .grid2 {
+    width: 130px;
+}
+
+.container60 .grid3 {
+    width: 200px;
+}
+
+.container60 .grid4 {
+    width: 270px;
+}
+
+.container60 .grid5 {
+    width: 340px;
+}
+
+.container60 .grid6 {
+    width: 410px;
+}
+
+.container60 .grid7 {
+    width: 480px;
+}
+
+.container60 .grid8 {
+    width: 550px;
+}
+
+.container60 .grid9 {
+    width: 620px;
+}
+
+.container60 .grid10 {
+    width: 690px;
+}
+
+.container16 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+}
+
+.container40 .grid1,
+.container40 .grid2,
+.container40 .grid3,
+.container40 .grid4,
+.container40 .grid5,
+.container40 .grid6,
+.container40 .grid7,
+.container40 .grid8,
+.container40 .grid9,
+.container40 .grid10,
+.container40 .grid11,
+.container40 .grid12,
+.container40 .grid13,
+.container40 .grid14,
+.container40 .grid15,
+.container40 .grid16 {
+    display: inline;
+    float: left;
+    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.container40 .grid1 {
+    width: 40px;
+}
+
+.container40 .grid2 {
+    width: 90px;
+}
+
+.container40 .grid3 {
+    width: 140px;
+}
+
+.container40 .grid4 {
+    width: 190px;
+}
+
+.container40 .grid5 {
+    width: 240px;
+}
+
+.container40 .grid6 {
+    width: 290px;
+}
+
+.container40 .grid7 {
+    width: 340px;
+}
+
+.container40 .grid8 {
+    width: 390px;
+}
+
+.container40 .grid9 {
+    width: 440px;
+}
+
+.container40 .grid10 {
+    width: 490px;
+}
+
+.container40 .grid11 {
+    width: 540px;
+}
+
+.container40 .grid12 {
+    width: 590px;
+}
+
+.container40 .grid13 {
+    width: 640px;
+}
+
+.container40 .grid14 {
+    width: 690px;
+}
+
+.container40 .grid15 {
+    width: 740px;
+}
+
+.container40 .grid16 {
+    width: 790px;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+    overflow: hidden;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+.lbl {
+    height: 30px;
+    line-height: 30px;
+}
+
+.val {
+    padding-top: 4px;
+}
+
+/*
+sweet-alert 长文本省略显示
+*/
+.sweet-alert p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

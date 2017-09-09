@@ -1,0 +1,350 @@
+﻿@{
+    //var model = Model.Data as Yar.BizModule.Permission.Model.BusinessGroup[];
+  Yar.Service.BusinessContext context = Model.Context;
+  var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+  var bizId = Model.BizId;
+  string resid = Model.RawData.form.ResId;
+  string pagetitle = string.IsNullOrEmpty(resid) ? "Role New" : "Role Edit(" + resid + ")";
+    bool bNew = string.IsNullOrEmpty(resid) ? true : false;
+  bool disableFun = resid == "admin" && !context.Credential.IsSysAdmin() ? true : false;
+}
+<div id="pgcontent" class="content">
+    <ol class="breadcrumb">
+        <li>系统管理</li>
+        <li>角色管理</li>
+        <li>角色编辑</li>
+    </ol>
+	<div class="row" style="margin-bottom:10px;">
+        <div class="col-md-12">
+            <div style="float: right;display: inline-block;">
+                <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnSave"><i class="fa fa-save"></i> 保存 </a>
+                <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnBack"><i class="fa fa-undo"></i> 返回 </a>
+            </div>
+        </div>
+    </div> 
+    <div class="row" style="display: block;">
+        <div class="col-md-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        角色管理
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">							
+                            <div class="form-group">
+								<label class="control-label col-md-2 bold">角色编码</label>
+                                <div class="col-md-4">
+                                    <input type="text" data-bind="textboxValue:formdata.Code" class="easyui-textbox" data-options="required:true,validType:'length[0,50]'" style="background-color: #FFFFE6; width: 100%;" placeholder="please input name" />
+                                </div>
+                                <label class="control-label col-md-2 bold">角色范围</label>
+                                <div class="col-md-4">
+                                    <input type="text" data-bind="comboboxValue:formdata.RoleType,dataSource:dataSources.roleTypes"  class="easyui-combobox"  data-options="required:true" style="width: 100%;" @(resid == "admin" ? "disabled" : "")/>
+                                </div>                                                              
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">角色名称</label>
+                                <div class="col-md-4">
+                                    <input type="text" data-bind="textboxValue:formdata.Name" class="easyui-textbox" data-options="required:true,validType:'length[0,20]'" style="background-color: #FFFFE6; width: 100%;" placeholder="please input name" />
+                                </div>                               
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">描述</label>
+                                <div class="col-md-10">
+                                    <input type="text" data-bind="textboxValue:formdata.Desc" class="easyui-textbox" data-options="validType:'length[0,255]'" style="width: 100%;" />
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="display:@(resid == "admin" ? "none" : "block");">
+        <div class="col-md-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        应用功能
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div style="height:300px;">
+                        <table id="gridlist1" style="width:auto;"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="display:@(resid == "admin" ? "none" : "block");">
+        <div class="col-md-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        业务功能
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div style="height:300px;overflow:auto;">
+                        <ul id="role_bizfuntree"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!bNew)
+    {
+        <div class="row" style="display:@(resid == "admin" ? "none" : "block");">
+            <div class="col-md-12">
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="icon-tag"></i>
+                            数据权限
+                        </div>
+                        <div class="tools">
+                            <a href="javascript:;" class="collapse"> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="form form-horizontal" style="">
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div style="float: right;display: inline-block;">
+                                            <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnDpCreate"><i class="fa fa-plus-circle"></i> 新增 </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div style="height:250px;">
+                                            <table data-bind="grid:uiSources.griddatalist" id="griddatalist" style=""></table>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    
+    <div class="row" >
+        <div class="col-md-12">
+            <div style="float: right;display: inline-block;">
+                <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnSave"><i class="fa fa-save"></i> 保存 </a>
+                <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnBack"><i class="fa fa-undo"></i> 返回 </a>
+            </div>
+        </div>
+    </div>   
+
+
+</div>
+
+  <script id="ContentInit" type="text/javascript"  src=""  >
+      MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+      MainApp.Token = '@tokenId';
+      $.ajaxSetup({
+          cache: false
+      });
+      Pagecom = (function () {
+          function Pagecom() {
+          };
+          Pagecom.FormatterLinkx = function (value, rowData, rowIndex) {
+              if (rowData.Checked)
+                  return String.format("<input  type='checkbox' checked='checked'   dataid='{0}' @(disableFun ? "DISABLED" :"")  />", rowData.ResID);
+              else
+                  return String.format("<input  type='checkbox'  dataid='{0}'  @(disableFun ? "DISABLED" :"") />", rowData.ResID);
+          };
+          Pagecom.bFunprlchange = false;
+          return Pagecom;
+      })();
+
+      var ViewModel = function (data) {
+          var self = this;
+          self.Action = 'new';
+          if(data.form.ResId && data.form.ResId != ''){
+              self.Action = 'edit';
+          }
+
+          self.formdata = ko.mapping.fromJS(data.form);
+          self.dataSources = data.dataSources;
+          self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+          self.uiSources = {
+              griddatalist: {
+                  ops: {
+                      ClientPage: false,
+                      ele: "#griddatalist",
+                      SizeOpt: {
+                      }
+                  },
+                  sops: {
+                      url: self.ViewTool.GetActionUrl("Post", "BizDataPrivilege.GetResourceList"),
+                      fitColumns:true,
+                      pagination:false,
+                      columns: [[
+                        { field: 'BizName', title: '业务名称', width: 100 },
+                         { field: 'DpType', title: '权限名称', width: 100 },
+                        { field: 'Desc', title: '备注', width: 200 },
+                        {
+                            field: 'ResId', title: '相关操作', align:'center',
+                            formatter: function (value, row, index) {
+                                var f = String.format('<a href="javascript:void(0)" class="btn_default" title="编辑" onclick="Pagecom.ViewModel.OnDpEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.ResId);
+                                f += String.format('<a href="javascript:void(0)" class="btn_default" title="删除" onclick="Pagecom.ViewModel.OnDpDelete(\'{0}\')"><i class="fa fa-trash-o"></i></a>', row.ResId);
+                                return f;
+                            }
+                        }
+                      ]]
+                  }
+              }
+          };
+
+          self.OnBack = function () {
+              global.OpenWindow('/Admin/Role');
+          };
+          self.Init = function(){
+              YarGrid.CreateTree({
+                  ele: "#gridlist1"
+              }, { url: self.ViewTool.GetActionUrl("Post", "GetFunctionPrivilege", { resId: data.form.ResId }),
+                  rownumbers : false,
+                  idField:'ResID',
+                  treeField:'Name',
+                  singleSelect: true,
+                  fitColumns:true,
+                  fit: true,
+                  border: false,
+                  columns: [[
+              { field: 'ResID', width: 20, align: 'center', formatter: Pagecom.FormatterLinkx },
+              { field: 'Name', title: '名称', width: 200},
+              { field: 'UrlPath', title: 'Url', width: 100},
+              { field: 'Desc', title: '描述', width: 200 }
+                  ]],
+                  onLoadSuccess: function (data) {
+                      $('input[dataid]').on("click", function () {
+                          if (!Pagecom.bFunprlchange) Pagecom.bFunprlchange = true;
+                      });
+
+                  }
+              });
+              $('#role_bizfuntree').tree({
+                  url: self.ViewTool.GetActionUrl("Post", "GetBizFunctions", { resId: data.form.ResId }),
+                  checkbox:true,
+                  onlyLeafCheck:true
+              });
+
+          };
+          self.OnRefresh = function() {
+              @if (!bNew) { <text>$('#griddatalist').datagrid('load',{ resId: data.form.ResId });</text>}              
+          };
+          self.OnDpCreate = function() {
+              MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "BizDataPrivilege.CreateView",{roleId : data.form.ResId}), { ViewModel: self, data: { } },
+                  function (data) {
+                      self.OnRefresh();
+                  });
+          };
+          self.OnDpEdit = function(resId) {
+              MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "BizDataPrivilege.EditView",{resId : resId}), { ViewModel: self, data: { } },
+                  function (data) {
+                      self.OnRefresh();
+                  });
+          };
+          self.OnDpDelete = function(resId) {
+              $.messager.confirm('确认', '你确定想删除此数据?', function (r) {
+                  if (r) {
+                      var url = self.ViewTool.GetActionUrl("Post", "BizDataPrivilege.Delete", { resId: resId});
+                      YarClient.AjaxPost(url, null, {
+                          IsWarning: true,
+                          success: function (returnData) {
+                              self.OnRefresh();
+                              $.messager.alert('Message', '更新成功', 'info');
+                          }
+                      });
+                  }
+              });
+          };
+
+          self.OnSave = function (finishcall) {
+              var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+
+              if(Pagecom.bFunprlchange) {
+                  var arry = [];
+                  $('input[type=checkbox][dataid]:checked').each(function () {
+                      arry.push($(this).attr('dataid'));
+                  });
+                  postdata.pdata = arry.join(',')
+              }
+              var bizfuns = $('#role_bizfuntree').tree('getChecked');
+              if(bizfuns){
+                  var arry = [];
+                  for(var i=0;i<bizfuns.length;i++){
+                      arry.push(bizfuns[i].id);
+                  }
+                  postdata.bizfundata = arry.join(',');
+              }
+              if(MainApp.FormValidate())
+              {
+                  var url = '';
+                  if(self.Action == 'new'){
+                      url = self.ViewTool.GetActionUrl("Post", "Create",{resId:data.form.ResId});
+                  } else {
+                      url = self.ViewTool.GetActionUrl("Post", "Edit",{resId:data.form.ResId});
+                  }
+
+                  YarClient.AjaxPost(url,postdata, {
+                      IsWarning: true,
+                      success : function(returnData) {
+                          window.location.reload();
+                      }
+                  });
+              }
+              else {
+
+              }
+          };
+      };
+      var data = @this.Raw(Model.Data);
+      var viewModel = new ViewModel(data);
+      Pagecom.ViewModel = viewModel;
+      viewModel.Init();
+      ko.applyBindings(viewModel,$('#pgcontent')[0]);
+      viewModel.OnRefresh();
+
+
+</script>
+
+<script id="ContentInitCss" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/jquery.validator.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")']       
+</script>
+
+<script id="ContentInitScript" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/jquery.validator.js?local=zh-CN")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	   
+</script>

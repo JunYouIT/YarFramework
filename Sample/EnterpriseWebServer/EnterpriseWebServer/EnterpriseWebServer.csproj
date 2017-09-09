@@ -1,0 +1,1321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{84DDE8BF-DB03-4FEE-873B-137D2BCC7396}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EnterpriseWebServer</RootNamespace>
+    <AssemblyName>EnterpriseWebServer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Dependency.1.0.1\lib\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Dependency.1.0.1\lib\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Dependency.1.0.1\lib\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="NCalc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Dependency.1.0.1\lib\NCalc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NetReflector, Version=1.1.2009.1214, Culture=neutral, PublicKeyToken=2f4dd8b32acbcd8e, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Dependency.1.0.1\lib\NetReflector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Dependency.1.0.1\lib\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.7.7.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RazorEngine.3.7.7\lib\net45\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Dependency.1.0.1\lib\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.SelfHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.SelfHost.5.2.3\lib\net45\System.Web.Http.SelfHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Yar.BizModule, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.BizModule.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.Core, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.Data, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.DbApp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.DbApp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.Enterprise, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.Enterprise.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.Enterprise.Organization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.Enterprise.Organization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.EnterpriseCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.EnterpriseCommon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.EnterpriseService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.EnterpriseService.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.EnterpriseWorkflow, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.EnterpriseWorkflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.Process, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Process.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.Process.Database, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Process.Database.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Yar.Service, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Service.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApiViews\Content\Images\edit.gif" />
+    <Content Include="ApiViews\Content\Images\exit.png" />
+    <Content Include="ApiViews\Content\Images\icon-select.gif" />
+    <Content Include="ApiViews\Content\Images\icon_01.png" />
+    <Content Include="ApiViews\Content\Images\icon_02.png" />
+    <Content Include="ApiViews\Content\Images\lin3_02.png" />
+    <Content Include="ApiViews\Content\Images\loading.gif" />
+    <Content Include="ApiViews\Content\Images\login-bg.jpg" />
+    <Content Include="ApiViews\Content\Images\login-bg.png" />
+    <Content Include="ApiViews\Content\Images\login-bg1.png" />
+    <Content Include="ApiViews\Content\Images\login.png" />
+    <Content Include="ApiViews\Content\Images\LoginBackground.png" />
+    <Content Include="ApiViews\Content\Images\LoginBackground1.png" />
+    <Content Include="ApiViews\Content\Images\loginlogo.png" />
+    <Content Include="ApiViews\Content\Images\logintitle.png" />
+    <Content Include="ApiViews\Content\Images\logintitleline.png" />
+    <Content Include="ApiViews\Content\Images\logo.png" />
+    <Content Include="ApiViews\Content\Images\logo1.png" />
+    <Content Include="ApiViews\Content\Images\Logo_ciic.png" />
+    <Content Include="ApiViews\Content\Images\meetingroomlayout1.gif" />
+    <Content Include="ApiViews\Content\Images\meetingroomlayout2.gif" />
+    <Content Include="ApiViews\Content\Images\meetingroomlayout3.gif" />
+    <Content Include="ApiViews\Content\Images\next.png" />
+    <Content Include="ApiViews\Content\Images\noman.gif" />
+    <Content Include="ApiViews\Content\Images\org.png" />
+    <Content Include="ApiViews\Content\Images\person.gif" />
+    <Content Include="ApiViews\Content\Images\position.png" />
+    <Content Include="ApiViews\Content\Images\previous.png" />
+    <Content Include="ApiViews\Content\Images\tasksIcon.png" />
+    <Content Include="ApiViews\Content\Images\tree-icon-new1.png" />
+    <Content Include="ApiViews\Content\Images\tree-icon-new2.png" />
+    <Content Include="ApiViews\Content\Site.css" />
+    <Content Include="ApiViews\Content\Site1.css" />
+    <Content Include="ApiViews\favicon.ico" />
+    <Content Include="ApiViews\Login.html" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\Content\AdminBoostrap.js" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\Content\components.css" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\Content\custom.css" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\Content\darkblue.css" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\Content\easyuiextend.css" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\Content\layout.css" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\Content\layout.js" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\Content\light.css" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\Content\metronic.js" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\loading-spinner-blue.gif" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\panel_tools_close.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\portlet-collapse-icon-white.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\portlet-collapse-icon.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\portlet-config-icon.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\portlet-expand-icon-white.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\portlet-expand-icon.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\portlet-reload-icon-white.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\portlet-reload-icon.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\portlet-remove-icon.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\sidebar-toggle-light.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\sidebar_inline_toggler_icon_darkblue.jpg" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\sidebar_toggler_icon_darkblue.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\sprite.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\syncfusion-icons-white.png" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\img\top_bg.png" />
+    <Content Include="ApiViews\Scripts\bic_calendar\bic_calendar.css" />
+    <Content Include="ApiViews\Scripts\bic_calendar\bic_calendar.js" />
+    <Content Include="ApiViews\Scripts\bic_calendar\bic_calendar.min.js" />
+    <Content Include="ApiViews\Scripts\BoostrapDialog\bootstrap-dialog.css" />
+    <Content Include="ApiViews\Scripts\BoostrapDialog\bootstrap-dialog.js" />
+    <Content Include="ApiViews\Scripts\BoostrapDialog\bootstrap-dialog.min.css" />
+    <Content Include="ApiViews\Scripts\BoostrapDialog\bootstrap-dialog.min.js" />
+    <Content Include="ApiViews\Scripts\bootgrid\jquery.bootgrid.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\css\bootstrap-theme.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\css\bootstrap-theme.min.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\css\bootstrap.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\css\bootstrap.min.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\js\bootstrap - 副本.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\js\bootstrap.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\js\bootstrap.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\js\npm.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datepicker\css\bootstrap-datepicker.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-datepicker\css\bootstrap-datepicker.min.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-datepicker\js\bootstrap-datepicker.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datepicker\js\bootstrap-datepicker.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datepicker\js\bootstrap-datepicker.zh-CN.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\css\bootstrap-datetimepicker.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\bootstrap-datetimepicker.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\bootstrap-datetimepicker.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ar.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.az.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.bg.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.bn.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ca.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.cs.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.da.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.de.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ee.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.el.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.es.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.fi.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.fr.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.he.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.hr.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.hu.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.hy.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.id.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.is.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.it.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ja.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ka.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ko.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.lt.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.lv.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ms.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.nb.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.nl.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.no.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.pl.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.pt-BR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.pt.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ro.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.rs-latin.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.rs.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ru.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sk.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sl.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sv.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.sw.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.th.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.tr.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.ua.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.uk.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-datetimepicker\js\locales\bootstrap-datetimepicker.zh-TW.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-hover-dropdown.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-switch\bootstrap-switch.min.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-switch\bootstrap-switch.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\bootstrap-table-extend.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\bootstrap-table-locale-all.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\bootstrap-table-locale-all.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\bootstrap-table.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\bootstrap-table.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\accent-neutralise\bootstrap-table-accent-neutralise.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\accent-neutralise\bootstrap-table-accent-neutralise.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\angular\bootstrap-table-angular.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\angular\bootstrap-table-angular.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\auto-refresh\bootstrap-table-auto-refresh.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\auto-refresh\bootstrap-table-auto-refresh.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\auto-refresh\bootstrap-table-auto-refresh.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\click-edit-row\bootstrap-table-click-edit-row.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\click-edit-row\bootstrap-table-click-edit-row.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\click-edit-row\bootstrap-table-click-edit-row.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\cookie\bootstrap-table-cookie.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\cookie\bootstrap-table-cookie.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\copy-rows\bootstrap-table-copy-rows.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\copy-rows\bootstrap-table-copy-rows.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\editable\bootstrap-table-editable.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\editable\bootstrap-table-editable.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\export\bootstrap-table-export.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\export\bootstrap-table-export.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\filter\bootstrap-table-filter.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\filter\bootstrap-table-filter.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\flat-json\bootstrap-table-flat-json.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\flat-json\bootstrap-table-flat-json.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\group-by\bootstrap-table-group-by.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\group-by\bootstrap-table-group-by.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\group-by\bootstrap-table-group-by.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\i18n-enhance\bootstrap-table-i18n-enhance.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\i18n-enhance\bootstrap-table-i18n-enhance.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\key-events\bootstrap-table-key-events.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\key-events\bootstrap-table-key-events.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\mobile\bootstrap-table-mobile.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\mobile\bootstrap-table-mobile.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\multi-column-toggle\bootstrap-table-multi-toggle.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\multi-column-toggle\bootstrap-table-multi-toggle.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\multiple-search\bootstrap-table-multiple-search.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\multiple-search\bootstrap-table-multiple-search.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\multiple-selection-row\bootstrap-table-multiple-selection-row.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\multiple-selection-row\bootstrap-table-multiple-selection-row.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\multiple-selection-row\bootstrap-table-multiple-selection-row.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\multiple-sort\bootstrap-table-multiple-sort.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\multiple-sort\bootstrap-table-multiple-sort.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\natural-sorting\bootstrap-table-natural-sorting.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\natural-sorting\bootstrap-table-natural-sorting.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\print\bootstrap-table-print.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\print\bootstrap-table-print.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\reorder-columns\bootstrap-table-reorder-columns.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\reorder-columns\bootstrap-table-reorder-columns.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\resizable\bootstrap-table-resizable.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\resizable\bootstrap-table-resizable.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\select2-filter\bootstrap-table-select2-filter.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\select2-filter\bootstrap-table-select2-filter.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\toolbar\bootstrap-table-toolbar.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\toolbar\bootstrap-table-toolbar.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\tree-column\bootstrap-table-tree-column.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\tree-column\bootstrap-table-tree-column.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\extensions\tree-column\bootstrap-table-tree-column.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-af-ZA.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-af-ZA.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ar-SA.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ar-SA.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ca-ES.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ca-ES.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-cs-CZ.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-cs-CZ.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-da-DK.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-da-DK.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-de-DE.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-de-DE.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-el-GR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-el-GR.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-en-US.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-en-US.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-AR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-AR.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-CL.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-CL.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-CR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-CR.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-ES.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-ES.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-MX.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-MX.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-NI.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-NI.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-SP.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-es-SP.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-et-EE.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-et-EE.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-fa-IR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-fa-IR.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-fr-BE.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-fr-BE.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-fr-FR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-fr-FR.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-he-IL.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-he-IL.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-hr-HR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-hr-HR.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-hu-HU.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-hu-HU.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-id-ID.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-id-ID.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-it-IT.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-it-IT.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ja-JP.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ja-JP.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ka-GE.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ka-GE.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ko-KR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ko-KR.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ms-MY.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ms-MY.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-nb-NO.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-nb-NO.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-nl-NL.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-nl-NL.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-pl-PL.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-pl-PL.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-pt-BR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-pt-BR.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-pt-PT.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-pt-PT.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ro-RO.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ro-RO.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ru-RU.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ru-RU.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-sk-SK.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-sk-SK.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-sv-SE.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-sv-SE.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-th-TH.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-th-TH.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-tr-TR.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-tr-TR.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-uk-UA.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-uk-UA.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ur-PK.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-ur-PK.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-uz-Latn-UZ.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-uz-Latn-UZ.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-vi-VN.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-vi-VN.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-zh-CN.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-zh-CN.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-zh-TW.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-table\locale\bootstrap-table-zh-TW.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-treeview.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-wizard\jquery.bootstrap.wizard.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\css\bootstrap-year-calendar.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\css\bootstrap-year-calendar.min.css" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\bootstrap-year-calendar.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\bootstrap-year-calendar.min.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.chs.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.de.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.es.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.fr.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.it.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.ja.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.nl.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.pl.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.pt.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.ru.js" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\js\languages\bootstrap-year-calendar.tr.js" />
+    <Content Include="ApiViews\Scripts\bootstrap\bootstrap.css" />
+    <Content Include="ApiViews\Scripts\bootstrap\bootstrap.js" />
+    <Content Include="ApiViews\Scripts\bootstrap\bootstrap.min.css" />
+    <Content Include="ApiViews\Scripts\bootstrap\bootstrap.min.js" />
+    <Content Include="ApiViews\Scripts\china.js" />
+    <Content Include="ApiViews\Scripts\CityPicker\css\city-picker.css" />
+    <Content Include="ApiViews\Scripts\CityPicker\images\drop-arrow.png" />
+    <Content Include="ApiViews\Scripts\CityPicker\js\city-picker.data.js" />
+    <Content Include="ApiViews\Scripts\CityPicker\js\city-picker.js" />
+    <Content Include="ApiViews\Scripts\ComJS.js" />
+    <Content Include="ApiViews\Scripts\ComJS.min.js" />
+    <Content Include="ApiViews\Scripts\datagrid-groupview.js" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\easyloader.js" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\jquery.easyui.min.js" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\locale\easyui-lang-en.js" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\locale\easyui-lang-zh_CN.js" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\easyui1.4.css" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\accordion_arrows.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\blank.gif" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\calendar_arrows.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\combo_arrow.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\datagrid_icons.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\datebox_arrow.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\layout_arrows.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\linkbutton_bg.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\loading.gif" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\menu_arrows.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\messager_icons.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\pagination_icons.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\panel_tools.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\passwordbox_close.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\passwordbox_open.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\searchbox_button.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\slider_handle.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\spinner_arrows.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\tabs_icons.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\tagbox_icons.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\tree_icons.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\bootstrap\images\validatebox_warning.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\color.css" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icon.css" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons.css" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\add.gif" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\back.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\blank.gif" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\cancel.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\clear.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\cut.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\edit.gif" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\edit_add.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\edit_remove.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\filesave.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\filter.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\folder-open.gif" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\folder.gif" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\help.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\large_chart.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\large_clipart.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\large_picture.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\large_shapes.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\large_smartart.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\lock.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\man.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\mini_add.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\mini_edit.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\mini_refresh.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\no.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\ok.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\pause.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\pencil.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\print.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\redo.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\reload.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\remove.gif" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\run.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\search.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\sum.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\tip.png" />
+    <Content Include="ApiViews\Scripts\EasyUI-1.4\themes\icons\undo.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\easyloader.js" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\jquery.easyui.min.js" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\locale\easyui-lang-en.js" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\locale\easyui-lang-zh_CN.js" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\easyui.css" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\accordion_arrows.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\blank.gif" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\calendar_arrows.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\combo_arrow.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\datagrid_icons.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\datebox_arrow.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\layout_arrows.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\linkbutton_bg.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\loading.gif" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\menu_arrows.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\messager_icons.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\pagination_icons.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\panel_tools.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\passwordbox_close.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\passwordbox_open.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\searchbox_button.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\slider_handle.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\spinner_arrows.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\tabs_icons.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\tagbox_icons.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\tree_icons.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\bootstrap\images\validatebox_warning.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\color.css" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icon.css" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\back.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\blank.gif" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\cancel.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\clear.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\cut.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\edit_add.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\edit_remove.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\filesave.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\filter.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\help.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\large_chart.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\large_clipart.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\large_picture.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\large_shapes.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\large_smartart.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\lock.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\man.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\mini_add.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\mini_edit.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\mini_refresh.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\more.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\no.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\ok.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\pencil.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\print.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\redo.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\reload.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\search.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\sum.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\tip.png" />
+    <Content Include="ApiViews\Scripts\easyui-1.5.1\themes\icons\undo.png" />
+    <Content Include="ApiViews\Scripts\easyui.validate.extend.js" />
+    <Content Include="ApiViews\Scripts\easyuiextend.css" />
+    <Content Include="ApiViews\Scripts\easyuiextend.js" />
+    <Content Include="ApiViews\Scripts\echarts.js" />
+    <Content Include="ApiViews\Scripts\ExcelExport\ExcelPlus\excelplus-2.4.1.js" />
+    <Content Include="ApiViews\Scripts\ExcelExport\ExcelPlus\sheetjs.all.js" />
+    <Content Include="ApiViews\Scripts\ExcelExport\js-xlsx\xlsx.js" />
+    <Content Include="ApiViews\Scripts\fontcss\font-awesome.min.css" />
+    <Content Include="ApiViews\Scripts\fontcss\simple-line-icons.min.css" />
+    <Content Include="ApiViews\Scripts\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\CHANGELOG.txt" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\CONTRIBUTING.txt" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\fullcalendar.css" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\fullcalendar.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\fullcalendar.min.css" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\fullcalendar.min.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\fullcalendar.print.css" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\gcal.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-bg_glass_50_3baae3_1x400.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-bg_glass_80_d7ebf9_1x400.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-icons_2694e8_256x240.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-icons_3d80b3_256x240.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-icons_72a7cf_256x240.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\cupertino\jquery-ui.min.css" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\jquery-ui.min.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\jquery.min.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\lib\moment.min.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\LICENSE.txt" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale-all.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ar-ma.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ar-sa.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ar-tn.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ar.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\bg.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ca.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\cs.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\da.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\de-at.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\de.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\el.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\en-au.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\en-ca.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\en-gb.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\en-ie.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\en-nz.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\es-do.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\es.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\eu.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\fa.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\fi.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\fr-ca.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\fr-ch.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\fr.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\gl.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\he.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\hi.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\hr.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\hu.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\id.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\is.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\it.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ja.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ko.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\lb.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\lt.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\lv.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\mk.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ms-my.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ms.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\nb.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\nl.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\nn.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\pl.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\pt-br.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\pt.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ro.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\ru.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\sk.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\sl.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\sr-cyrl.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\sr.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\sv.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\th.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\tr.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\uk.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\vi.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\zh-cn.js" />
+    <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\locale\zh-tw.js" />
+    <Content Include="ApiViews\Scripts\global.js" />
+    <Content Include="ApiViews\Scripts\GridEditModel.js" />
+    <Content Include="ApiViews\Scripts\jquery-3.1.1.min.js" />
+    <Content Include="ApiViews\Scripts\jquery.base64.js" />
+    <Content Include="ApiViews\Scripts\jquery.blockui.min.js" />
+    <Content Include="ApiViews\Scripts\jquery.json-2.4.min.js" />
+    <Content Include="ApiViews\Scripts\jquery.min.1.11.1.js" />
+    <Content Include="ApiViews\Scripts\jquery.min.js" />
+    <Content Include="ApiViews\Scripts\jquery.slimscroll.min.js" />
+    <Content Include="ApiViews\Scripts\JQueryFileUpload\jquery.fileupload-process.js" />
+    <Content Include="ApiViews\Scripts\JQueryFileUpload\jquery.fileupload-validate.js" />
+    <Content Include="ApiViews\Scripts\JQueryFileUpload\jquery.fileupload.css" />
+    <Content Include="ApiViews\Scripts\JQueryFileUpload\jquery.fileupload.js" />
+    <Content Include="ApiViews\Scripts\JQueryFileUpload\jquery.iframe-transport.js" />
+    <Content Include="ApiViews\Scripts\JQueryFileUpload\jquery.ui.widget.js" />
+    <Content Include="ApiViews\Scripts\JQueryFileUpload\UploadHelper.js" />
+    <Content Include="ApiViews\Scripts\js.cookie.min.js" />
+    <Content Include="ApiViews\Scripts\jsencrypt.js" />
+    <Content Include="ApiViews\Scripts\jsencrypt.min.js" />
+    <Content Include="ApiViews\Scripts\knockout-2.2.1.js" />
+    <Content Include="ApiViews\Scripts\knockout-3.4.1.js" />
+    <Content Include="ApiViews\Scripts\knockout.mapping.js" />
+    <Content Include="ApiViews\Scripts\knockoutextend.js" />
+    <Content Include="ApiViews\Scripts\knockout\knockout-3.4.1.js" />
+    <Content Include="ApiViews\Scripts\Login\register.js" />
+    <Content Include="ApiViews\Scripts\Login\login.css" />
+    <Content Include="ApiViews\Scripts\Login\login.js" />
+    <Content Include="ApiViews\Scripts\MainApp.js" />
+    <Content Include="ApiViews\Scripts\md5.js" />
+    <Content Include="ApiViews\Scripts\NiceValidator\images\loading.gif" />
+    <Content Include="ApiViews\Scripts\NiceValidator\images\validator_default.png" />
+    <Content Include="ApiViews\Scripts\NiceValidator\images\validator_simple.png" />
+    <Content Include="ApiViews\Scripts\NiceValidator\jquery.validator.css" />
+    <Content Include="ApiViews\Scripts\NiceValidator\jquery.validator.js" />
+    <Content Include="ApiViews\Scripts\NiceValidator\jquery.validator.min.js" />
+    <Content Include="ApiViews\Scripts\NiceValidator\local\en.js" />
+    <Content Include="ApiViews\Scripts\NiceValidator\local\ja.js" />
+    <Content Include="ApiViews\Scripts\NiceValidator\local\zh-CN.js" />
+    <Content Include="ApiViews\Scripts\NiceValidator\local\zh-TW.js" />
+    <Content Include="ApiViews\Scripts\PageMainApp.js" />
+    <Content Include="ApiViews\Scripts\select2\select2-bootstrap.css" />
+    <Content Include="ApiViews\Scripts\select2\select2.full.js" />
+    <Content Include="ApiViews\Scripts\select2\select2.full.min.js" />
+    <Content Include="ApiViews\Scripts\select2\select2.js" />
+    <Content Include="ApiViews\Scripts\select2\select2.min.css" />
+    <Content Include="ApiViews\Scripts\select2\select2.min.js" />
+    <Content Include="ApiViews\Scripts\sweetalert\sweetalert.css" />
+    <Content Include="ApiViews\Scripts\sweetalert\sweetalert.min.js" />
+    <Content Include="ApiViews\Scripts\sysboot-1.1.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\anchor\anchor.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\attachment.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\attachment.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\attachment.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_chm.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_default.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_doc.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_exe.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_jpg.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_mp3.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_mv.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_pdf.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_ppt.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_psd.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_rar.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_txt.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\fileTypeImages\icon_xls.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\alignicon.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\alignicon.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\bg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\file-icons.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\file-icons.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\icons.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\icons.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\image.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\progress.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\success.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\attachment\images\success.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\background\background.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\background\background.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\background\background.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\background\images\bg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\background\images\success.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\chart.config.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\charts.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\charts.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\charts.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\images\charts0.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\images\charts1.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\images\charts2.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\images\charts3.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\images\charts4.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\charts\images\charts5.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\emotion.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\emotion.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\emotion.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\images\0.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\images\bface.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\images\cface.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\images\fface.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\images\jxface2.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\images\neweditor-tab-bg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\images\tface.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\images\wface.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\emotion\images\yface.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\gmap\gmap.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\help\help.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\help\help.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\help\help.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\image.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\image.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\image.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\images\alignicon.jpg" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\images\bg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\images\icons.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\images\icons.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\images\image.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\images\progress.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\images\success.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\image\images\success.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\insertframe\insertframe.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\internal.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\link\link.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\map\map.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\map\show.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\music\music.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\music\music.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\music\music.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\preview\preview.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\addimg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\brush.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\delimg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\delimgH.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\empty.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\emptyH.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\eraser.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\redo.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\redoH.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\scale.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\scaleH.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\size.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\undo.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\images\undoH.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\scrawl.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\scrawl.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\scrawl\scrawl.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\searchreplace\searchreplace.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\searchreplace\searchreplace.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\snapscreen\snapscreen.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\spechars\spechars.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\spechars\spechars.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\table\dragicon.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\table\edittable.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\table\edittable.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\table\edittable.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\table\edittd.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\table\edittip.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\config.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\images\bg.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\images\pre0.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\images\pre1.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\images\pre2.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\images\pre3.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\images\pre4.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\template.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\template.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\template\template.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\bg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\center_focus.jpg" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\file-icons.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\file-icons.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\icons.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\icons.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\image.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\left_focus.jpg" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\none_focus.jpg" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\progress.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\right_focus.jpg" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\success.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\images\success.png" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\video.css" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\video.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\video\video.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\webapp\webapp.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\wordimage\fClipboard_ueditor.swf" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\wordimage\imageUploader.swf" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\wordimage\tangram.js" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\wordimage\wordimage.html" />
+    <Content Include="ApiViews\Scripts\UEditor\dialogs\wordimage\wordimage.js" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\en.js" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\addimage.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\alldeletebtnhoverskin.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\alldeletebtnupskin.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\background.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\button.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\copy.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\deletedisable.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\deleteenable.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\listbackground.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\localimage.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\music.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\rotateleftdisable.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\rotateleftenable.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\rotaterightdisable.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\rotaterightenable.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\en\images\upload.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\zh-cn\images\copy.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\zh-cn\images\localimage.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\zh-cn\images\music.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\zh-cn\images\upload.png" />
+    <Content Include="ApiViews\Scripts\UEditor\lang\zh-cn\zh-cn.js" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\css\ueditor.css" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\css\ueditor.min.css" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\dialogbase.css" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\anchor.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\arrow.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\arrow_down.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\arrow_up.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\button-bg.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\cancelbutton.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\charts.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\cursor_h.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\cursor_h.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\cursor_v.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\cursor_v.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\dialog-title-bg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\filescan.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\highlighted.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\icons-all.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\icons.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\icons.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\loaderror.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\loading.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\lock.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\neweditor-tab-bg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\pagebreak.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\scale.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\sortable.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\spacer.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\sparator_v.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\table-cell-align.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\tangram-colorpicker.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\toolbar_bg.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\unhighlighted.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\upload.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\videologo.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\word.gif" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\default\images\wordpaste.png" />
+    <Content Include="ApiViews\Scripts\UEditor\themes\iframe.css" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\codemirror\codemirror.css" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\codemirror\codemirror.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\adapters\mootools-adapter.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\adapters\mootools-adapter.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\adapters\prototype-adapter.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\adapters\prototype-adapter.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\adapters\standalone-framework.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\adapters\standalone-framework.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\highcharts-more.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\highcharts-more.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\highcharts.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\highcharts.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\annotations.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\annotations.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\canvas-tools.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\canvas-tools.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\data.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\data.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\drilldown.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\drilldown.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\exporting.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\exporting.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\funnel.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\funnel.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\heatmap.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\heatmap.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\map.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\map.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\no-data-to-display.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\modules\no-data-to-display.src.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\themes\dark-blue.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\themes\dark-green.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\themes\gray.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\themes\grid.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\highcharts\themes\skies.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\jquery-1.10.2.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\jquery-1.10.2.min.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\snapscreen\codemirror.css" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\snapscreen\codemirror.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\SyntaxHighlighter\shCore.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\SyntaxHighlighter\shCoreDefault.css" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\video-js\font\vjs.svg" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\video-js\video-js.css" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\video-js\video-js.min.css" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\video-js\video-js.swf" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\video-js\video.dev.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\video-js\video.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\Uploader.swf" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.css" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.custom.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.custom.min.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.flashonly.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.flashonly.min.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.html5only.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.html5only.min.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.min.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.withoutimage.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\webuploader\webuploader.withoutimage.min.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\xss.min.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\zeroclipboard\ZeroClipboard.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\zeroclipboard\ZeroClipboard.min.js" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\zeroclipboard\ZeroClipboard.swf" />
+    <Content Include="ApiViews\Scripts\UEditor\ueditor.all.js" />
+    <Content Include="ApiViews\Scripts\UEditor\ueditor.all.min.js" />
+    <Content Include="ApiViews\Scripts\UEditor\ueditor.config.js" />
+    <Content Include="ApiViews\Scripts\UEditor\ueditor.parse.js" />
+    <Content Include="ApiViews\Scripts\UEditor\ueditor.parse.min.js" />
+    <Content Include="ApiViews\Scripts\velocity\velocity.min.js" />
+    <Content Include="ApiViews\Scripts\velocity\velocity.ui.min.js" />
+    <Content Include="ApiViews\Scripts\Yar.Common.js" />
+    <Content Include="ApiViews\Scripts\Yar.Dialog.js" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="ApiViews\Portal\AdminBoostrap\IndexWeb.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\JobEntity\Job.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\JobEntity\_fmJobEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\JobEntity\_fmJobView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\JobLevelManage\JobLevel.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\JobLevelManage\_fmJobLevelEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\JobLevelManage\_fmJobLevelView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\LegalEntity\Legal.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\LegalEntity\_fmLegalEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\LegalEntity\_fmLegalView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\LegalEntity\_fmPrintPreview.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\OrgUnit\OrgUnit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\OrgUnit\_fmOrgUnitEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\OrgUnit\_fmOrgUnitView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\Position\Position.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\Position\_fmPosEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\Position\_fmPosView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\Common\_fmSelectRole.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\Role\RoleDetail.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\Role\RoleGeneral.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\Role\_fmDataPrivilegeEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\User\User.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\User\_fmRoleSetting.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\User\_fmUserEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\User\_fmUserPreview.cshtml" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\css\bootstrap-theme.css.map" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\css\bootstrap.css.map" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="ApiViews\Scripts\bootstrap-3.3.0\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\bower.json" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\LICENSE" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\package.json" />
+    <Content Include="ApiViews\Scripts\bootstrap-yearcalendar\README.md" />
+    <Content Include="ApiViews\Scripts\fontcss\fonts\Simple-Line-Icons.woff" />
+    <Content Include="ApiViews\Scripts\fonts\fontawesome-webfont.eot" />
+    <Content Include="ApiViews\Scripts\fonts\fontawesome-webfont.woff" />
+    <Content Include="ApiViews\Scripts\fonts\fontawesome-webfont.woff2" />
+    <Content Include="ApiViews\Scripts\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="ApiViews\Scripts\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="ApiViews\Scripts\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\jquery-1.10.2.min.map" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\video-js\font\vjs.eot" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\video-js\font\vjs.ttf" />
+    <Content Include="ApiViews\Scripts\UEditor\third-party\video-js\font\vjs.woff" />
+    <Content Include="ApiViews\Redirect.cshtml" />
+    <Content Include="ApiViews\fonts\fontawesome-webfont.eot" />
+    <Content Include="ApiViews\fonts\fontawesome-webfont.woff" />
+    <Content Include="ApiViews\fonts\fontawesome-webfont.woff2" />
+    <Content Include="ApiViews\fonts\Simple-Line-Icons.woff" />
+    <Content Include="ApiViews\Enterprise\Common\_pageHead.cshtml" />
+    <Content Include="ApiViews\Enterprise\System\BizSystemLog.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\Common\_fmSelectOrgUnit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\Common\_fmSelectPosition.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\User\_fmUserPositionEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\System\AuditLog.cshtml" />
+    <Content Include="ApiViews\Enterprise\System\DictionaryManagement.cshtml" />
+    <Content Include="ApiViews\Enterprise\System\_frmDictionaryItemEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\System\_frmDictionaryItemScopeEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\System\_frmDictionaryManagementEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Common\_fmCustomeOrgFilterSetting.cshtml" />
+    <Content Include="ApiViews\Enterprise\Common\_fmLegalFilterSetting.cshtml" />
+    <Content Include="ApiViews\Enterprise\Common\_fmOrgFilterSetting.cshtml" />
+    <Content Include="ApiViews\Enterprise\Login.cshtml" />
+    <Content Include="ApiViews\Enterprise\System\CodeRule.cshtml" />
+    <Content Include="ApiViews\Enterprise\System\_fmCodeRuleEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\User\_fmUserPasswordChange.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\_fmWorkflowCreate.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\_fmWorkflowApprove.cshtml" />
+    <Content Include="ApiViews\Enterprise\Register.cshtml" />
+    <Content Include="ApiViews\Enterprise\Pms\Common\_fmSelectUser.cshtml" />
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\local.pubxml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="System\Enterprise\BizGroup.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="System\Enterprise\Resource.xml" />
+    <Content Include="System\Enterprise\DataDict.xml" />
+    <Content Include="System\Enterprise\PortalNode.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="System\Enterprise\YarSystem.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="System\Enterprise\YarSystemDebug.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ApiViews\Portal\AdminBoostrap\Content\img\" />
+    <Folder Include="ApiViews\Scripts\easyui-1.5.1\demo-mobile\" />
+    <Folder Include="ApiViews\Scripts\easyui-1.5.1\demo\" />
+    <Folder Include="ApiViews\Scripts\easyui-1.5.1\plugins\" />
+    <Folder Include="ApiViews\Scripts\easyui-1.5.1\src\" />
+    <Folder Include="ApiViews\Scripts\jquery.nicescroll\" />
+    <Folder Include="ApiViews\Scripts\UEditor\net\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="Handler\" />
+    <Folder Include="Models\" />
+    <Folder Include="System\Enterprise\ProcessDefine\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>16964</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:16968/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

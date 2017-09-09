@@ -1,0 +1,17 @@
+﻿@{
+Yar.Service.BusinessContext context = Model.Context;
+string[] headpath = Yar.Service.UIHelper.GetNodeNamePath(context);
+
+}
+@if (headpath.Length > 0)
+{
+    <ol class="breadcrumb">
+        <li>首页</li> 
+        @foreach (var item in headpath)
+        {
+            <li>@item</li> 
+        }
+    </ol>
+}
+
+

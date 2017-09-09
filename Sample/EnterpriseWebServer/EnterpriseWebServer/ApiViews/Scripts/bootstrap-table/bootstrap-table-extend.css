@@ -1,0 +1,23 @@
+
+.bootstrap-table .table > thead > tr > th {
+    border-bottom: 0px solid #ddd;
+}
+
+.fixed-table-container thead th {
+    border-left: 0px solid #dddddd;
+}
+
+.fixed-table-container {
+    border: 0;
+}
+
+.fixed-table-container tbody td {
+    border-left: 0;
+	cursor: pointer;
+}
+
+.fixed-table-pagination div.pagination {
+    margin-top: 4px;
+    margin-bottom: 0px;
+	float: left!important;
+}

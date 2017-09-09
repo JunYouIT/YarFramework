@@ -1,0 +1,16 @@
+﻿@{
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html lang="en">
+<head>
+    <title id='redirect'></title>
+    <script type="text/javascript">
+      if ('@Model.Target' === 'top')
+        window.top.location.href = '@Model.Site' + '@Model.Url';
+      else
+        window.location.href = '@Model.Site' + '@Model.Url';  
+  </script>
+</head>
+<body >
+</body>
+</html>

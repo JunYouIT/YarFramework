@@ -1,0 +1,229 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+<div class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+    <div class="row" style="display: block;">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-gift"></i>职级管理
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">职级名称</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="textboxValue:displaydata.name,txclick:OnRefresh" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                                        </div>
+                                    </div>
+                                </div>                                                               
+                                <div class="col-md-8">
+                                    <div style="float: right;display: inline-block;">
+                                        <a class="gt2_btn_search" href="javascript:;" data-bind="click:OnRefresh"><i class="fa fa-refresh"></i> 搜索 </a>
+                                        <a id="btnAdd" class="gt2_btn_add" href="javascript:;" data-bind="click:OnCreate" data-toggle="tooltip" data-placement="top" title="新增职级"><i class="fa fa-plus-circle"></i> 新增 </a>
+                                        <a class="gt2_btn_delete" href="javascript:;" data-bind="click:OnDeleteall"><i class="fa fa-remove"></i> 删除 </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:5px;" id="griddiv">
+                        <table data-bind="grid:uiSources.gridList" id="gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ContentInit" type="text/javascript" scr="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+    $.ajaxSetup({
+        cache: false
+    });
+    Pagecom = (function () {
+        function Pagecom() {
+    };
+    Pagecom.DetailLink = function (value, rowData, rowIndex) {
+        return String.format("<a href='#' onclick='Pagecom.ViewModel.DetailLink(\"{0}\")'>{1}</a>", rowData.ResId,value);
+    };
+    Pagecom.FormatterDateTime = function (value, row, index) {
+        if (value && value != null) {
+        var t = new Date(Date.parse(value.replace(/-/g, "/")));
+        return t.Format("M/d/yyyy");
+    }
+        return value;
+    };
+        return Pagecom;
+    })();
+    var ViewModel = function (data) {
+        var self = this;
+        self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+   
+        var displaydata = { name: '',type:'' };
+        self.displaydata = ko.mapping.fromJS(displaydata);
+        self.dataSources = data.dataSources;
+        self.uiSources = {
+            gridList: {
+                ops: {
+                    ClientPage: false,
+                    ele: "#gridlist",
+                    SizeOpt: {
+                        pid: "#griddiv",
+                        top: 311
+                    }
+                },
+                sops: {
+                    url: self.ViewTool.GetActionUrl("Post", "GetResourceList"),
+                    fitColumns:true,
+                    striped:true,
+                    selectOnCheck: false,
+                    checkOnSelect: false,
+                    columns: [[
+                    { field: 'ck', checkbox:true },
+                    { field: 'JobLevelName', title: '名称',sortable:true, width: 260 ,formatter: function(value, row, index){
+                        var n = String.format('<a class="" href="#" title="{1}" data-toggle="tooltip" data-placement="top" onclick="Pagecom.ViewModel.OnView(\'{0}\')">{1}</a>',row.JobLevelID,value)
+                        return n;
+                    }},
+                    { field: 'JobLevelNumber', title: '职级数值',sortable:true, width: 200 },
+                    { field: 'IsDisabled', title: '状态',sortable:true, width: 200, formatter: function(value, row, index){
+                        var s = String.format('<a class="btn btn-xs btn-success" onclick="Pagecom.ViewModel.OnModifyIsDisableState(\'{0}\')">{1}</a>',row.JobLevelID,value);
+                        if(value=='禁用')
+                            s = String.format('<a class="btn btn-xs btn-default" onclick="Pagecom.ViewModel.OnModifyIsDisableState(\'{0}\')">{1}</a>',row.JobLevelID,value);
+                        return  s;
+                    } },
+                    { field: 'JobLevelID', title: '功能',formatter: function(value, row, index){
+
+                        var s = 
+                        @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnView(\'{0}\')"><i class="fa fa-eye"></i></a>',row.JobLevelID)+*@
+                        String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.JobLevelID);
+                        @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnDelete(\'{0}\')"><i class="fa fa-trash-o"></i></a>',row.JobLevelID)+*@
+                        @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnModifyIsDisableState(\'{0}\')">{1}</a>',row.JobLevelID,row.Disabled);*@
+
+
+                        return s;
+                    }
+                    }
+                    ]]
+                }
+            }
+        };
+
+        self.OnRefresh = function () {
+            var data = {
+                name: Pagecom.ViewModel.displaydata.name(),
+                type:Pagecom.ViewModel.displaydata.type()
+            };
+            $('#gridlist').datagrid('load', data);
+        };
+        self.OnCreate = function () {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateView"), { ViewModel: self, data: {} },
+            function (data) {
+                self.OnRefresh();
+            });
+        };
+        self.OnView = function (companyId) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "PreviewView", { resId: companyId }), { ViewModel: self, data: {} },
+            function (data) {
+                //self.OnRefresh();
+            });
+        };
+        self.OnEdit = function (companyId) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditView", { resId: companyId }), { ViewModel: self, data: {} },
+            function (data) {
+                self.OnRefresh();
+            });
+        };
+
+        self.OnDeleteall = function () {
+            var rows = $("#gridlist").datagrid('getChecked');
+            var array = [];
+            var names = '';
+            if(rows && rows.length > 0){
+                rows.each(function (value, index) {
+                    array.push(value.JobLevelID);
+                    if(names!='')
+                        names +='\r\n';
+                    names += value.JobLevelName;
+                });
+                swal({
+                    title: "你是否确认删除如下信息?",
+                    text: names,
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false
+                }, function() {
+                    YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAll",{ ids: array.join(';') }), {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            if(returnData.Result != null && returnData.Result.status == 'warning')
+                            {
+                                swal(returnData.Result.message, "", "warning");
+                                return;
+                            }
+                            self.OnRefresh();
+                            swal("删除成功", "", "success");
+                        }
+                    });
+                });
+            }
+            else{
+                swal("请选择需要删除的信息", "", "warning");
+            }
+        };
+
+        self.OnModifyIsDisableState = function (companyId) {       
+            $.ajax({
+                url: self.ViewTool.GetActionUrl("Get", "ModifyIsDisableState", { resId: companyId }),
+                success: function (text) {
+                    if(text.indexOf('Error')!=-1)
+                    {
+                        swal("当前职级下存在成员,无法禁用!", "", "warning");
+                        return;
+                    }
+                    self.OnRefresh();
+                },
+                error: function () {
+                }
+            });
+        };
+
+    };
+
+    var data = @this.Raw(Model.Data);
+    //var data = {};
+    var viewModel = new ViewModel(data);
+    Pagecom.ViewModel = viewModel;
+    ko.applyBindings(viewModel);
+    viewModel.OnRefresh();
+
+</script>
+
+<script id="ContentInitCss" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")']
+</script>
+
+<script id="ContentInitScript" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.zh-CN.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']
+</script>
+

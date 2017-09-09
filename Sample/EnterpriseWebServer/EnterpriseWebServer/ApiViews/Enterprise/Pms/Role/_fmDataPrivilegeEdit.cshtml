@@ -1,0 +1,99 @@
+﻿
+<div class="form form-horizontal" style="width:400px;">
+                        <div class="form-body">							
+                            <div class="form-group">
+								<label class="control-label col-md-2 bold">业务</label>
+                                <div class="col-md-10">
+                                    <input type="text" id="dp_bizId" data-bind="comboboxValue:formdata.BizId,dataSource:dataSources.dsBizs" data-options="required:true" class="easyui-combobox" style="width: 100%;" />
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">权限</label>
+                                <div class="col-md-9">
+                                    <input type="text" id="dp_type" data-bind="comboboxValue:formdata.Type,dataSource:dataSources.dsDpTypes" data-options="required:true" class="easyui-combobox" style="width: 100%;" />                                                                           
+                                </div>
+                                <div class="col-md-1">
+                                    <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnDpSetting" style="margin-left:-28px;"><span class="icon-settings" style="margin-top:4px;"></span> </a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">备注</label>
+                                <div class="col-md-10">
+                                    <input type="text" data-bind="textboxValue:formdata.Desc" class="easyui-textbox" style="width: 100%;" />
+                                </div>
+                            </div>
+                        </div>
+</div>
+<script type="text/javascript">
+  
+    (function (eleId, context, callback) {
+      //debugger;
+      $.parser.parse(eleId);
+      var ViewModel = function (data) {
+		  var self = this;
+		  self.Action = 'new';
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000' ){
+                self.Action = 'edit';
+            }
+           
+            self.formdata = ko.mapping.fromJS(data.form);
+            self.dataSources = data.dataSources;
+            self.ViewTool = context.ViewModel.ViewTool;
+            self.Init = function() {
+                $('#dp_bizId').combobox({
+                    onChange: function (newValue, oldValue) {                       
+                        $('#dp_type').combobox('reload',self.ViewTool.GetActionUrl("Post", "BizDataPrivilege.GetDpProviders",{resId : newValue,roleId:data.form.RoleResId}));
+                        $('#dp_type').combobox('setValue', '');                        
+                        self.formdata.BizId(newValue);
+                    }
+                });
+                if(self.Action == 'edit' && data.form.BizId != ''){
+                    $('#dp_type').combobox({disabled:true});
+                    $('#dp_type').combobox('reload',self.ViewTool.GetActionUrl("Post", "BizDataPrivilege.GetDpProviders",{resId : data.form.BizId,roleId:data.form.RoleResId,edit:true}));
+                    $('#dp_bizId').combobox({disabled:true});
+                }
+            };
+            self.OnDpSetting = function() {
+                var tt = self.formdata.Param();
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "BizDataPrivilege.SettingView",{resId:self.formdata.ResId(),bizId:self.formdata.BizId(),dpId:self.formdata.Type()}), { ViewModel: self, data: { param: self.formdata.Param(),value: self.formdata.Value()} },
+                  function (data) {
+                      if(data.param){
+                          self.formdata.Param(data.param);
+                      }
+                      if(data.value){
+                          self.formdata.Value(data.value);
+                      }
+                  });
+            };
+		  self.OnSave = function (finishcall) {
+		      //debugger;			
+			var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+			if(MainApp.FormValidate())
+			{
+				var url = '';
+				if(self.Action == 'new'){
+				    url = self.ViewTool.GetActionUrl("Post", "BizDataPrivilege.Create",{resId:data.form.ResId});
+				} else {
+				    url = self.ViewTool.GetActionUrl("Post", "BizDataPrivilege.Edit",{resId:data.form.ResId});
+				}
+				YarClient.AjaxPost(url,postdata, { 
+					IsWarning: true, 
+					success : function(returnData) {
+						finishcall(returnData,callback);
+					} 
+				});
+			}
+			else {
+			  
+			}
+		  };
+	  };
+      var data = @this.Raw(Model.Data);
+      var viewModel = new ViewModel(data);
+	  
+      ko.applyBindings(viewModel, $(eleId)[0]);
+      viewModel.Init();
+      $.Yar.Dialog.Show(eleId,viewModel.Action == "new" ? '数据权限新增' : '数据权限编辑',400,175,viewModel.OnSave);
+
+    })(eleId, context, callback);
+</script>

@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<System Id="YarEnterpriseTestWeb" Name ="YarEnterpriseTestWeb" DefaultApp="DbAppAdmin">
+  <connectionStrings>
+    <item name="_enterprisedb" value="metadata=res://*/Modal._dmxEnterprise.csdl|res://*/Modal._dmxEnterprise.ssdl|res://*/Modal._dmxEnterprise.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;persist security info=True;user id=dev1;password=Admin.1234;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
+    <item name="_organizationdb" value="metadata=res://*/Modal.dmxOrganization.csdl|res://*/Modal.dmxOrganization.ssdl|res://*/Modal.dmxOrganization.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;persist security info=True;user id=dev1;password=Admin.1234;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
+    <item name="admindb" value="data source=.;initial catalog=EnterpriseTestDb;User Id=dev1;Password=Admin.1234;"/>
+    <item name="processdb" value="metadata=res://*/Model.dmxProcess.csdl|res://*/Model.dmxProcess.ssdl|res://*/Model.dmxProcess.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;persist security info=True;user id=dev1;password=Admin.1234;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
+    <item name="enterprise_workflow_db" value="metadata=res://*/Modal._dmxEnterpriseWorkflow.csdl|res://*/Modal._dmxEnterpriseWorkflow.ssdl|res://*/Modal._dmxEnterpriseWorkflow.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;persist security info=True;user id=dev1;password=Admin.1234;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
+  </connectionStrings>
+  <appSettings>
+    <item name="ResourcePath" value="System\Enterprise" />
+    <item name="ProcessLogLevel" value="2" />
+    <item name="DisableSysadmin" value="true" />
+    <item name="BizDataPrivilegeKind" value="DataPrivilege" />
+    <item name="AttachmentRootPath" value="\\127.0.0.1\Temp\Resources"/>
+
+  </appSettings>
+  <Applications>
+
+    <Application Id="system" Name ="system">
+      <Services>
+        <Service id="Yar.Core.ILogService,Yar.Core" type="Yar.Core.Service.FileLogService,Yar.Core" />
+        <Service id="Yar.Service.ISysLogService,Yar.Service" type="Yar.Enterprise.Service.SysLogServiceImp,Yar.Enterprise" />
+        <Service id="Yar.Service.IViewService,Yar.Service" type="Yar.Service.View.ViewService,Yar.Service">
+          <Properties>
+            <Property Name="ViewPath" Value="ApiViews\" />
+            <Property Name="IsCache" Value="true" />
+          </Properties>
+        </Service>
+        <Service id="Yar.Service.IBizNodeService,Yar.Service" type="Yar.Service.BizNodeService,Yar.Service">
+          <Properties>
+            <Property Name="Path" Value="System\Enterprise\BizGroup.xml" />
+          </Properties>
+        </Service>
+        <Service id="Yar.Service.IBusinessService,Yar.Service" type="Yar.Service.BusinessService,Yar.Service"/>
+        <Service id="Yar.Process.IProcessService,Yar.Process" type="Yar.Process.DefaultProcessService,Yar.Process"/>
+        <Service id="Yar.Service.IPermissionService,Yar.Service" type="Yar.Service.PermissionService,Yar.Service">
+          <Properties>
+            <Property Name="PermProvider" Value="Yar.Enterprise.Service.EnterprisePermissionProvider,Yar.Enterprise" />
+            <Property Name="AuthProvider" Value="Yar.Enterprise.Service.EnterpriseAuthorizeProvider,Yar.Enterprise" />
+            <Property Name="SetoutTime" Value="30" />
+            <Property Name="AuthType" Value="form" />
+            <Property Name="ServerPwdType" Value="saltmd5" />
+          </Properties>
+        </Service>
+      </Services>
+      <Modules>
+        <Module Name="_enterprise" Type="Yar.Service.SystemModule,Yar.Service">
+          <Bizs>
+            <!--biz service-->
+            <Biz Id="_BizLegalService" Name="法人服务" Type="Yar.Enterprise.Service.BizLegalService,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizPermissionService" Name="权限服务" Type="Yar.Enterprise.Service.BizPermissionService,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizOrganizationService" Name="组织单元服务" Type="Yar.Enterprise.Organization.Service.BizOrganizationService,Yar.Enterprise.Organization" IsGlobal="true" />
+            <Biz Id="_BizDictService" Name="字典服务" Type="Yar.Enterprise.Service.BizDictService,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizCodeRuleService" Name="编码服务" Type="Yar.Enterprise.Service.BizCodeRuleService,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizAttachmentService" Name="附件服务" Type="Yar.Enterprise.Service.BizAttachmentService,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizMessageService" Name="消息服务" Type="Yar.Enterprise.Service.BizMessageService,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizWorkflowService" Name="工作流服务" Type="Yar.EnterpriseWorkflow.Service.BizEnterpriseWorkflowService,Yar.EnterpriseWorkflow" IsGlobal="true" />
+
+
+            <!--System Biz-->
+            <Biz Id="_BizSysUser" Name="用户管理" Type="Yar.Enterprise.Biz.Pms.BizSysUser,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizSysRole" Name="角色管理" Type="Yar.Enterprise.Biz.Pms.BizSysRole,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizSysLog" Name="系统日志" Type="Yar.Enterprise.Biz.BizSysLog,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizAuditLog" Name="审计日志" Type="Yar.Enterprise.Biz.BizAuditLog,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_Biz_Dict" Name="字典管理" Type="Yar.Enterprise.Biz.Biz_Dict,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_Biz_CodeRule" Name="编码管理" Type="Yar.Enterprise.Biz.Biz_CodeRule,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizMessageTemplate" Name="消息模板管理" Type="Yar.Enterprise.Biz.BizMessageTemplate,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_BizMessageManagement" Name="消息管理" Type="Yar.Enterprise.Biz.BizMessageManagement,Yar.Enterprise" IsGlobal="true" />
+
+            <!--Organization Biz-->
+            <Biz Id="_BizSysLegal" Name="法人管理" Type="Yar.Enterprise.Biz.BizSysLegal,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="_Biz_Org_OrgUnit" Name="组织单元管理" Type="Yar.Enterprise.Organization.Biz.Biz_Org_OrgUnit,Yar.Enterprise.Organization" IsGlobal="true" />
+            <Biz Id="_Biz_Org_Position" Name="职位管理" Type="Yar.Enterprise.Organization.Biz.Biz_Org_Position,Yar.Enterprise.Organization" IsGlobal="true" />
+            <Biz Id="_Biz_Org_Job" Name="职务管理" Type="Yar.Enterprise.Organization.Biz.Biz_Org_Job,Yar.Enterprise.Organization" IsGlobal="true" />
+            <Biz Id="_Biz_Org_JobLevel" Name="职级管理" Type="Yar.Enterprise.Organization.Biz.Biz_Org_JobLevel,Yar.Enterprise.Organization" IsGlobal="true" />
+          </Bizs>
+        </Module>
+      </Modules>
+    </Application>
+    <Application Id="DbAppAdmin" Level="3" AuthType="form" Name ="DbAppAdmin" UrlPath="Admin" BizSystem="BizAdminSystem" LoginUrl="/Auth/Login">
+      <Modules>
+        <Module Name="DbAppAdmin" Type="Yar.Service.SystemModule,Yar.Service">
+          <Bizs>
+            <Biz Id="BizAdminSystem" Type="Yar.BizModule.BizDynamicActionSystem,Yar.BizModule" IsGlobal="true">
+              <Properties>
+                <Property Name="masterid" Value="AdminBoostrap" />
+              </Properties>
+            </Biz>
+          </Bizs>
+        </Module>
+      </Modules>
+    </Application>
+    <Application Id="BizAppAuth" Level="4" AppType="api" AuthType="basic" Name ="DbAppAuth" UrlPath="Auth" BizSystem="BizAdminAuth">
+      <Modules>
+        <Module Name="DbAppAuth" Type="Yar.Service.SystemModule,Yar.Service">
+          <Bizs>
+            <Biz Id="BizAdminAuth" Type="Yar.BizModule.BizDynamicActionSystem,Yar.BizModule" IsGlobal="true">
+              <Properties>
+              </Properties>
+            </Biz>
+            BizTenant
+            <Biz Id="_BizAuth" Name="验证服务" Type="Yar.Enterprise.Biz.BizAuth,Yar.Enterprise" IsGlobal="true" />
+            <Biz Id="BizTenant" Name="租户服务" Type="Yar.Enterprise.Biz.BizTenant,Yar.Enterprise" IsGlobal="true" />
+          </Bizs>
+        </Module>
+      </Modules>
+    </Application>
+  </Applications>
+  <Version>
+    <Level>release</Level>
+    <Publish>20170331.1</Publish>
+    <Build>1.0.7</Build>
+    <Database>1</Database>
+  </Version>
+</System>

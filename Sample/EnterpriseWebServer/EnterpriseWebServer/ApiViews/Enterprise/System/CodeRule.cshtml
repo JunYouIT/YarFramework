@@ -1,0 +1,207 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+<div class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+
+    <div class="row" style="display: block;">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-tag"></i>编码规则
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">编码名称</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" data-bind="value:displaydata.name">
+                                         
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">编码编号</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" data-bind="value:displaydata.code">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="float: right;display: inline-block;">
+                                        <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+                                        <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnCreate"><i class="fa fa-plus-circle"></i> 新增 </a>
+                                        <a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnDeleteall"><i class="fa fa-trash-o"></i> 删除 </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:5px;" id="griddiv">
+                        <table data-bind="grid:uiSources.gridList" id="gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ContentInit" type="text/javascript" src="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+    $.ajaxSetup({
+        cache: false
+    });
+    Pagecom = (function () {
+        function Pagecom() {
+        };
+        Pagecom.DetailLink = function (value, rowData, rowIndex) {
+            return String.format("<a href='#' onclick='Pagecom.ViewModel.DetailLink(\"{0}\")'>{1}</a>", rowData.ResId,value);
+        };
+        Pagecom.FormatterDateTime = function (value, row, index) {
+            if (value && value != null) {
+                var t = new Date(Date.parse(value.replace(/-/g, "/")));
+                return t.Format("M/d/yyyy");
+            }
+            return value;
+        };
+        return Pagecom;
+    })();
+    var ViewModel = function (data) {
+        var self = this;
+        self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+        var displaydata = { name: '',code:'' };
+        self.displaydata = ko.mapping.fromJS(displaydata);
+        self.uiSources = {
+            gridList: {
+                ops: {
+                    ClientPage: false,
+                    ele: "#gridlist",
+                    SizeOpt: {
+                        pid: "#griddiv",
+                        top: 311
+                    }
+                },
+                sops: {
+                    url: self.ViewTool.GetActionUrl("Post", "GetResourceList"),
+                    fitColumns:true,
+                    selectOnCheck: false,
+                    checkOnSelect: false,
+                    columns: [[
+                    { field: 'ck', checkbox:true },
+                    { field: 'RuleCode', title: '编码',sortable:true, width: 150,formatter:YarGrid.StringContentFormatter },
+                    { field: 'RuleName', title: '名称',sortable:true, width: 80,formatter:YarGrid.StringContentFormatter},
+                    { field: 'Description', title: '描述',sortable:true, width: 150,formatter:YarGrid.StringContentFormatter},
+                    { field: 'LegalOrder', title: '法人序号',sortable:true, width: 40},
+                    { field: 'FixChar', title: '固定值',sortable:true, width: 40}, 
+                    { field: 'FixOrder', title: '固定序号',sortable:true, width: 40},  
+                     { field: 'TimeChar', title: '时间值',sortable:true, width: 40}, 
+                    { field: 'TimeOrder', title: '时间序号',sortable:true, width: 40},
+                     { field: 'FlowingChar', title: '流水值',sortable:true, width: 40}, 
+                    { field: 'FlowingOrder', title: '流水序号',sortable:true, width: 40},  
+                     { field: 'OtherCharType', title: '其他值',sortable:true, width: 40,formatter:YarGrid.StringContentFormatter}, 
+                    { field: 'OtherCharOrder', title: '其他序号',sortable:true, width: 40},  
+                    { field: 'LastTimeCode', title: '最后编码',sortable:true, width: 100,formatter:YarGrid.StringContentFormatter}, 
+                    { field: 'RuleProvider', title: 'RuleProvider',sortable:true, width: 100,formatter:YarGrid.StringContentFormatter}, 
+                    { field: 'IsUse', title: '状态',halign:'center',align:'center', formatter: function(value, row, index){
+                        if(value){
+                            return '<i class="fa fa-check font-green" style="font-size:18px;"></i>';
+                        } else {
+                            return '<i class="fa fa-ban font-red" style="font-size:18px;"></i>';
+                        }
+                       
+                    }},
+                    { field: 'RuleID', title: '功能',formatter: function(value, row, index){
+
+                        var s =String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.RuleID);
+                        return s;
+                    }
+                    }
+                    ]]
+                }
+            }
+        };
+
+        self.OnRefresh = function () {
+            debugger;
+            var data = {
+                name: Pagecom.ViewModel.displaydata.name(),
+                code:Pagecom.ViewModel.displaydata.code()
+            };
+            $('#gridlist').datagrid('load', data);
+        };
+
+        self.OnCreate = function () {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateView"), { ViewModel: self, data: {} },
+            function (data) {
+                self.OnRefresh();
+            });
+        };
+        self.OnEdit = function (ruleId) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditView", { resId: ruleId }), { ViewModel: self, data: {} },
+            function (data) {
+                self.OnRefresh();
+            });
+        };
+        self.OnDeleteall = function () {
+            var rows = $("#gridlist").datagrid('getChecked');
+            var array = [];
+            var txt = '';
+            if(rows && rows.length > 0){
+                rows.each(function (value, index) {
+                    array.push(value.RuleID);
+                    txt += value['RuleName'] + '\n';
+                });
+                $.messager.confirm('确认', '你确定想删除此数据?', function (r) {
+                    if (r) {
+                        var url = self.ViewTool.GetActionUrl("Post", "Deletes");
+                        YarClient.AjaxPost(url, YarClient.GetRequestString({ ids: array.join(';') }), {
+                            IsWarning: true,
+                            success: function (returnData) {
+                                self.OnRefresh();
+                                $.messager.alert('Message', '更新成功', 'info');
+                            }
+                        });
+                    }
+                });                
+            }
+            else{
+                $.messager.alert('请选择需要删除的信息', '', 'warning');                
+            }
+        };
+
+    };
+
+    var data = @this.Raw(Model.Data);
+    //var data = {};
+    var viewModel = new ViewModel(data);
+    Pagecom.ViewModel = viewModel;
+    ko.applyBindings(viewModel);
+    viewModel.OnRefresh();
+
+</script>
+
+<script id="ContentInitCss" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")']
+</script>
+
+<script id="ContentInitScript" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	
+</script>
+

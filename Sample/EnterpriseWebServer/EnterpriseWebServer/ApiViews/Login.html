@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" class="no-js">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>钧优企业管理平台</title>
+    <meta name="description" content="CMS Login" />
+    <link href="Scripts/Login/login.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="Scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.json-2.4.min.js"></script>
+    <script type="text/javascript" src="Scripts/md5.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.base64.js"></script>
+    <script type="text/javascript" src="Scripts/Login/login.js"></script>
+    <!--[if lte IE 9]>
+    <style type="text/css">
+     </style>
+    <![endif]-->
+</head>
+<body>
+    <table border="0" cellpadding="0" cellspacing="0" class="tablewrapper">
+        <tbody>
+            <tr valign="middle">
+                <td>
+                    <div id="login">
+                        <div id="login_wrapper">
+                            <div style="margin: 0 auto;padding: 40px;">
+                                <div style="height:65px;text-align:center"><div style="padding-top: 30px;font-size: 26px;text-shadow: rgba(0,0,0,.15) 0 0 1px;    font-family: Microsoft YaHei;font-weight: 400;line-height: 1.2;color: #37474f;">钧优企业管理平台</div></div>
+                                <div id="txError" style="margin-left: 60px; height: 45px; color: red; font-size: 12px;"></div>
+                                <div style="height: 36px;margin-bottom: 30px;">
+                                    <div class="input-icon">
+                                        <i class="fa fa-user"></i>
+                                        <input class="form-control" type="text" style="width: 100%;" id="Username" name="Username" placeholder="User Name" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div style="height: 36px;margin-bottom: 20px;">
+                                    <div class="input-icon">
+                                        <i class="fa fa-lock"></i>
+                                        <input class="form-control" style="width: 100%;" id="Password" name="Password" type="password" placeholder="Password" autocomplete="off" onkeyup="CheckLogin()">
+                                    </div>
+                                </div>
+                                <div style="height: 22px;">
+                                    <div class="checkbox-custom checkbox-inline checkbox-primary pull-left">
+                                        <input type="checkbox" id="saveCookie" name="checkbox" checked>
+                                        <label for="inputCheckbox" class="fa">记住用户</label>
+                                    </div>
+                                </div>
+                                <div style="margin-top:34px;">
+                                    <div style="width: 100%;">
+                                        <input id="btnOk" class="btn blue-btn login-btn" type="button" value="登 录">
+                                    </div>
+                                </div>
+                                <div style="height:40px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        function CheckLogin() {
+            var code = event.keyCode;
+            if (13 == code) {
+                Login.Login();
+            }
+        };
+        $(document).ready(function () {
+            Login.init();
+        });
+    </script>
+</body>
+</html>

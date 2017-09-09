@@ -1,0 +1,273 @@
+/* =========================================================
+ * Bootstrap year calendar v1.1.0
+ * Repo: https://github.com/Paul-DS/bootstrap-year-calendar
+ * =========================================================
+ * Created by Paul David-Sivelle
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ========================================================= */
+
+/* Main */
+.byccalendar {
+  padding: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  direction: ltr;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.byccalendar:after {
+	/* Apply the right height on the calendar div, even if the months elements are floating  */
+	clear: both;
+	content: "";
+	display:block;
+}
+
+.byccalendar.byccalendar-rtl {
+  direction: rtl;
+}
+.byccalendar.byccalendar-rtl table tr td span {
+  float: right;
+}
+
+.byccalendar table {
+  margin: auto;
+}
+
+.byccalendar table td,
+.byccalendar table th {
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  padding: 4px 5px;
+  font-size:12px;
+}
+
+/* Header */
+.byccalendar .byccalendar-header
+{
+	width:100%;
+	margin-bottom:20px;
+}
+
+.byccalendar .byccalendar-header table
+{
+	width:100%;
+}
+
+.byccalendar .byccalendar-header table th
+{
+	font-size:22px;
+	padding:5px 10px;
+}
+
+.byccalendar .byccalendar-header table th:hover {
+  background: #eeeeee;
+  cursor: pointer;
+}
+
+.byccalendar .byccalendar-header table th.disabled,
+.byccalendar .byccalendar-header table th.disabled:hover {
+  background: none;
+  cursor: default;
+  color:white;
+}
+
+.byccalendar .byccalendar-header table th.prev,
+.byccalendar .byccalendar-header table th.next
+{
+	width:20px;
+}
+
+.byccalendar .year-title {
+	font-weight:bold;
+	text-align:center;
+	height:20px;
+	width:auto;
+}
+
+.byccalendar .year-neighbor
+{
+	color:#aaaaaa;
+}
+
+.byccalendar .year-neighbor2
+{
+	color:#dddddd;
+}
+
+/* Months */
+.byccalendar .months-container {
+	width:100%;
+	display:none;
+}
+
+.byccalendar .month-container {
+	text-align:center;
+	height:200px;
+	padding:0;
+}
+
+.byccalendar table.month th.month-title
+{
+	font-size:16px;
+	padding-bottom: 5px;
+}
+
+.byccalendar table.month th.day-header
+{
+	font-size:14px;
+}
+
+
+.byccalendar table.month tr td,
+.byccalendar table.month tr th
+{
+	padding:0;
+}
+
+.byccalendar table.month tr td.hidden,
+.byccalendar table.month tr th.hidden
+{
+	display:none;
+}
+
+.byccalendar table.month td.week-number {
+	cursor: default;
+	font-weight:bold;
+	border-right:1px solid #eee;
+	padding:5px;
+}
+
+.byccalendar .round-left {
+	-webkit-border-radius: 8px 0 0 8px;
+	-moz-border-radius: 8px 0 0 8px;
+	border-radius: 8px 0 0 8px;
+}
+
+.byccalendar .round-right {
+	webkit-border-radius: 0 8px 8px 0 ;
+	-moz-border-radius: 0 8px 8px 0;
+	border-radius: 0 8px 8px 0;
+}
+
+.byccalendar table.month tr td .day-content {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding: 5px 6px;
+}
+
+/*.byccalendar table.month tr td .bycweekendcontent{
+    background-color:#fff2d6;
+    color:red;
+}
+
+.byccalendar table.month tr td .bycweekdaycontent{
+    background-color:#ffc8c8;
+    color:black;
+}*/
+
+.table-striped .byccalendar table.month tr td,
+.table-striped .byccalendar table.month tr th {
+  background-color: transparent;
+}
+
+.byccalendar table.month td.day .day-content:hover {
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.byccalendar table.month tr td.old,
+.byccalendar table.month tr td.new,
+.byccalendar table.month tr td.old:hover,
+.byccalendar table.month tr td.new:hover {
+  background: none;
+  cursor: default;
+}
+.byccalendar table.month tr td.disabled,
+.byccalendar table.month tr td.disabled:hover {
+  color: #dddddd;
+}
+
+.byccalendar table.month tr td.day.disabled .bycweekdaycontent{
+    background-color:#ffc8c8;
+    color:black;
+}
+
+.byccalendar table.month tr td.range .day-content {
+   background: rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
+.byccalendar table.month tr td.range.range-start .day-content  {
+  border-top-left-radius:4px;
+  border-bottom-left-radius:4px;
+}
+
+.byccalendar table.month tr td.range.range-end .day-content  {
+  border-top-right-radius:4px;
+  border-bottom-right-radius:4px;
+}
+
+.byccalendar-context-menu,
+.byccalendar-context-menu  .submenu {
+	border: 1px solid #ddd;
+	background-color: white;
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, .2);
+	-webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, .2);
+	position:absolute;
+	display:none;
+}
+
+.byccalendar-context-menu .item {
+	padding:5px 10px;
+	cursor:pointer;
+	display:table;
+	width:100%;
+}
+
+.byccalendar-context-menu .item:hover {
+	background:#eee;
+}
+
+.byccalendar-context-menu .item .content {
+	display:table-cell;
+}
+
+.byccalendar-context-menu .item span {
+	display:table-cell;
+	padding-left:10px;
+	text-align:right;
+}
+
+.byccalendar-context-menu .item span:last-child {
+	display:none;
+}
+
+.byccalendar-context-menu  .submenu {
+	left: 100%;
+	margin-top: -6px;
+}
+
+.byccalendar-context-menu  .item:hover > .submenu {
+	display:block;
+}

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<BizGroupModel>
+  <Nodes>
+    <BizNode ID="Organization_root" Name="组织机构" Level="3" >
+      <Nodes>
+        <BizNode ID="Organization_A01" Name="组织架构" Icon="icon-users">
+          <Nodes>
+            <BizNode ID="ORG_LEG" Name="法人管理" UrlPath="ORG_LEG"   BusinessId="_BizSysLegal" BusinessAction="View" />
+            <BizNode ID="ORG_ORGUNIT" Name="组织机构" UrlPath="ORG_ORGUNIT"   BusinessId="_Biz_Org_OrgUnit" BusinessAction="View" />
+            <BizNode ID="ORG_Position" Name="职位管理" UrlPath="ORG_POSITION"   BusinessId="_Biz_Org_Position" BusinessAction="View" />
+            <BizNode ID="ORG_Job" Name="职务管理" UrlPath="ORG_JOB"   BusinessId="_Biz_Org_Job" BusinessAction="View" />
+          </Nodes>
+        </BizNode>
+      </Nodes>
+    </BizNode>
+    <BizNode ID="SYS_root" Name="管理" Level="3" >
+      <Nodes>
+        <BizNode ID="SYS_001" Name="系统管理" Icon="icon-home">
+          <Nodes>
+            <BizNode ID="SYS_User" Name="用户管理" UrlPath="User"  BusinessId="_BizSysUser" BusinessAction="View"  />
+            <BizNode ID="SYS_Role" Name="角色管理" UrlPath="Role" BusinessId="_BizSysRole" BusinessAction="View" />
+            <BizNode ID="SYS_SysAuditLog" Name="审计日志" UrlPath="SysAuditLog"  BusinessId="_BizAuditLog" BusinessAction="View" />
+          </Nodes>
+        </BizNode>
+        <BizNode ID="SYS_002" Name="系统配置" Icon="icon-settings">
+          <Nodes>
+            <BizNode ID="SYS_Dict" Name="字典管理" UrlPath="Dict"  BusinessId="_Biz_Dict" BusinessAction="View"  />
+            <BizNode ID="SYS_CodeRule" Name="编码管理" UrlPath="CodeRule"  BusinessId="_Biz_CodeRule" BusinessAction="View"  />
+          </Nodes>
+        </BizNode>
+      </Nodes>
+    </BizNode>
+    <BizNode ID="sys_AuthApi" Name="DbAppAuth" Level="4" IsEnableConfig="false">
+      <Nodes>
+        <BizNode ID="api_auth" NodeType="api" Role="Guest" Name="auth" UrlPath="Login" BusinessId="_BizAuth" BusinessAction="Login" />
+        <BizNode ID="api_tenant" NodeType="api" Role="Guest" Name="auth" UrlPath="Register" BusinessId="BizTenant" BusinessAction="CreateView" />
+      </Nodes>
+    </BizNode>
+  </Nodes>
+</BizGroupModel>

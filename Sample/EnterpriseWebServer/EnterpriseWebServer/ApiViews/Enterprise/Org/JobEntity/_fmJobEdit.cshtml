@@ -1,0 +1,113 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">职务编码</label>
+                        <div class="col-md-8">
+                            <input type="text" id="JobCode" disabled data-bind="textboxValue:formdata.JobCode" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>职务名称</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.JobName" data-options="required:true,validType:'length[1,36]'" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>职务族群</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="comboboxValue:formdata.JobGroup,dataSource:dataSources.dsJobGroup" data-options="required:true" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">职务说明</label>
+                        <div class="col-md-10">
+                            <input type="text" data-bind="textboxValue:formdata.Description" class="easyui-textbox" data-options="validType:'length[0,128]'" style="height: 80px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+      //debugger;
+      $.parser.parse(eleId);
+
+      var ViewModel = function (data) {
+      var self = this;
+      self.Action = 'new';
+          //debugger;
+        if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+            self.Action = 'edit';
+            $('#JobCode').textbox('disable');
+	  }
+	  self.formdata = ko.mapping.fromJS(data.form);
+
+	  self.dataSources = data.dataSources;
+      self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+	  var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist",{id:data.form.ResId});
+	  //debugger;
+		var valid = String.format("cremote['{0}','name','名称已存在']", checkUrl);
+		$("#legalname1").textbox({
+		  required: true,
+		  validType: ['length[0,100]',valid]
+		});
+      self.Init = function()
+      {
+      };
+      self.OnSave = function (finishcall) {
+        debugger;
+        var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+        if(MainApp.FormValidate())
+        {
+			var url = '';
+			if(self.Action == 'new'){
+				url = self.ViewTool.GetActionUrl("Post", "Create",{resId:data.form.ResId});
+			} else {
+				url = self.ViewTool.GetActionUrl("Post", "Edit",{resId:data.form.ResId});
+			}
+            YarClient.AjaxPost(url,postdata, {
+                IsWarning: true,
+                success : function(returnData) {
+                    finishcall(returnData,callback);
+                }
+            });
+        }
+        else {
+
+        }
+      };
+	  };
+      var data = @this.Raw(Model.Data);
+      var viewModel = new ViewModel(data);
+
+      ko.applyBindings(viewModel, $(eleId)[0]);
+	  viewModel.Init();
+      MainApp.DialogModel(eleId,viewModel.Action == "new"? '新增职务' : '编辑职务',750,230,viewModel.OnSave);
+
+    })(eleId, context, callback);
+</script>

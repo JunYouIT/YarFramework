@@ -1,0 +1,173 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+    var isMulti = "1".Equals(context.Request["isMulti"]);
+    var notLimitLegal = "1".Equals(context.Request["notLimitLegal"]);
+    var limitLegal = context.Request["limitLegal"] == null ? "" : context.Request["limitLegal"].ToString();
+}
+<div style="padding: 5px 20px 5px;" tabindex="-1">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="portlet box blue" style="margin-bottom:2px;">
+                <div class="portlet-title">
+                    <div class="caption">
+                        组织机构
+                    </div>
+                </div>
+                <div class="portlet-body" style="height:285px;overflow:auto;">
+                    <ul id="hr_common_selectOrgUnit_orgTree"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="form form-horizontal">
+                <div class="form-body">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">名称</label>
+                        <div class="col-md-3">
+                            <input class="form-control" type="text" data-bind="value:displaydata.name" />
+                        </div>
+                        <label class="control-label bold col-md-2">编码</label>
+                        <div class="col-md-3">
+                            <input class="form-control" type="text" data-bind="value:displaydata.code" />
+                        </div>
+                        <div class="col-md-2">
+                            <div class="" style="float: right;display: inline-block;">
+                                <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-refresh"></i> 搜索 </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin: 1px;height:265px;">
+                        <table data-bind="grid:uiSources.gridList" id="hr_common_selectOrgUnit_gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+            self.ViewTool = new YarClient.ViewModel("_BizOrganizationService", "@tokenId");
+            var displaydata = { name: '', code: '' };
+            self.displaydata = ko.mapping.fromJS(displaydata);
+            debugger;
+            self.uiSources = {
+                gridList: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#hr_common_selectOrgUnit_gridlist",
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", "Biz_Select_OrgUnit.GetOrgs", { notLimitLegal: '@(notLimitLegal?"1":"0")', limitLegal: '@(limitLegal)' }),
+                        fit: true,
+                        fitColumns: true,
+                        pageSize: 5,
+                        @if(isMulti){<text>singleSelect: false,</text>}
+                            columns: [[
+                              { field: 'ck', checkbox: true },
+                              { field: 'Name', title: '名称', width: 100 },
+                              { field: 'Code', title: '编码', width: 100 },
+                            ]]
+                        }
+                    }
+                };
+            self.Init = function () {
+                $('#hr_common_selectOrgUnit_orgTree').tree({
+                    url: self.ViewTool.GetActionUrl("Post", "Biz_Select_OrgUnit.GetOrgTree", { notLimitLegal: '@(notLimitLegal?"1":"0")', limitLegal: '@(limitLegal)' }),
+                    onLoadSuccess: function (node, data) {
+                        $('#hr_common_selectOrgUnit_orgTree').tree("collapseAll");
+                        var root = $('#hr_common_selectOrgUnit_orgTree').tree("getRoot");
+                        if (root) {
+                            $('#hr_common_selectOrgUnit_orgTree').tree("select", root.target);
+                            $('#hr_common_selectOrgUnit_orgTree').tree("expand", root.target);
+                            var data = {
+
+                                name: self.displaydata.name(),
+                                code: self.displaydata.code(),
+                                parentId: root.id
+                            };
+                            //debugger;
+                            //$('#hr_common_selectOrgUnit_gridlist').datagrid('load', data);
+                        }
+
+                    },
+                    onSelect: function (node) {
+                        //debugger;
+                        var data = {
+                            name: self.displaydata.name(),
+                            code: self.displaydata.code(),
+                            parentId: node.id
+                        };
+                        $('#hr_common_selectOrgUnit_gridlist').datagrid('load', data);
+                    }
+                });
+            };
+
+            self.OnRefresh = function () {
+                //var data = {
+                //    name: self.displaydata.name(),
+                //    code: self.displaydata.code(),
+                //};
+                //$('#hr_common_selectOrgUnit_gridlist').datagrid('load', data);
+
+                debugger;
+                $('#hr_common_selectOrgUnit_orgTree').tree({
+                    url: self.ViewTool.GetActionUrl("Post", "Biz_Select_OrgUnit.GetOrgTree"),
+                    onLoadSuccess: function (node, data) {
+
+                        var node = $('#hr_common_selectOrgUnit_orgTree').tree('getSelected');
+                        if (node) {
+                            var data = {
+                                name: self.displaydata.name(),
+                                code: self.displaydata.code(),
+                                parentId: node.id
+                            };
+                            $('#hr_common_selectOrgUnit_gridlist').datagrid('load', data);
+                        }
+                        else {
+                            //debugger;
+                            var root = $('#hr_common_selectOrgUnit_orgTree').tree("getRoot");
+                            if (root) {
+                                $('#hr_common_selectOrgUnit_orgTree').tree("select", root.target);
+                            }
+                        }
+                    },
+                });
+            };
+
+            self.OnOk = function (finishcall) {
+                //debugger;
+                var rows = $("#hr_common_selectOrgUnit_gridlist").datagrid('getChecked');
+                if (rows.length > 0) {
+                    var results = [];
+                    for (var i = 0; i < rows.length; i++) {
+                        results.push({
+                            Id: rows[i].Id, Name: rows[i].Name, Code: rows[i].Code,
+                            LegalEntityID: rows[i].LegalEntityID, TenantID: rows[i].TenantID,
+                            LegalEntityName: rows[i].LegalEntityName
+                        });
+                    }
+                    finishcall(results, callback);
+                }
+
+            };
+        };
+
+        debugger;
+        var viewModel = new ViewModel({});
+        ko.applyBindings(viewModel, $(eleId)[0]);
+        viewModel.Init();
+        MainApp.DialogModel(eleId, '选择组织单元', 800, 350, viewModel.OnOk);
+        //viewModel.OnRefresh();
+
+    })(eleId, context, callback);
+</script>

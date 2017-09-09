@@ -1,0 +1,89 @@
+﻿@{
+Yar.Service.BusinessContext context = Model.Context;
+var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+var bizId = Model.BizId;
+}
+<div style="padding: 5px 20px 5px;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form form-horizontal">
+        <div class="form-body">
+          <div class="form-group">
+
+            <div class="list-group" data-bind="foreach:pathList">
+              <a href="#" class="list-group-item" data-bind="css:{ active: $data.Id == $root.selectedPath().Id },click:$root.selectPath">
+              <h4 class="list-group-item-heading" data-bind="text:$data.FlowName"></h4>
+              <p class="list-group-item-text" data-bind="text:$data.Remark"></p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript">
+
+  (function (eleId, context, callback) {
+    $.parser.parse(eleId);
+
+    var ViewModel = function (data,context,posId,deptId,requestTypeCode,resId) {
+      var self = this;
+
+      self.pathList = ko.mapping.fromJS(data);
+
+      self.selectedPath = ko.observable();
+      self.selectPath = function(path){
+        self.selectedPath(path);
+      };
+
+      self.selectedPath(self.pathList()[0]);
+
+      self.OnSave = function(finishcall){
+
+        if(!self.selectedPath().FlowCode() || self.selectedPath().FlowCode()==""){
+         swal("保存失败", "您选择的审批路径不存在!", "warning");
+         return false;
+       }
+        debugger;
+        var
+        isNotify      = context.isNotify,
+        requireFields = context.requireFields,
+        workflowInfoId          = self.selectedPath().Id(),
+        flowCode = self.selectedPath().FlowCode();
+
+
+       var postdata  = {
+        isNotify   : isNotify,
+        workflowInfoId       : workflowInfoId,
+         resId : resId,
+        positionId      : posId,
+        orgId     : deptId,
+        requireFields : requireFields,
+      };
+
+       YarClient.AjaxPost(MainApp.GetUrl("_BizWorkflowService", "Post", "CreateWorkflow"),postdata, {
+        IsWarning: true,
+        success : function(returnData) {
+            finishcall(postdata,callback);
+        }});
+    };
+
+    };
+    debugger;
+  var
+  data            = @this.Raw(Model.WorkflowInfos),
+  posId           =  "@Model.positionId",
+  deptId          = "@Model.orgId",
+  requestTypeCode = "@Model.requestTypeCode",
+  workflowId      = "@Model.workflowId",
+  resId           = "@Model.resId",
+  viewModel       = new ViewModel(data,context,posId,deptId,requestTypeCode,resId),
+  pathCnt         = data.length;
+
+  ko.applyBindings(viewModel, $(eleId)[0]);
+  MainApp.DialogModel(eleId, '创建流程', 400, 200, viewModel.OnSave);
+
+})(eleId, context, callback);
+</script>

@@ -1,0 +1,162 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">组织单元路径</label>
+                        <div class="col-md-8">
+                            <div class="input-group">                            
+                                <span type="text" data-bind="text:formdata.OrgName" class="form-control-static" style="width: 100%; "></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">职位类型</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.FunctionPositionTypeName" class="form-control-static" style="width: 100%; "></span>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">职位编码</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.PositionCode" class="form-control-static" style="width: 100%; "></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">职位名称</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.PositionName" class="form-control-static" style="width: 100%; "></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">上级职位</label>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <span type="text" data-bind="text:formdata.LeadEmpPosName" class="form-control-static" style="width: 100%; "></span>                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">所属职务</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.JobName" class="form-control-static" style="width: 100%; "></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">职位定员数</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.Headcount" class="form-control-static" style="width: 100%; "></span>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-2"> </div>
+                        <div class="col-md-10" style="margin-top:5px;">
+                            <input type="checkbox" data-bind="checked:formdata.IsHead"> 是否负责人
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">对应角色</label>
+                        <div class="col-md-10">
+                            <span type="text" data-options="multiline:true" data-bind="text:formdata.SelectRoles" class="form-control-static" style="width: 100%;"></span>                            
+                        </div>                        
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">职位说明</label>
+                        <div class="col-md-10">
+                            <span type="text" id="legalcode" data-bind="text:formdata.PositionDescription" class="form-control-static" style="height: 80px; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+      //debugger;
+      $.parser.parse(eleId);
+
+      var ViewModel = function (data) {
+      var self = this;
+      self.Action = 'new';
+          //debugger;
+        if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+		self.Action = 'edit';
+	  }
+      self.formdata = ko.mapping.fromJS(data.form);
+	  self.dataSources = data.dataSources;
+      self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+	  var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist",{id:data.form.ResId});
+	  //debugger;
+		var valid = String.format("cremote['{0}','name','名称已存在']", checkUrl);
+		$("#legalname1").textbox({
+		  required: true,
+		  validType: ['length[0,100]',valid]
+		});
+      self.Init = function()
+      {
+      };
+      self.OnSave = function (finishcall) {
+        debugger;
+        var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+        if(MainApp.FormValidate())
+        {
+			var url = '';
+			if(self.Action == 'new'){
+				url = self.ViewTool.GetActionUrl("Post", "Create",{resId:data.form.ResId});
+			} else {
+				url = self.ViewTool.GetActionUrl("Post", "Edit",{resId:data.form.ResId});
+			}
+            YarClient.AjaxPost(url,postdata, {
+                IsWarning: true,
+                success : function(returnData) {
+                    finishcall(returnData,callback);
+                }
+            });
+        }
+        else {
+
+        }
+      };
+	  };
+      var data = @this.Raw(Model.Data);
+      var viewModel = new ViewModel(data);
+
+      ko.applyBindings(viewModel, $(eleId)[0]);
+	  viewModel.Init();
+	  MainApp.DialogCustomButton(eleId, '查看职位信息', 950, 600, [{ text: '关闭', cancel: true }]);
+
+    })(eleId, context, callback);
+</script>

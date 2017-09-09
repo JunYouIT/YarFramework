@@ -1,0 +1,150 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="control-label col-md-2 bold"><span style="color: red;">*</span>编码</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="textboxValue:formdata.RuleCode" class="easyui-textbox" data-options="required:true,validType:'length[1,100]'" style="width: 100%;" placeholder="" />
+                </div>
+                <label class="control-label col-md-2 bold"><span style="color: red;">*</span>名称</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="textboxValue:formdata.RuleName" data-options="required:true,validType:'length[1,256]'" class="easyui-textbox" style="width: 100%;" placeholder="" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">描述</label>
+                <div class="col-md-10">
+                    <input type="text" data-bind="textboxValue:formdata.Description" style="width: 100%;" />
+                </div>
+            </div>         
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">是否启用</label>
+                <div class="col-md-4">
+                    <input type="checkbox" data-ontext="是" data-offtext="否" data-bind="SwitchValue: formdata.IsUse" />
+                </div>
+                <label class="control-label col-md-2 bold">法人序号</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="numberboxValue:formdata.LegalOrder" style="width: 100%;" />
+                </div>
+                
+
+            </div>   
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">固定序号</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="numberboxValue:formdata.FixOrder" style="width: 100%;" />
+                </div>
+                <label class="control-label col-md-2 bold">固定值</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="textboxValue:formdata.FixChar"  style="width: 100%;"  />
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">时间序号</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="numberboxValue:formdata.TimeOrder" style="width: 100%;" />
+                </div>
+                <label class="control-label col-md-2 bold">时间值</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="textboxValue:formdata.TimeChar" style="width: 100%;" />
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">流水序号</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="numberboxValue:formdata.FlowingOrder" style="width: 100%;" />
+                </div>
+                <label class="control-label col-md-2 bold">流水值</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="textboxValue:formdata.FlowingChar" style="width: 100%;" />
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">其他序号</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="numberboxValue:formdata.OtherCharOrder" style="width: 100%;" />
+                </div>
+                <label class="control-label col-md-2 bold">其他值</label>
+                <div class="col-md-4">
+                    <input type="text" data-bind="textboxValue:formdata.OtherCharType" style="width: 100%;" />
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">RuleProvider</label>
+                <div class="col-md-10">
+                    <input type="text" data-bind="textboxValue:formdata.RuleProvider" style="width: 100%;" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 bold">LastTimeCode</label>
+                <div class="col-md-10">
+                    <input type="text" data-bind="textboxValue:formdata.LastTimeCode" style="width: 100%;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+      //debugger;
+      $.parser.parse(eleId);
+
+      var ViewModel = function (data) {
+      var self = this;
+      self.Action = 'new';
+          //debugger;
+        if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+            self.Action = 'edit';
+            $('#JobCode').textbox('disable');
+	  }
+	  self.formdata = ko.mapping.fromJS(data.form);
+
+	  self.dataSources = data.dataSources;
+      self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+      self.Init = function()
+      {
+      };
+      self.OnSave = function (finishcall) {
+        debugger;
+        var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+        if(MainApp.FormValidate())
+        {
+			var url = '';
+			if(self.Action == 'new'){
+				url = self.ViewTool.GetActionUrl("Post", "Create",{resId:data.form.ResId});
+			} else {
+				url = self.ViewTool.GetActionUrl("Post", "Edit",{resId:data.form.ResId});
+			}
+            YarClient.AjaxPost(url,postdata, {
+                IsWarning: true,
+                success : function(returnData) {
+                    finishcall(returnData,callback);
+                }
+            });
+        }
+        else {
+
+        }
+      };
+	  };
+      var data = @this.Raw(Model.Data);
+      var viewModel = new ViewModel(data);
+
+      ko.applyBindings(viewModel, $(eleId)[0]);
+	  viewModel.Init();
+      MainApp.DialogModel(eleId,viewModel.Action == "new"? '新增职务' : '编辑职务',750,470,viewModel.OnSave);
+
+    })(eleId, context, callback);
+</script>

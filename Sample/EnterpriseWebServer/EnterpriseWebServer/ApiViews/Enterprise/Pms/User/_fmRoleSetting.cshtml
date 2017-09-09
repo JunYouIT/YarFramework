@@ -1,0 +1,76 @@
+﻿<div style="height:360px;">
+<table id="roleSettinglist"  border="false" style="">  
+                <thead>  
+                    <tr>                                      
+                        <th data-options="field:'ck',checkbox:true"></th>    
+                        <th data-options="field:'Name',width:200">名称</th>
+                        <th data-options="field:'Code',width:200">编码</th>               
+                    </tr>  
+                </thead> 
+            </table> 
+</div>
+
+<script type="text/javascript">
+    
+    (function (eleId, context, callback) {
+      //debugger;
+
+      $.parser.parse(eleId);
+	  var ViewModel = function () {
+		var self = this;
+		self.Init = function () {
+			YarGrid.Create({
+			ClientPage: false,
+			ele: "#roleSettinglist"
+		  }, { url: context.ViewModel.GetActionUrl('Post', 'GetRoleList', { resId: context.resId }),
+		  initLoader: true,
+              rownumbers:true,
+			  fit:true,
+			  fitColumns:true,
+              striped:true,
+		  pagination: false,
+		  selectOnCheck: false,
+		  checkOnSelect: false,
+			onLoadSuccess: function (data) {
+			  if (data.rows) {
+				//debugger;
+				for (var i = 0; i < data.rows.length; i++) {
+
+				  if (data.rows[i].Checked) {
+					$("#roleSettinglist").datagrid("checkRow", i);
+				  }
+				}
+			  }
+			}
+		  });
+		};
+		self.OnSave = function (finishcall) {
+			//debugger;
+			var arry = [];
+            var selectedData = $("#roleSettinglist").datagrid("getChecked");
+            if (selectedData) {
+              selectedData.each(function (value, index) {
+                arry.push(value.ResId);
+              });
+            };
+			var url = context.ViewModel.GetActionUrl('Post', 'UpdateRoleList', { resId: context.resId })
+			YarClient.AjaxPost(url,{ data: arry.join(',') }, { 
+					IsWarning: true, 
+					success : function(returnData) {
+						finishcall(returnData,callback);
+					} 
+				});			
+		  };
+	  };
+      
+	  var viewModel = new ViewModel();
+	  
+      $.Yar.Dialog.Show(eleId, '角色权限', 500, 400, viewModel.OnSave, null, function (dialogRef) {
+          viewModel.Init();
+          ko.applyBindings(viewModel, $(eleId)[0]);
+      });
+
+     
+
+    })(eleId, context, callback);
+</script>

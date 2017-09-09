@@ -1,0 +1,315 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #c2cad8;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #c2cad8;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #c2cad8;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #c2cad8;
+}
+html, body {
+    height: 100%;
+}
+body{
+padding: 0px;
+margin: 0px;
+font-family: "Microsoft YaHei";
+font-weight:300;
+font-size: 14px;
+line-height: 1.57142857;
+color: #76838f;
+    background: #62a8ea;
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod¡­EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background-image: -webkit-linear-gradient(top,#62a8ea 0,#3583ca 100%);
+    background-image: -o-linear-gradient(top,#62a8ea 0,#3583ca 100%);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#62a8ea),to(#3583ca));
+    background-image: linear-gradient(to bottom,#62a8ea 0,#3583ca 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff62a8ea', endColorstr='#ff3583ca', GradientType=0);
+}
+a {
+    background-color: transparent;
+    color: #62a8ea;
+    text-decoration: none;
+}
+
+a:active, a:hover {
+    outline: 0;
+    cursor: pointer;
+}
+a:focus, a:hover {
+    color: #89bceb;
+    text-decoration: underline;
+}
+
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+}
+button, input, select, textarea {
+    margin: 0;
+    font: inherit;
+    color: inherit;
+}
+input[type=checkbox], input[type=radio] {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+input {
+    line-height: normal;
+}
+
+input:focus {
+                border-color: #62a8ea;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+				
+            }
+.tablewrapper {
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+}			
+
+#login{
+padding: 0;
+margin-left: auto; margin-right: auto;
+width: 400px;
+}
+#login_wrapper{
+background-color: #ffffff;
+margin-left: auto; margin-right: auto;
+background: #fff;
+border: 1px solid transparent;
+border-radius: 4px;
+box-shadow: 0 1px 1px rgba(0,0,0,.05);
+overflow: hidden;
+}
+
+[class^="fa-"]:not(.fa-stack), [class^="glyphicon-"], [class^="icon-"], [class*=" fa-"]:not(.fa-stack), [class*=" glyphicon-"], [class*=" icon-"] {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+.input-icon {
+  position: relative;
+}
+.input-icon > i {
+  color: #ccc;
+  display: block;
+  position: absolute;
+  margin: 11px 2px 4px 10px;
+  z-index: 3;
+  width: 16px;
+  font-size: 16px;
+  text-align: center;
+}
+
+
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 36px;
+    padding: 6px 15px;
+    font-size: 14px;
+    line-height: 1.57142857;
+    color: #76838f;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #e4eaec;
+    border-radius: 3px;
+        -webkit-appearance: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    -webkit-transition: -webkit-box-shadow .25s linear,border .25s linear,color .25s linear,background-color .25s linear;
+    -o-transition: box-shadow .25s linear,border .25s linear,color .25s linear,background-color .25s linear;
+    transition: box-shadow .25s linear,border .25s linear,color .25s linear,background-color .25s linear;
+    -moz-appearance: none;
+}
+
+.input-icon > .form-control {
+  padding-left: 33px;
+}
+
+        .btn {
+            display: inline-block;
+    padding: 6px 15px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.57142857;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    -webkit-transition: border .2s linear,color .2s linear,width .2s linear,background-color .2s linear;
+    -o-transition: border .2s linear,color .2s linear,width .2s linear,background-color .2s linear;
+    transition: border .2s linear,color .2s linear,width .2s linear,background-color .2s linear;
+    -webkit-font-smoothing: subpixel-antialiased;
+        }
+
+        .blue-btn:hover {
+            color: #fff;
+            background-color: #89bceb;
+            border-color: #89bceb;
+        }
+
+        .blue-btn:focus {
+            background-color: #62a8ea;
+            border-color: #62a8ea;
+        }
+
+        .blue-btn {
+           color: #fff;
+            background-color: #62a8ea;
+            border-color: #62a8ea;
+        }
+@font-face{font-family:'FontAwesome';src:url('../../fonts/fontawesome-webfont.eot?v=4.3.0');src:url('../../fonts/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'),url('../../fonts/fontawesome-webfont.woff2?v=4.3.0') format('woff2'),url('../../fonts/fontawesome-webfont.woff?v=4.3.0') format('woff'),url('../../fonts/fontawesome-webfont.ttf?v=4.3.0') format('truetype'),url('../../fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');font-weight:normal;font-style:normal}.fa{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;transform:translate(0, 0)}
+.fa-user:before{content:"\f007"} 
+.fa-lock:before{content:"\f023"}
+
+
+
+.login-btn, .fullpage-btn {
+                display: block;
+    width: 100%;
+    white-space: normal;
+    font-size: 18px;
+        }
+
+.checkbox-custom.checkbox-inline {
+    margin-top: 0;
+    display: inline-block;
+    margin-bottom: 0;
+}
+.checkbox-custom {
+    padding-left: 20px;
+}
+.checkbox-custom, .radio-custom {
+    position: relative;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.checkbox-inline, .radio-inline {
+    font-weight: 300;
+}
+.pull-left {
+    float: left!important;
+}
+.pull-right {
+    float: right!important;
+}
+.checkbox-inline, .radio-inline {
+    position: relative;
+    display: inline-block;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.checkbox-custom input[type=radio], .checkbox-custom input[type=checkbox] {
+    opacity: 0;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+}
+.checkbox-custom input[type=checkbox], .radio-custom input[type=radio] {
+    position: absolute;
+    margin-left: -20px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.checkbox-custom label {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    padding-left: 10px;
+}
+.checkbox-custom label, .radio-custom label {
+    min-height: 22px;
+    margin-bottom: 0;
+    font-weight: 300;
+    cursor: pointer;
+}
+.checkbox-custom label::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 0;
+    margin-left: -20px;
+    margin-top: -3px;
+    border: 1px solid #e4eaec;
+    border-radius: 3px;
+    background-color: #fff;
+    -webkit-transition: all .3s ease-in-out 0s;
+    -o-transition: all .3s ease-in-out 0s;
+    transition: all .3s ease-in-out 0s;
+}
+
+.checkbox-custom label::after {
+    display: inline-block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    left: 0;
+    top: 0;
+    margin-left: -21px;
+    margin-top:1px;
+    text-align: center;
+    font-size: 28px;
+    color: #62a8ea;
+}
+.checkbox-custom input[type=radio]:checked+label::after, .checkbox-custom input[type=checkbox]:checked+label::after {
+    content: "\f14a";
+}
+
+@media (max-width: 440px) {
+  /***
+  Login page
+  ***/
+  #login {
+    width: 320px; 
+
+  }
+
+
+}

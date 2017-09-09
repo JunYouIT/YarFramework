@@ -1,0 +1,92 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+}
+<div style="padding: 5px 20px 5px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form form-horizontal">
+                <div class="form-body">
+                    <div class="form-group">
+                        <div class="col-md-12" style="height:300px;overflow:auto;">
+                            <ul id="fm_customorgfilter_orgTree" ></ul>
+                        </div>                        
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input @if (!Model.RawData.EnableOrgCode) { <text>disabled</text> } type="checkbox" data-bind="checked:param.includesub"> 包含子部门
+                        </div>
+                    </div>
+                    </div>
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
+    <script type="text/javascript">
+
+        (function (eleId, context, callback) {
+            //debugger;
+            $.parser.parse(eleId);
+
+            var ViewModel = function (data) {
+                //debugger;
+                var self = this;//JSON.parse(data.DefaultParam)
+                self.ViewTool = context.ViewModel.ViewTool;
+                var param = $.parseJSON(context.data.param);
+                if($.isEmptyObject(param)){
+                    param = data.DefaultParam;
+                }
+                self.param = context.data.param ?  ko.mapping.fromJS(param) : ko.mapping.fromJS($.parseJSON(data.DefaultParam));
+                self.value = context.data.value ? $.parseJSON(context.data.value) : $.parseJSON(data.DefaultValue);
+                self.Init = function () {
+                    $('#fm_customorgfilter_orgTree').tree({
+                        url: self.ViewTool.GetActionUrl("Post", "BizDataPrivilege.CustomOrg.GetOrgTree"),
+                        checkbox:true,
+                        cascadeCheck:false,
+                        onLoadSuccess: function (node, data) {
+                            if(self.value.orgs){
+                                var orglist = self.value.orgs.split(',');
+                                $.each(orglist,function (index, item) {
+                                    var cnode = $('#fm_customorgfilter_orgTree').tree('find',item);
+                                    if (cnode){
+                                        $('#fm_customorgfilter_orgTree').tree('update', {
+                                            target: cnode.target,
+                                            checked:true
+                                        });
+                                    }
+                                });
+                        
+                            }
+
+                        }
+                    });
+                    
+                };
+                self.OnOk = function (finishcall) {
+                    
+                    var nodes = $('#fm_customorgfilter_orgTree').tree('getChecked');
+                    var ids = [];
+                    var codes = []
+                    $.each(nodes,function (index, item) {
+                        
+                        ids.push(item.id);                       
+                        if(self.param.includesub()){
+                            codes.push(item.attributes.OrgCode);
+                        }
+                    });
+                    self.value.orgs = ids.join(',');
+                    self.value.orgCodes = codes.join(',');
+                    var result = {param:$.toJSON(ko.mapping.toJS(self.param)),value:$.toJSON(self.value)};
+                    finishcall(result, callback);
+                };
+            };
+            var data = @this.Raw(Model.Data);
+            var viewModel = new ViewModel(data);
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+            MainApp.DialogModel(eleId, data.Name + '设定', 300, 400, viewModel.OnOk);
+
+        })(eleId, context, callback);
+    </script>
