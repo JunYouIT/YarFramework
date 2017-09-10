@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <System Id="YarEnterpriseTestWeb" Name ="YarEnterpriseTestWeb" DefaultApp="DbAppAdmin">
   <connectionStrings>
-    <item name="_enterprisedb" value="metadata=res://*/Modal._dmxEnterprise.csdl|res://*/Modal._dmxEnterprise.ssdl|res://*/Modal._dmxEnterprise.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;persist security info=True;user id=dev1;password=Admin.1234;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
-    <item name="_organizationdb" value="metadata=res://*/Modal.dmxOrganization.csdl|res://*/Modal.dmxOrganization.ssdl|res://*/Modal.dmxOrganization.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;persist security info=True;user id=dev1;password=Admin.1234;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
-    <item name="admindb" value="data source=.;initial catalog=EnterpriseTestDb;User Id=dev1;Password=Admin.1234;"/>
-    <item name="processdb" value="metadata=res://*/Model.dmxProcess.csdl|res://*/Model.dmxProcess.ssdl|res://*/Model.dmxProcess.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;persist security info=True;user id=dev1;password=Admin.1234;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
-    <item name="enterprise_workflow_db" value="metadata=res://*/Modal._dmxEnterpriseWorkflow.csdl|res://*/Modal._dmxEnterpriseWorkflow.ssdl|res://*/Modal._dmxEnterpriseWorkflow.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;persist security info=True;user id=dev1;password=Admin.1234;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
+    <item name="_enterprisedb" value="metadata=res://*/Modal._dmxEnterprise.csdl|res://*/Modal._dmxEnterprise.ssdl|res://*/Modal._dmxEnterprise.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
+    <item name="_organizationdb" value="metadata=res://*/Modal.dmxOrganization.csdl|res://*/Modal.dmxOrganization.ssdl|res://*/Modal.dmxOrganization.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
+    <item name="admindb" value="data source=.;initial catalog=EnterpriseTestDb;integrated security=True;"/>
+    <item name="processdb" value="metadata=res://*/Model.dmxProcess.csdl|res://*/Model.dmxProcess.ssdl|res://*/Model.dmxProcess.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
+    <item name="enterprise_workflow_db" value="metadata=res://*/Modal._dmxEnterpriseWorkflow.csdl|res://*/Modal._dmxEnterpriseWorkflow.ssdl|res://*/Modal._dmxEnterpriseWorkflow.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=.;initial catalog=EnterpriseTestDb;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;"/>
   </connectionStrings>
   <appSettings>
     <item name="ResourcePath" value="System\Enterprise" />
     <item name="ProcessLogLevel" value="2" />
     <item name="DisableSysadmin" value="true" />
+    <item name="CsrfValidation" value="true" />
     <item name="BizDataPrivilegeKind" value="DataPrivilege" />
-    <item name="AttachmentRootPath" value="\\127.0.0.1\Temp\Resources"/>
-    
+    <item name="AttachmentRootPath" value="\\127.0.0.1\Temp\Resources"/>    
   </appSettings>
   <Applications>
     
