@@ -6,4 +6,4 @@ YarFramework是一个用来构建企业web应用系统的框架和平台
 * 提供了企业应用基础框架,可以快速的构建基于多租户,多法人的企业应用系统
 * 提供一个新一代的,灵活可扩展的流程和工作流引擎
 
-demo: http://demo.itwiseonline.cn/
+site: http://erm.itwiseonline.cn/
