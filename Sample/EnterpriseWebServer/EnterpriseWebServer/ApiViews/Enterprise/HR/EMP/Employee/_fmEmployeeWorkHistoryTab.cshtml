@@ -1,0 +1,192 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+    var isView = "1".Equals(context.Request["isView"]);
+}
+
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div id="job">
+                    @if (!isView)
+                    {
+                        <div class="col-md-12" style="text-align: right">
+                            <div style="display: inline-block;">
+                                <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnCreateWorkHistory"><i class="fa fa-plus-circle"></i> 新增 </a>
+                                <a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnDeleteAllWorkHistory"><i class="fa fa-trash-o"></i> 删除 </a>
+                            </div>
+                        </div>
+                    }@*End IsView*@
+                    <div class="col-md-12" style="margin-top: 5px;" id="historydiv">
+                        <table data-bind="grid:uiSources.historylist" id="historylist" style="height: 420px; width: 100%;"></table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+
+   
+            if (context.ViewModel && context.ViewModel.BizName && context.ViewModel.SubBizName) {
+                self.ViewTool = new YarClient.ViewModel(context.ViewModel.BizName, "@tokenId");
+                self.BizName = context.ViewModel.BizName;
+                self.SubBizName = context.ViewModel.SubBizName;
+                self.DispMode = context.ViewModel.DispMode;
+            }
+            else {
+                self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            }
+
+            //
+            self.dataSources = data.dataSources;
+
+            self.Init = function() {
+                $('#historylist').datagrid('load');
+            };
+
+            self.uiSources = {
+                historylist: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#historylist",
+                        SizeOpt: {
+                            pid: "#historydiv",
+                            top: ((self.DispMode && self.DispMode == "singleTab") ? 0 : 430)
+                        }
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", (self.SubBizName ? self.SubBizName + ".GetWorkHistoryList" : "GetWorkHistoryList"), { resId: data.form.empId }),
+                        fitColumns:true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                        pageSize: 10,
+                        columns: [[
+                        @if (!isView)
+                        {
+                            <text>
+                            { field: 'ck', checkbox: true },
+                            </text>
+                        }
+                        { field: 'Company', title: '工作单位',sortable:true, width: 200 },
+                        { field: 'Department', title: '所在部门',sortable:true, width: 200 },
+                        { field: 'JobDuty', title: '职务',sortable:true, width: 200 },
+                        { field: 'WorkBeginDate', title: '开始日期',sortable:true, width: 200 },
+                        { field: 'WorkEndDate', title: '结束日期',sortable:true, width: 200 },
+                        { field: 'Description', title: '备注',sortable:true, width: 200 },
+                        @if (!isView) {
+                            <text>
+                        { field: 'WorkHistoryID', title: '功能',formatter: function(value, row, index){
+
+                            var s =String.format('<a class="btn_default" href="#" onclick="Pagecom.EditViewModel.OnWorkHistoryEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.WorkHistoryID);
+                            //String.format('<a class="btn_default" href="#" onclick="Pagecom.EditViewModel.OnWorkHistoryDelete(\'{0}\')"><i class="fa fa-trash-o"></i></a>',row.WorkHistoryID);
+
+
+                            return s;
+                        }
+                        }
+                            </text>
+                        }@*End IsView*@
+                        ]]
+                    }
+                }
+            };
+
+            self.OnRefresh = function () {
+                var data = {
+                };
+                $('#historylist').datagrid('load', data);
+            };
+            @if (!isView) {
+                <text>
+            self.OnCreateWorkHistory = function () {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateWorkHistoryView", { empId: data.form.empId ,legalId: data.form.legalId}), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefresh();
+                });
+            };
+            self.OnWorkHistoryEdit = function (whId) {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditWorkHistoryView", { resId: whId,empId:data.form.empId ,legalId: data.form.legalId}), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefresh();
+                });
+            };
+            self.OnDeleteAllWorkHistory = function () {
+                var rows = $("#historylist").datagrid('getChecked');
+                var array = [];
+                var names = [];
+                //debugger;
+                if(rows && rows.length > 0){
+                    rows.each(function (value, index) {
+                        array.push(value.WorkHistoryID);
+                        names.push(String.format('{0}[{1}]',value.Company,value.Department) );
+                    });
+                    swal({
+                        title: "你是否确认删除如下信息?",
+                        text: names.join('、'),
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        confirmButtonText:'是的，删除！'
+                    },  function () {
+                        //alert(array.join(';'));
+                        YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAllWorkHistory",{ ids: array.join(';') }), {
+                            IsWarning: true,
+                            success: function (returnData) {
+                                self.OnRefresh();
+                                swal("删除成功", "", "success");
+                            }
+                        });
+
+                    });
+                } else {
+                    swal("请选中需要删除的数据", "", "warning");
+                }
+
+            };
+            self.OnWorkHistoryDelete = function () {
+                var row = $('#historylist').datagrid('getSelected');
+                if (row) {
+                    $.messager.confirm('确认', '你确定想删除此数据?', function (r) {
+                        if (r) {
+                            $.ajax({
+                                url: self.ViewTool.GetActionUrl("Get", "DeleteWorkHistory", { resId: row.WorkHistoryID, logicDeletes: 1 }),
+                                success: function (text) {
+                                    self.OnRefresh();
+                                },
+                                error: function () {
+                                }
+                            });
+                        }
+                    });
+                }
+            };
+
+            </text>
+            }@*End IsView*@
+
+        };
+
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+        Pagecom.EditViewModel = viewModel;
+
+        ko.applyBindings(viewModel, $(eleId)[0]);
+        viewModel.Init();
+
+    })(eleId, context, callback);
+</script>

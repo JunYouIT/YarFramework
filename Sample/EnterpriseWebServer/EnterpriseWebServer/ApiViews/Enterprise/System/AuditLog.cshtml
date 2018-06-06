@@ -93,7 +93,7 @@
           };
           return Pagecom;
       })();
-	  
+
   function BizViewModel() {
       var self = this;
       self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
@@ -106,7 +106,7 @@
                         ele: "#gridlist",
                         SizeOpt: {
                             pid: "#griddiv",
-                            top: 360
+                            top: @Yar.Service.UIHelper.GetMasterInterval(context) + 180
                         }
                     },
                     sops: {
@@ -115,7 +115,7 @@
                         selectOnCheck: false,
                         checkOnSelect: false,
                         rownumbers: true,
-                        columns: [[  
+                        columns: [[
                     { field: 'LoginName', title: '账号', sortable: true, width: 100 },
                     { field: 'Name', title: '姓名', sortable: true, width: 100 },
                     { field: 'Business', title: '业务', sortable: true, width: 150 },
@@ -125,8 +125,8 @@
                     { field: 'RequestIP', title: 'IP', width: 80 },
                     { field: 'Title', title: '内容'},
                     { field: 'CreateTime', title: '时间', sortable: true, width: 120 },
-                    
-                        ]],                                              
+
+                        ]],
                     }
                 }
             };
@@ -150,7 +150,7 @@
       self.displaydata.endtime.subscribe(function (val) {
           $('#starttime').datepicker('setEndDate', val == "" ? false : val);
       });
-    
+
     };
 
     var viewModel = new BizViewModel();
@@ -161,21 +161,11 @@
 </script>
 
 <script id="ContentInitCss" type="text">
-	['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")']     
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
 </script>
 
 <script id="ContentInitScript" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.zh-CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	  	
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
 </script>

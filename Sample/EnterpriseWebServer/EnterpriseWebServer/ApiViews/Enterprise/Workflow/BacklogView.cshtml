@@ -1,0 +1,267 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+
+<div id="pgcontent" class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light">
+                
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-sm-4">任务单号</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" data-bind="textboxValue: displayData.dlRequestCode" style="width: 100%;height:34px;" data-options="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-sm-4">任务类型</label>
+                                        <div class="col-sm-8">
+                                            <select id="ddlRequestTypeSelector" data-bind="SearchValue: displayData.dlRequestType, event: { /*change: $root.OnRefresh*/ }" width="100%" placeholder="按申请类型名称和编码搜索" data-biz="_BizBacklog" data-action="GetBacklogApplicationRequestTypeList" data-allow-clear="true"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="javascript:;" class="btn btn-sm btn-primary" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+                                    <a href="javascript:;" class="btn btn-sm btn-success" data-bind="click:OnBatchProcess"><i class="fa fa-user"></i> 批量审批 </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="" id="gridDiv">
+                        <table data-bind="grid: uiSources.gridList" id="gridList" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ContentInit" src="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    Pagecom = (function () {
+        function Pagecom() { };
+
+        Pagecom.BacklogFormatter = function (value, row, index) {
+            var opts = {
+                requestID: row.RequestID,
+                requestCode: row.RequestCode,
+                requestTypeCode: row.RequestTypeCode,
+                requestTypeName: row.RequestTypeName,
+
+                bizID: row.BusinessName,
+                avName: row.ApproveViewName,
+                pvName: row.PreviewViewName,
+                canBatchApproval: row.CanBatchApproval,
+                canCommonApproval: row.CanCommonApproval,
+
+                procStatus: row.ApproveStatus,
+
+                auditID: row.AudittrailID,
+                activityCode: row.ActivityCode
+            };
+            var str = "";
+            switch (this.field) {
+                case "RequestCode":
+                case "RequestID":
+                    str = String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnView(\'{1}\')" title="任务单号：{0}">{0}</a>', value, encodeURI(JSON.stringify(opts)));
+                    break;
+            }
+            return str;
+        };
+
+        Pagecom.Operation = function (value, rowData, rowIndex) {
+            var opts = {
+                requestID: rowData.RequestID,
+                requestCode: rowData.RequestCode,
+                requestTypeCode: rowData.RequestTypeCode,
+                requestTypeName: rowData.RequestTypeName,
+
+                bizID: rowData.BusinessName,
+                avName: rowData.ApproveViewName,
+                pvName: rowData.PreviewViewName,
+                canBatchApproval: rowData.CanBatchApproval,
+                canCommonApproval: rowData.CanCommonApproval,
+
+                procStatus: rowData.ApproveStatus,
+
+                auditID: rowData.AudittrailID,
+                activityCode: rowData.ActivityCode
+            };
+            var link = '';
+            //debugger;
+            if (rowData.Actions) {
+                for (var j = 0; j < rowData.Actions.length; j++) {
+                    if (rowData.Actions[j].Enable) {
+                            var black = "&nbsp;&nbsp;";
+                            var linkcss = "";
+                            if (rowData.Actions[j].LinkCss) {
+                                linkcss = "class='" + rowData.Actions[j].LinkCss + "'";
+                                black = "";
+                            }
+                            var displayvalue = rowData.Actions[j].Name;
+                            if (rowData.Actions[j].IconCss) {
+                                displayvalue = String.format("<i class='{0}' title='{1}'></i>", rowData.Actions[j].IconCss, rowData.Actions[j].Name);
+                            }
+                            link += String.format("{4}<a href='javascript:void(0)' {3} onclick='Pagecom.OnAction(\"{0}\",\"{1}\");'>{2}</a>", encodeURI(JSON.stringify(opts)), encodeURI(JSON.stringify(rowData.Actions[j])),displayvalue, linkcss, black);
+                        }
+                }
+            }
+
+            return link;
+        };
+        Pagecom.OnAction = function (workflowstring, actionstring) {
+            var workflowData = JSON.parse(decodeURI(workflowstring));
+            var actionData = JSON.parse(decodeURI(actionstring));
+            //debugger;
+            if (actionData.ActionType == "dialog") {
+                var businessId = actionData.BusinessId;
+                var businessAction = actionData.BusinessAction;
+                var bAction = actionData.BusinessAction;
+                if (businessAction.indexOf('.') > 0) {
+                    var index = businessAction.indexOf('.');
+                    businessId = businessAction.substr(0, index);
+                    bAction = businessAction.substr(index + 1);
+                }
+                MainApp.ShowDialog(
+                    global.GetActionUrl(businessId, bAction,
+                        { resId: workflowData.requestID, businessId: actionData.BusinessId, workflowAction: actionData.Action}),
+                    {},
+                    function (data) {
+                        Pagecom.ViewModel.OnRefresh();
+                    });
+            } else if (actionData.ActionType == "operate") {
+                global.AjaxPost(global.GetActionUrl("_BizWorkflowService", "ApproveWorkflow"),
+                    {
+                        resId: workflowData.requestID,
+                        audittrailId: workflowData.auditID,
+                        action: actionData.Action,
+                        comment: ''
+                    }
+                    , {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            Pagecom.ViewModel.OnRefresh();
+                        }
+                    });
+            }
+
+        };
+
+        return Pagecom;
+    })();
+
+    var ViewModel = function (data) {
+        var self = this;
+
+        //debugger;
+        self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+        self.formdata = ko.mapping.fromJS(data.form);
+
+        self.displayData = ko.mapping.fromJS({
+            dlLegalEntityID:    '',
+            dlRequestType:      '',
+            dlRequestCode:      '',
+            dlOperationStatus :self.formdata.dlOperationStatus()
+        });
+        self.dataSources = data.dataSources;
+
+        self.uiSources = {
+            gridList: {
+                ops: {
+                    ClientPage: false,
+                    ele: "#gridList",
+                    SizeOpt: {
+                        pid: "#gridDiv",
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 78
+                    }
+                },
+                sops: {
+                    url: self.ViewTool.GetActionUrl("Post", "GetBacklogApplicationList"),
+                    fitColumns:true,
+                    selectOnCheck: false,
+                    checkOnSelect: false,
+                    rownumbers: true,
+                    columns: [[
+                        { field: 'RequestCode', title: '任务单号', sortable:true, width: 150, formatter: Pagecom.BacklogFormatter },
+                        { field: 'RequestTypeName', title: '任务类型', sortable: true, width: 150 },
+                        { field: 'RequestorName', title: '申请人', sortable: true, width: 80 },
+                        { field: 'RequestTime', title: '申请时间', sortable: true, width: 120, formatter: function (value, row, index) {
+                            return YarGrid.DateFormatter(value);
+                        } },
+                        { field: 'ActivityName', title: '待办节点', sortable: true, width: 150 },
+                        { field: 'ApproveStatusName', title: '任务状态', sortable: true, width: 100 },
+                        { field: 'RequestID', title: '功能', formatter: Pagecom.Operation }
+                    ]]
+                }
+            }
+        };
+
+        self.Init = function () {
+            //debugger;
+        };
+
+        self.OnRefresh = function () {
+            var rt = $("#ddlRequestTypeSelector").select2("data");
+            var data = {
+                legal:   self.displayData.dlLegalEntityID(),
+                //type:    self.displayData.dlRequestType() ? self.displayData.dlRequestType().id : '',
+                type:    (rt && rt.length > 0) ? rt[0].id : '',
+                code:    self.displayData.dlRequestCode(),
+                status:    self.displayData.dlOperationStatus()
+            };
+
+            $('#gridList').datagrid('load', data);
+        };
+
+        self.OnBatchProcess = function () {
+            var url = global.GetActionUrl("PersonalHomeTileService", "BacklogApplicationBatchView");
+
+            if (url) {
+                global.OpenWindow(url, "_blank", "");
+            }
+        };
+
+        self.OnView = function (strOpts) {
+            var opts = JSON.parse(decodeURI(strOpts));
+            MainApp.ShowDialog(global.GetActionUrl("_BizWorkflowService", "ApproveWorkflowView", { resId: opts.requestID, businessId: opts.bizID, workflowAction: '', viewAction: opts.pvName}), {});
+            
+        };
+    };
+
+    var data = @this.Raw(Model.Data);
+    var viewModel = new ViewModel(data);
+
+    Pagecom.ViewModel = viewModel;
+
+    ko.applyBindings(viewModel);
+
+    viewModel.Init();
+    viewModel.OnRefresh();
+</script>
+
+<script id="ContentInitCss" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
+</script>
+
+<script id="ContentInitScript" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
+</script>

@@ -1,0 +1,8 @@
+
+1.在IIS中配置新的站点,设定路径和端口号(8080)
+2.在sqlserver或sqlexpress中创建新的数据库(EnterpriseWebTestDb)
+3.在浏览器中输入 http://localhost:8080, 第一次运行会自动进入安装界面
+4.输入数据库连接字符串(需要设定数据库连接的用户名和密码),例子 Data Source=.;Initial Catalog=EnterpriseWebTestDb;User Id=sa;Password=111111;
+5.输入公司编码(SH),公司名称
+6.点击创建,系统会自动初始化表和数据
+7.默认用户admin,密码111111

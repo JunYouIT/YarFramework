@@ -1,0 +1,188 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+    var isView = "1".Equals(context.Request["isView"]);
+}
+
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div id="otherContact">
+                    @if (!isView)
+                    {
+                        <div class="col-md-12" style="text-align: right">
+                            <div style="display: inline-block;">
+                                <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnCreateOtherContact"><i class="fa fa-plus-circle"></i> 新增 </a>
+                                <a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnDeleteAllOtherContact"><i class="fa fa-trash-o"></i> 删除 </a>
+                            </div>
+                        </div>
+                    }@*End IsView*@
+                    <div class="col-md-12" style="margin-top:5px;" id="otherdiv">
+                        <table data-bind="grid:uiSources.otherlist" id="otherlist" style="height:420px;width:100%;"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+
+  
+            if (context.ViewModel && context.ViewModel.BizName && context.ViewModel.SubBizName) {
+                self.ViewTool = new YarClient.ViewModel(context.ViewModel.BizName, "@tokenId");
+                self.BizName = context.ViewModel.BizName;
+                self.SubBizName = context.ViewModel.SubBizName;
+                self.DispMode = context.ViewModel.DispMode;
+            }
+            else {
+                self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            }
+
+            //
+            self.dataSources = data.dataSources;
+
+            self.Init = function()
+            {
+                $('#otherlist').datagrid('load');
+            };
+
+            self.uiSources = {
+                otherlist: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#otherlist",
+                        SizeOpt: {
+                            pid: "#otherdiv",
+                            top: ((self.DispMode && self.DispMode == "singleTab") ? 0 : 430)
+                        }
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", (self.SubBizName ? self.SubBizName + ".GetOtherContactList" : "GetOtherContactList"), { resId: data.form.empId }),
+                        fitColumns:true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                        pageSize: 10,
+                        columns: [[
+                        @if (!isView)
+                        {
+                            <text>
+                            { field: 'ck', checkbox:true },
+                            </text>
+                        }
+                        { field: 'Cellphone', title: '联系电话',sortable:true, width: 200 },
+                        { field: 'Email', title: '电子邮件',sortable:true, width: 200 },
+                        { field: 'Telephone', title: '固定电话',sortable:true, width: 200 },
+                        { field: 'Address', title: '地址',sortable:true, width: 200 },
+                        @if (!isView) {
+                            <text>
+                        { field: 'OtherContactID', title: '功能',formatter: function(value, row, index){
+
+                            var s =String.format('<a class="btn_default" href="#" onclick="Pagecom.EditViewModel.OnOtherContactEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.OtherContactID);
+                            //String.format('<a class="btn_default" href="#" onclick="Pagecom.EditViewModel.OnOtherContactDelete(\'{0}\')"><i class="fa fa-trash-o"></i></a>',row.OtherContactID);
+
+
+                            return s;
+                        }
+                        }
+                            </text>
+                        }@*End IsView*@
+                        ]]
+                    }
+                }
+            };
+
+            self.OnRefresh = function () {
+                var data = {
+                };
+                $('#otherlist').datagrid('load', data);
+            };
+
+            @if (!isView) {
+                <text>
+            self.OnCreateOtherContact = function () {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateOtherContactView", { empId: data.form.empId ,legalId: data.form.legalId}), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefresh();
+                });
+            };
+            self.OnOtherContactEdit = function (ocId) {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditOtherContactView", { resId: ocId,empId:data.form.empId ,legalId: data.form.legalId}), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefresh();
+                });
+            };
+            self.OnDeleteAllOtherContact = function () {
+                var rows = $("#otherlist").datagrid('getChecked');
+                var array = [];
+                //debugger;
+                if(rows && rows.length > 0){
+                    rows.each(function (value, index) {
+                        array.push(value.OtherContactID);
+                    });
+                    swal({
+                        title: "你是否确认删除选中的信息?",
+                        text:'',
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        confirmButtonText:'是的，删除！'
+                    },  function () {
+                        //alert(array.join(';'));
+                        YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAllOtherContact",{ ids: array.join(';') }), {
+                            IsWarning: true,
+                            success: function (returnData) {
+                                self.OnRefresh();
+                                swal("删除成功", "", "success");
+                            }
+                        });
+
+                    });
+                } else {
+                    swal("请选中需要删除的数据", "", "warning");
+                }
+
+            };
+            //self.OnOtherContactDelete = function () {
+            //    var row = $('#otherlist').datagrid('getSelected');
+            //    if (row) {
+            //        $.messager.confirm('确认', '你确定想删除此数据?', function (r) {
+            //            if (r) {
+            //                $.ajax({
+            //                    url: self.ViewTool.GetActionUrl("Get", "DeleteOtherContact", { resId: row.OtherContactID, logicDeletes: 1 }),
+            //                    success: function (text) {
+            //                        self.OnRefresh();
+            //                    },
+            //                    error: function () {
+            //                    }
+            //                });
+            //            }
+            //        });
+            //    }
+            //};
+
+            </text>
+            }@*End IsView*@
+        };
+
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+        Pagecom.EditViewModel = viewModel;
+
+        ko.applyBindings(viewModel, $(eleId)[0]);
+        viewModel.Init();
+
+    })(eleId, context, callback);
+</script>

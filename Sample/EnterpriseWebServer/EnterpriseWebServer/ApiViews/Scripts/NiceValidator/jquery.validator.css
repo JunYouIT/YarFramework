@@ -222,7 +222,7 @@
 }
 .n-yellow .msg-wrap {
     position: absolute;
-    z-index: 1;
+    z-index: 99999;
     padding: 5px;
     font-size: 12px;
     border: 1px solid transparent;

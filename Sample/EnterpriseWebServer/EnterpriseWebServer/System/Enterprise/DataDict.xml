@@ -19,4 +19,200 @@
     <DictItem ResId="SendSuccess" Name="推送成功" Value="2"/>
     <DictItem ResId="SendFail" Name="推送失败" Value="3"/>
   </DataCategory>
+  <DataCategory ResId="SYS_TaskStatus" Name="任务状态">
+    <DictItem ResId="Draft" Name="草稿" Value="0" />
+    <DictItem ResId="Submit" Name="已提交" Value="1"/>
+    <DictItem ResId="Process" Name="审批中" Value="2"/>
+    <DictItem ResId="Approve" Name="已通过" Value="3"/>
+    <DictItem ResId="Reject" Name="已拒绝" Value="4"/>
+  </DataCategory>
+  <DataCategory ResId="SYS_ApproveOperation" Name="任务状态">
+    <DictItem ResId="Approve" Name="同意" Value="Approve" />
+    <DictItem ResId="Submit" Name="提交" Value="Submit"/>
+    <DictItem ResId="Back" Name="退回" Value="Back"/>
+    <DictItem ResId="Reject" Name="拒绝" Value="Reject"/>
+  </DataCategory>
+  <DataCategory ResId="CostCenterMode" Name="成本中心模式">
+    <DictItem ResId="None" Name="未设置" Value="0" />
+    <DictItem ResId="Dept" Name="跟随所属部门" Value="1"/>
+    <DictItem ResId="Personal" Name="单独设置" Value="2"/>
+  </DataCategory>
+  <DataCategory ResId="HR_ORG_EnterpriseType" Name="法人公司企业类型">
+    <DictItem ResId="0" Name="全民所有制" Value="0" />
+    <DictItem ResId="1" Name="全民所有制分支机构（非法人）" Value="1"/>
+    <DictItem ResId="2" Name="其他有限责任公司" Value="2"/>
+    <DictItem ResId="3" Name="有限责任公司" Value="3"/>
+    <DictItem ResId="4" Name="有限责任公司（非自然人投资或控股的法人独资）" Value="4"/>
+    <DictItem ResId="5" Name="有限责任公司分公司" Value="5"/>
+    <DictItem ResId="6" Name="有限责任公司（法人独资）" Value="6"/>
+    <DictItem ResId="7" Name="民办非企业单位" Value="7"/>
+    <DictItem ResId="8" Name="有限责任公司（中外合资）" Value="8"/>
+    <DictItem ResId="9" Name="有限责任公司（国有控股）" Value="9"/>
+  </DataCategory>
+  <DataCategory ResId="HR_ORG_OrganizationType" Name="组织机构类型">
+    <DictItem ResId="1" Name="部门" Value="1"/>
+    <DictItem ResId="2" Name="分公司" Value="2"/>
+    <DictItem ResId="3" Name="法人公司" Value="3"/>
+  </DataCategory>
+  <DataCategory ResId="HR_ORG_JobGroup" Name="职务群组">
+    <DictItem ResId="0" Name="专业序列" Value="0" />
+    <DictItem ResId="1" Name="管理序列" Value="1"/>
+    <DictItem ResId="2" Name="行政序列" Value="2"/>
+    <DictItem ResId="3" Name="研发系列" Value="3"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_EmpStatus" Name="性别">
+    <DictItem ResId="0" Name="在职" Value="0" />
+    <DictItem ResId="1" Name="待入职" Value="1"/>
+    <DictItem ResId="2" Name="待离职" Value="2"/>
+    <DictItem ResId="3" Name="已离职" Value="3"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_Gender" Name="性别">
+    <DictItem ResId="0" Name="男" Value="0" />
+    <DictItem ResId="1" Name="女" Value="1"/>
+    <DictItem ResId="2" Name="未知" Value="2"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_IDType" Name="身份证件类型">
+    <DictItem ResId="0" Name="身份证" Value="0" />
+    <DictItem ResId="1" Name="军官证" Value="1"/>
+    <DictItem ResId="2" Name="护照" Value="2"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_MaritalStatus" Name="婚姻状态">
+    <DictItem ResId="0" Name="已婚" Value="0" />
+    <DictItem ResId="1" Name="未婚" Value="1"/>
+    <DictItem ResId="2" Name="离异" Value="2"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_Nationality" Name="国籍">
+    <DictItem ResId="0" Name="中华人民共和国" Value="0" />
+    <DictItem ResId="1" Name="中国台湾" Value="1"/>
+    <DictItem ResId="2" Name="中国香港" Value="2"/>
+    <DictItem ResId="3" Name="中国澳门" Value="3"/>
+    <DictItem ResId="4" Name="美利坚合众国" Value="4"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_EmployeeStatus" Name="员工身份">
+    <DictItem ResId="0" Name="正式员工" Value="0" />
+    <DictItem ResId="1" Name="返聘员工" Value="1"/>
+    <DictItem ResId="2" Name="退休员工" Value="2"/>
+    <DictItem ResId="3" Name="临时员工" Value="3"/>
+    <DictItem ResId="4" Name="实习员工" Value="4"/>
+    <DictItem ResId="5" Name="见习员工" Value="5"/>
+    <DictItem ResId="6" Name="试用期员工" Value="6"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_PoliticalStatus" Name="政治面貌">
+    <DictItem ResId="0" Name="中国共产党" Value="0" />
+    <DictItem ResId="1" Name="中国共青团" Value="1"/>
+    <DictItem ResId="2" Name="民主党派" Value="2"/>
+    <DictItem ResId="3" Name="中国国民党" Value="3"/>
+    <DictItem ResId="4" Name="群众" Value="4"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_EduBG" Name="学历">
+    <DictItem ResId="0" Name="全日制博士研究生" Value="0" />
+    <DictItem ResId="1" Name="全日制硕士研究生" Value="1"/>
+    <DictItem ResId="2" Name="全日制本科" Value="2"/>
+    <DictItem ResId="3" Name="全日制专科（高职）" Value="3"/>
+    <DictItem ResId="4" Name="非全日制本科" Value="4"/>
+    <DictItem ResId="5" Name="非全日制专科（高职）" Value="5"/>
+    <DictItem ResId="6" Name="高中" Value="6"/>
+    <DictItem ResId="7" Name="初中" Value="7"/>
+    <DictItem ResId="8" Name="其他" Value="8"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_EduDegree" Name="学位">
+    <DictItem ResId="0" Name="博士" Value="0" />
+    <DictItem ResId="1" Name="硕士" Value="1"/>
+    <DictItem ResId="2" Name="学士" Value="2"/>
+    <DictItem ResId="3" Name="其他" Value="3"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_Relationships" Name="家庭关系">
+    <DictItem ResId="1" Name="子女" Value="1" />
+    <DictItem ResId="2" Name="配偶" Value="2"/>
+    <DictItem ResId="3" Name="父母" Value="3"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_EmployeeType" Name="员工类型">
+    <DictItem ResId="1" Name="客服" Value="1"/>
+    <DictItem ResId="2" Name="行政" Value="2"/>
+    <DictItem ResId="3" Name="销售" Value="3"/>
+    <DictItem ResId="4" Name="技术" Value="4"/>
+    <DictItem ResId="5" Name="管理" Value="5"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_ProfessionalTitle" Name="职称">
+    <DictItem ResId="0" Name="无" Value="0" />
+    <DictItem ResId="1" Name="正高级" Value="1"/>
+    <DictItem ResId="2" Name="副高级" Value="2"/>
+    <DictItem ResId="3" Name="中级" Value="3"/>
+    <DictItem ResId="4" Name="助理级" Value="4"/>
+    <DictItem ResId="5" Name="技术员级" Value="5"/>
+    <DictItem ResId="999" Name="其他" Value="999"/>
+  </DataCategory>
+  <DataCategory ResId="HR_EMP_Ethnic" Name="民族">
+    <DictItem ResId="1" Name="汉族" Value="1"/>
+    <DictItem ResId="2" Name="蒙古族" Value="2"/>
+    <DictItem ResId="3" Name="回族" Value="3"/>
+    <DictItem ResId="4" Name="藏族" Value="4"/>
+    <DictItem ResId="5" Name="维吾尔族" Value="5"/>
+  </DataCategory>
+  <DataCategory ResId="FM_CERT_TYPE" Name="证照类别">
+    <DictItem ResId="1" Name="营业执照正本" Value="1"/>
+    <DictItem ResId="2" Name="营业执照副本" Value="2"/>
+    <DictItem ResId="3" Name="CA证书" Value="3"/>
+  </DataCategory>
+  <DataCategory ResId="FM_STAMP_TYPE" Name="印章类别">
+    <DictItem ResId="0" Name="公章" Value="0" />
+    <DictItem ResId="1" Name="合同章" Value="1"/>
+    <DictItem ResId="2" Name="法人章" Value="2"/>
+    <DictItem ResId="3" Name="财务章" Value="3"/>
+  </DataCategory>
+  <DataCategory ResId="FM_STAMP_USAGE" Name="用章用途">
+    <DictItem ResId="0" Name="合同用章" Value="0" />
+    <DictItem ResId="1" Name="证明用章" Value="1"/>
+    <DictItem ResId="2" Name="办事用章" Value="2"/>
+    <DictItem ResId="3" Name="项目用章" Value="3"/>
+    <DictItem ResId="4" Name="其他用章" Value="4"/>
+  </DataCategory>
+  <DataCategory ResId="FM_COPY_TYPE" Name="复印件类型">
+    <DictItem ResId="0" Name="扫描电子版" Value="0" />
+    <DictItem ResId="1" Name="盖章纸质版" Value="1"/>
+  </DataCategory>
+  <DataCategory ResId="FM_STAMP_FORM_STATUS" Name="用章申请表单状态">
+    <DictItem ResId="0" Name="申请中" Value="0" />
+    <DictItem ResId="1" Name="已完成" Value="1"/>
+  </DataCategory>
+  <DataCategory ResId="AM_LIST_CATEGORY" Name="资产大类">
+    <DictItem ResId="0" Name="固定资产" Value="0" />
+    <DictItem ResId="1" Name="低值资产" Value="1"/>
+    <DictItem ResId="3" Name="易耗品" Value="3"/>
+    <DictItem ResId="4" Name="礼品" Value="4"/>
+  </DataCategory>
+  <DataCategory ResId="AM_ASSET_STATUS" Name="资产信息状态">
+    <DictItem ResId="0" Name="入库新资产" Value="0" />
+    <DictItem ResId="1" Name="入库旧资产" Value="1"/>
+    <DictItem ResId="2" Name="使用中" Value="2"/>
+    <DictItem ResId="3" Name="已报废" Value="3"/>
+    <DictItem ResId="4" Name="已调拨" Value="4"/>
+  </DataCategory>
+  <DataCategory ResId="AM_ASSET_OWNER" Name="物资所属">
+    <DictItem ResId="Personal" Name="个人" Value="0" />
+    <DictItem ResId="Common" Name="公共" Value="1"/>
+  </DataCategory>
+  <DataCategory ResId="AM_INPUT_TYPE" Name="资产入库方式">
+    <DictItem ResId="0" Name="老数据" Value="0" />
+    <DictItem ResId="1" Name="盘盈" Value="1"/>
+    <DictItem ResId="2" Name="采购" Value="2"/>
+    <DictItem ResId="3" Name="其他" Value="3"/>
+  </DataCategory>
+  <DataCategory ResId="AM_ASSET_UseType" Name="资产使用类型">
+    <DictItem ResId="0" Name="领用" Value="0" />
+    <DictItem ResId="1" Name="借用" Value="1"/>
+  </DataCategory>
+  <DataCategory ResId="AM_REQUEST_MODE" Name="资产处理方式">
+    <DictItem ResId="0" Name="调拨" Value="0" />
+  </DataCategory>
+  <DataCategory ResId="AM_RETURN_TYPE" Name="归还类型">
+    <DictItem ResId="0" Name="普通归还" Value="0" />
+    <DictItem ResId="1" Name="资产调拨" Value="1"/>
+  </DataCategory>
+  <DataCategory ResId="AM_RETURN_STATUS" Name="归还单据状态">
+    <DictItem ResId="0" Name="未归还" Value="0" />
+    <DictItem ResId="1" Name="可归还" Value="1"/>
+    <DictItem ResId="2" Name="已归还" Value="2"/>
+    <DictItem ResId="3" Name="取消" Value="3"/>
+  </DataCategory>
 </DataDict>

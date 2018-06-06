@@ -24,7 +24,7 @@
                                             <input type="text" data-bind="textboxValue:displaydata.name,txclick:OnRefresh" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
                                         </div>
                                     </div>
-                                </div>                                                               
+                                </div>
                                 <div class="col-md-8">
                                     <div style="float: right;display: inline-block;">
                                         <a class="gt2_btn_search" href="javascript:;" data-bind="click:OnRefresh"><i class="fa fa-refresh"></i> 搜索 </a>
@@ -44,30 +44,20 @@
     </div>
 </div>
 
-<script id="ContentInit" type="text/javascript" scr="">
-    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+<script id="ContentInit" type="text/javascript" src="">
     $.ajaxSetup({
         cache: false
     });
     Pagecom = (function () {
         function Pagecom() {
-    };
-    Pagecom.DetailLink = function (value, rowData, rowIndex) {
-        return String.format("<a href='#' onclick='Pagecom.ViewModel.DetailLink(\"{0}\")'>{1}</a>", rowData.ResId,value);
-    };
-    Pagecom.FormatterDateTime = function (value, row, index) {
-        if (value && value != null) {
-        var t = new Date(Date.parse(value.replace(/-/g, "/")));
-        return t.Format("M/d/yyyy");
-    }
-        return value;
-    };
+        };    
         return Pagecom;
     })();
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
     var ViewModel = function (data) {
         var self = this;
         self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
-   
+
         var displaydata = { name: '',type:'' };
         self.displaydata = ko.mapping.fromJS(displaydata);
         self.dataSources = data.dataSources;
@@ -78,7 +68,7 @@
                     ele: "#gridlist",
                     SizeOpt: {
                         pid: "#griddiv",
-                        top: 311
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 131
                     }
                 },
                 sops: {
@@ -102,7 +92,7 @@
                     } },
                     { field: 'JobLevelID', title: '功能',formatter: function(value, row, index){
 
-                        var s = 
+                        var s =
                         @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnView(\'{0}\')"><i class="fa fa-eye"></i></a>',row.JobLevelID)+*@
                         String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.JobLevelID);
                         @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnDelete(\'{0}\')"><i class="fa fa-trash-o"></i></a>',row.JobLevelID)+*@
@@ -180,7 +170,7 @@
             }
         };
 
-        self.OnModifyIsDisableState = function (companyId) {       
+        self.OnModifyIsDisableState = function (companyId) {
             $.ajax({
                 url: self.ViewTool.GetActionUrl("Get", "ModifyIsDisableState", { resId: companyId }),
                 success: function (text) {
@@ -199,7 +189,6 @@
     };
 
     var data = @this.Raw(Model.Data);
-    //var data = {};
     var viewModel = new ViewModel(data);
     Pagecom.ViewModel = viewModel;
     ko.applyBindings(viewModel);
@@ -208,22 +197,12 @@
 </script>
 
 <script id="ContentInitCss" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")']
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
 </script>
 
 <script id="ContentInitScript" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.zh-CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
 </script>
 

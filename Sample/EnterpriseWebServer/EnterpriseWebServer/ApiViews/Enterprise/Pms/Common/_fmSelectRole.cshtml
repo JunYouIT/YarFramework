@@ -37,7 +37,6 @@
 
         (function (eleId, context, callback) {
             //debugger;
-            $.parser.parse(eleId);
 
             var ViewModel = function (data) {
                 var self = this;
@@ -89,10 +88,14 @@
             };
 
             var viewModel = new ViewModel({});
-            ko.applyBindings(viewModel, $(eleId)[0]);
-            viewModel.Init();
-            MainApp.DialogModel(eleId, '选择角色', 700, 340, viewModel.OnOk);
-            viewModel.OnRefresh();
+            
+            MainApp.DialogModel(eleId, '选择角色', 700, 340, viewModel.OnOk, null, function () {
+                $.parser.parse(eleId);
+                ko.applyBindings(viewModel, $(eleId)[0]);
+                viewModel.Init();
+                viewModel.OnRefresh();
+            });
+            
 
         })(eleId, context, callback);
     </script>

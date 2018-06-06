@@ -3,7 +3,7 @@ function ShowUploadTip() {
     return '仅允许上传小于5M的文件，允许的文件类型为：图片(bmp,gif,jpg,png);文档(doc,docx,xls,xlsx,ppt,pptx,pdf,zip);';
 }
 
-function AttachmentUpload(self, $inputObj, legalId, formId, requestTypeCode, attachmentTypeCode, successCallback) {
+function AttachmentUpload(self, $inputObj, legalId, formId, requestTypeCode, attachmentTypeCode, successCallback, acceptFileTypes) {
 
     var isLteIe9 = false;
     //检测是否低于IE10
@@ -18,7 +18,10 @@ function AttachmentUpload(self, $inputObj, legalId, formId, requestTypeCode, att
             if (fIEVersion < 10)
                 isLteIe9 = true;
         }
-    
+        if (acceptFileTypes === 'imgages')
+            acceptFileTypes = /(\.|\/)(bmp|gif|jpe?g|png)$/i;
+        else
+            acceptFileTypes = /(\.|\/)(bmp|gif|jpe?g|png|zip|docx?|xlsx?|pptx?|ppsx?|pdf)$/i;
 
         var url = self.ViewTool.GetActionUrl("Post", "SaveAttachment", { _crsfToken: $("input[name^=_crsfToken]").first().val(), InputName: $inputObj.attr('name'), LegalId: legalId, FormId: formId, RequestTypeCode: requestTypeCode, AttachmentTypeCode: attachmentTypeCode });
     //$inputObj.attr('Accept', 'image/bmp, image/gif, image/jpeg, image/png, image/tif, application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.openxmlformats-officedocument.presentationml.slideshow, application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint, application/zip, application/pdf')
@@ -31,7 +34,7 @@ function AttachmentUpload(self, $inputObj, legalId, formId, requestTypeCode, att
         multipart: true,
         autoUpload: true,
         maxFileSize: 1024 * 1024 * 5, //限制文件大小为5M
-        acceptFileTypes: /(\.|\/)(bmp|gif|jpe?g|png|zip|docx?|xlsx?|pptx?|ppsx?|pdf)$/i, //限制文件类型
+        acceptFileTypes: acceptFileTypes, //限制文件类型
         dataType: 'json',
         formData: { },
         messages: {
@@ -87,7 +90,7 @@ function AttachmentUpload(self, $inputObj, legalId, formId, requestTypeCode, att
     YarAttachment.ShowUploadTip = function() {
         return '仅允许上传小于5M的文件，允许的文件类型为：图片(bmp,gif,jpg,png);文档(doc,docx,xls,xlsx,ppt,pptx,pdf,zip);';
     };
-    YarAttachment.AttachmentUpload = function($inputObj, legalId, formId, requestTypeCode, attachmentTypeCode, successCallback) {
+    YarAttachment.AttachmentUpload = function ($inputObj, legalId, formId, requestTypeCode, attachmentTypeCode, successCallback, acceptFileTypes) {
 
         var isLteIe9 = false;
         //检测是否低于IE10
@@ -102,7 +105,10 @@ function AttachmentUpload(self, $inputObj, legalId, formId, requestTypeCode, att
             if (fIEVersion < 10)
                 isLteIe9 = true;
         }
-
+        if (acceptFileTypes === 'imgages')
+            acceptFileTypes = /(\.|\/)(bmp|gif|jpe?g|png)$/i;
+        else
+            acceptFileTypes = /(\.|\/)(bmp|gif|jpe?g|png|zip|docx?|xlsx?|pptx?|ppsx?|pdf)$/i;
         var url = global.GetActionUrl("_BizAttachmentService", "SaveAttachment", { _crsfToken: $("input[name^=_crsfToken]").first().val(), InputName: $inputObj.attr('name'), LegalId: legalId, FormId: formId, RequestTypeCode: requestTypeCode, AttachmentTypeCode: attachmentTypeCode });
         //$inputObj.attr('Accept', 'image/bmp, image/gif, image/jpeg, image/png, image/tif, application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.openxmlformats-officedocument.presentationml.slideshow, application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.ms-powerpoint, application/zip, application/pdf')
         $inputObj.fileupload({
@@ -114,7 +120,7 @@ function AttachmentUpload(self, $inputObj, legalId, formId, requestTypeCode, att
             multipart: true,
             autoUpload: true,
             maxFileSize: 1024 * 1024 * 5, //限制文件大小为5M
-            acceptFileTypes: /(\.|\/)(bmp|gif|jpe?g|png|zip|docx?|xlsx?|pptx?|ppsx?|pdf)$/i, //限制文件类型
+            acceptFileTypes: acceptFileTypes, //限制文件类型
             dataType: 'json',
             formData: {},
             messages: {

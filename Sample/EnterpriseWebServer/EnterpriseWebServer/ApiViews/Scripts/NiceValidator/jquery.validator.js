@@ -2076,39 +2076,7 @@
         .load('local')              // dito
      */
     Validator.load = function(str) {
-        if (!str) return;
-        var doc = document,
-            params = {},
-            node = doc.scripts[0],
-            dir, el, ONLOAD;
-
-        str.replace(/([^?=&]+)=([^&#]*)/g, function(m, key, value){
-            params[key] = value;
-        });
-
-        dir = params.dir || Validator.dir;
-
-        if (!Validator.css && params.css !== '') {
-            el = doc.createElement('link');
-            el.rel = 'stylesheet';
-            el.href = Validator.css = dir + 'jquery.validator.css';
-            node.parentNode.insertBefore(el, node);
-        }
-        if (!Validator.local && ~str.indexOf('local') && params.local !== '') {
-            Validator.local = (params.local || doc.documentElement.lang || 'en').replace('_','-');
-            Validator.pending = 1;
-            el = doc.createElement('script');
-            el.src = dir + 'local/' + Validator.local + '.js';
-            ONLOAD = 'onload' in el ? 'onload' : 'onreadystatechange';
-            el[ONLOAD] = function() {
-                if (!el.readyState || /loaded|complete/.test(el.readyState)) {
-                    el = el[ONLOAD] = null;
-                    delete Validator.pending;
-                    $(window).triggerHandler('validatorready');
-                }
-            };
-            node.parentNode.insertBefore(el, node);
-        }
+     
     };
 
     // Auto loading resources

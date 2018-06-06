@@ -1,0 +1,91 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+
+<style>
+    input[class~='easyui-textbox'][data-options*='multiline:true'][class~='multi-content'] + span > textarea {
+        height: 100px !important;
+    }
+</style>
+
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">名称</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.SalaryLevelName" class="form-control" style="width: 100%;"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">数值</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.SalaryLevelValue" class="form-control" style="width: 100%;" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">类型</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.SalaryLevelTypeName" class="form-control" style="width: 100%;" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">备注</label>
+                        <div class="col-md-10">
+                            <input type="text" disabled data-bind="textboxValue:formdata.Description" data-options="validType:'length[0,500]',multiline:true" class="easyui-textbox multi-content" style="height: 80px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+            //
+            self.Action = 'new';
+
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+                self.Action = 'edit';
+            }
+
+            self.formdata = ko.mapping.fromJS(data.form);
+            self.dataSources = data.dataSources;
+
+            self.Init = function() {
+            };
+        };
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+
+        MainApp.DialogCustomButton(eleId, '查看岗位等级信息', 750, 300, [{ text: '关闭', cancel: true }], function () {
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+        });
+
+    })(eleId, context, callback);
+</script>

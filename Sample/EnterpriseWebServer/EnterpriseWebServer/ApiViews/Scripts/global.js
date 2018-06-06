@@ -6,15 +6,18 @@ var global = function() {
             opts.IsWarning = opts.IsWarning == undefined ? false : opts.IsWarning;
             if (opts.IsCheckStatus == undefined) opts.IsCheckStatus = opts.IsWarning == undefined ? false : opts.IsWarning;            
         }
-        else {
-            opts = {
+        opts = $.extend({
+        }, {
                 IsWarning: false,
-                IsCheckStatus: false
-            }
-        }
+                IsCheckStatus: true,
+                IsBlock: (action == 'POST') ? true : false
+            }, opts);
         var param = {
             url: url, type: action, dataType: 'text',
             success: function (text, textStatus, jqXHR) {
+                if (opts.IsBlock) {
+                    if (typeof App != 'undefined') App.unblockUI();
+                }
                 var data = text == '' ? '' : eval('(' + text + ')');
                 if (opts.IsCheckStatus) {
                     if (data.StatusCode == 'Success') {
@@ -54,6 +57,9 @@ var global = function() {
                     param.data = $.toJSON(data)
             }         
         }
+        if (opts.IsBlock) {
+            if (typeof App != 'undefined') App.blockUI();
+        }
         $.ajax(param);
     };
 	return {
@@ -66,7 +72,8 @@ var global = function() {
 				})  
 			   
 			   $("#ContentInitCss").remove();
-		   }
+            }
+            
 		   var initscript = $("#ContentInitScript").text();
 			if(initscript != ''){
 			   var scriptarray = eval('(' + initscript + ')');
@@ -112,16 +119,35 @@ var global = function() {
 			AjaxCall('POST', url, data, opts);
 		},
 		GetActionUrl : function(bizId,bizAction,attrs){
-				var url;
-				url = "/RestAPI/Business/" + bizId + "/" + bizAction + "";
-				if(attrs){
-					var attrUrl = "";
-					for(var attr in attrs){
-					    attrUrl = "" + attrUrl + "&" + attr + "=" + attrs[attr] + "";
-					}
-					url = url + '?' + attrUrl;
-				}
-				return url;
+            var url, attrUrl = '';
+            var idlist = bizId.split('.');
+            var actionlist = bizAction.split('.');
+            var bizIdUrl = bizId;
+            var bizActionUrl = bizAction;
+            if (attrs) {
+                for (var attr in attrs) {
+                    attrUrl = "" + attrUrl + "&" + attr + "=" + attrs[attr] + "";
+                }
+            }
+            if (idlist.length > 1) {
+                bizIdUrl = idlist[0];
+                bizActionUrl = idlist.slice(1).join('.') + "." + bizAction;
+                url = "/RestAPI/Business/ActionInvoke?businessname=" + bizIdUrl + '&businessaction=' + bizActionUrl;
+                if (attrUrl) {
+                    url = url + '&' + attrUrl;
+                }
+            } else if (actionlist.length > 1) {
+                url = "/RestAPI/Business/ActionInvoke?businessname=" + bizId + '&businessaction=' + bizAction;
+                if (attrUrl) {
+                    url = url + '&' + attrUrl;
+                }
+            }
+            else {
+                url = "/RestAPI/Business/" + bizIdUrl + "/" + bizActionUrl + "";
+                if (attrUrl)
+                    url = url + '?' + attrUrl;
+            }
+		    return url;
 		}
 	
 	};

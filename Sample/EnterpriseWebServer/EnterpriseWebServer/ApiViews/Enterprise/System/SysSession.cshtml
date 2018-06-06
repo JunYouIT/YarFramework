@@ -1,0 +1,124 @@
+﻿@using Yar.Service;
+@{
+    //var model = Model.Data as Yar.BizModule.Permission.Model.BusinessGroup[];
+    var context = (Yar.Service.BusinessContext)Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+<div id="pgcontent" class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+
+    <div class="row" style="display: block;">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        Session管理
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4">账号</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="textboxValue:displaydata.loginname" style="width: 100%; height: 34px;" class="easyui-textbox" data-options="" />
+                                        </div>
+                                    </div>
+                                </div>    
+                                <div class="col-md-8">
+                                    <div style="float: right;display: inline-block;">
+                                        <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-refresh"></i> 搜索 </a>
+                                    </div>
+                                </div>                       
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:5px;" id="griddiv">
+                        <table data-bind="grid:uiSources.gridList" id="gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>           
+     </div>
+</div>
+<script id="ContentInit" type="text/javascript" src="">
+  MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+      MainApp.Token = '@tokenId';
+  Pagecom = (function () {
+          function Pagecom() {
+          };
+          return Pagecom;
+      })();
+
+  function BizViewModel() {
+      var self = this;
+      self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+      var displaydata = { loginname: ''};
+      self.displaydata = ko.mapping.fromJS(displaydata);
+            self.uiSources = {
+                gridList: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#gridlist",
+                        SizeOpt: {
+                            pid: "#griddiv",
+                            top: @Yar.Service.UIHelper.GetMasterInterval(context) + 131
+                        }
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", "GetResourceList"),
+                        fitColumns: true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                        rownumbers: true,
+                        columns: [[
+                    { field: 'Id', title: 'Session', sortable: true, width: 100 },
+                    { field: 'LoginName', title: '账号', sortable: true, width: 100 },
+                    { field: 'Name', title: '姓名', sortable: true, width: 100 },
+                    { field: 'ExpiryTime', title: '过期时间', sortable: true, width: 120 },
+
+                        ]],
+                    }
+                }
+            };
+      self.Init = function () {
+      };
+      self.OnRefresh = function () {
+          var data = {
+              loginname: Pagecom.ViewModel.displaydata.loginname(),
+          };
+          $('#gridlist').datagrid('load',data);
+      };
+
+    };
+
+    var viewModel = new BizViewModel();
+        Pagecom.ViewModel = viewModel;
+      viewModel.Init();
+      ko.applyBindings(viewModel,$('#pgcontent')[0]);
+      viewModel.OnRefresh();
+</script>
+
+<script id="ContentInitCss" type="text">
+	['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")']     
+</script>
+
+<script id="ContentInitScript" type="text">
+    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.zh-CN.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	  	
+</script>

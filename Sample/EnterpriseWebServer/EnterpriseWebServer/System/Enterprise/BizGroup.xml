@@ -3,16 +3,28 @@
   <Nodes>
     <BizNode ID="Organization_root" Name="组织机构" Level="3" >
       <Nodes>
-        <BizNode ID="Organization_A01" Name="组织架构" Icon="icon-users">
+        <BizNode ID="Organization_A01" Name="组织架构" Icon="icon-organization">
           <Nodes>
-            <BizNode ID="ORG_LEG" Name="法人管理" UrlPath="ORG_LEG"   BusinessId="_BizSysLegal" BusinessAction="View" />
-            <BizNode ID="ORG_ORGUNIT" Name="组织机构" UrlPath="ORG_ORGUNIT"   BusinessId="_Biz_Org_OrgUnit" BusinessAction="View" />
-            <BizNode ID="ORG_Position" Name="职位管理" UrlPath="ORG_POSITION"   BusinessId="_Biz_Org_Position" BusinessAction="View" />
-            <BizNode ID="ORG_Job" Name="职务管理" UrlPath="ORG_JOB"   BusinessId="_Biz_Org_Job" BusinessAction="View" />
+            <BizNode ID="ORG_LEG" Name="公司管理" UrlPath="ORG_LEG"   BusinessId="_BizSysLegal" BusinessAction="View" />
+            <BizNode ID="ORG_ORGUNIT" Name="组织单元" UrlPath="ORG_ORGUNIT"   BusinessId="_Biz_Org_OrgUnit" BusinessAction="View" />
+            <BizNode ID="ORG_Position" Name="职位管理" UrlPath="ORG_Position"   BusinessId="_Biz_Org_Position" BusinessAction="View" />
+            <BizNode ID="ORG_Job" Name="职务管理" UrlPath="ORG_Job"   BusinessId="_Biz_Org_Job" BusinessAction="View" />
+            <BizNode ID="ORG_JobLevel" Name="职级管理" UrlPath="ORG_JobLevel"   BusinessId="_Biz_Org_JobLevel" BusinessAction="View" />
           </Nodes>
         </BizNode>
       </Nodes>
     </BizNode>
+    <BizNode ID="HR_root" Name="人力资源" Level="3" >
+      <Nodes>
+        <BizNode ID="HR_A01" Name="人力资源" Icon="icon-people" >
+          <Nodes>
+            <BizNode ID="HR_EMP_Employee" Name="员工信息" UrlPath="HR_EMP_Employee"   BusinessId="Biz_HR_EMP_Employee" BusinessAction="View" />
+            <BizNode ID="HR_OfficeArea" Name="办公区域" UrlPath="HR_OfficeArea"   BusinessId="Biz_HR_OfficeArea" BusinessAction="View" />
+            <BizNode ID="HR_EMP_SalaryLevel" Name="薪资等级" UrlPath="HR_EMP_SalaryLevel"   BusinessId="Biz_HR_EMP_SalaryLevel" BusinessAction="View" />
+          </Nodes>
+        </BizNode>
+      </Nodes>
+    </BizNode>   
     <BizNode ID="SYS_root" Name="管理" Level="3" >
       <Nodes>
         <BizNode ID="SYS_001" Name="系统管理" Icon="icon-home">
@@ -34,6 +46,7 @@
       <Nodes>
         <BizNode ID="api_auth" NodeType="api" Role="Guest" Name="auth" UrlPath="Login" BusinessId="_BizAuth" BusinessAction="Login" />
         <BizNode ID="api_tenant" NodeType="api" Role="Guest" Name="auth" UrlPath="Register" BusinessId="BizTenant" BusinessAction="CreateView" />
+        <BizNode ID="api_install" NodeType="api" Role="Guest" Name="install" UrlPath="Install" BusinessId="BizInstall" BusinessAction="View" />
       </Nodes>
     </BizNode>
   </Nodes>

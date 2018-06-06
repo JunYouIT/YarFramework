@@ -1,0 +1,190 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+
+<div id="pgcontent" class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light">
+                
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-sm-4">任务类型</label>
+                                        <div class="col-sm-8">
+                                            <select id="ddlRequestTypeSelector" class="form-control select2"  data-bind="SearchValue: displayData.dlRequestType, event: { /*change: $root.OnRefresh*/ }" width="100%" height="34px;" placeholder="按申请类型名称和编码搜索" data-biz="_BizBacklog" data-action="GetBacklogApplicationRequestTypeList" data-allow-clear="true"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-sm-4">任务单号</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" data-bind="textboxValue: displayData.dlRequestCode" style="width: 100%;height:34px;" data-options="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="javascript:;" class="btn btn-sm btn-primary" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                
+                                <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-sm-4">任务操作</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" data-bind="comboboxValue: displayData.dlOperationStatus, dataSource: dataSources.dsOperationStatus" style="width: 100%;height:34px;" class="easyui-combobox" data-options="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="" id="gridDiv">
+                        <table data-bind="grid: uiSources.gridList" id="gridList" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ContentInit" src="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    Pagecom = (function () {
+        function Pagecom() { };
+
+        Pagecom.BacklogFormatter = function (value, row, index) {
+            var opts = {
+                requestID: row.RequestID,
+                requestCode: row.RequestCode,
+                requestTypeCode: row.RequestTypeCode,
+                requestTypeName: row.RequestTypeName,
+
+                bizID: row.BusinessName,
+                avName: row.ApproveViewName,
+                pvName: row.PreviewViewName,
+                canBatchApproval: row.CanBatchApproval,
+                canCommonApproval: row.CanCommonApproval,
+
+                procStatus: row.ApproveStatus,
+
+                auditID: row.AudittrailID,
+                activityCode: row.ActivityCode
+            };
+            var str = String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnView(\'{1}\')" title="任务单号：{0}">{0}</a>', value, encodeURI(JSON.stringify(opts)));
+            return str;
+        };
+
+        return Pagecom;
+    })();
+
+    var ViewModel = function (data) {
+        var self = this;
+        self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+        self.formdata = ko.mapping.fromJS(data.form);
+
+        self.displayData = ko.mapping.fromJS({
+            dlLegalEntityID:    '',
+            dlRequestType:      '',
+            dlRequestCode: '',
+            dlApproveStatus: self.formdata.dlApproveStatus(),
+            dlOperationStatus :self.formdata.dlOperationStatus()
+        });
+        self.dataSources = data.dataSources;
+
+        self.uiSources = {
+            gridList: {
+                ops: {
+                    ClientPage: false,
+                    ele: "#gridList",
+                    SizeOpt: {
+                        pid: "#gridDiv",
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 130
+                    }
+                },
+                sops: {
+                    url: self.ViewTool.GetActionUrl("Post", "GetBacklogApplicationList"),
+                    fitColumns:true,
+                    selectOnCheck: false,
+                    checkOnSelect: false,
+                    rownumbers: true,
+                    columns: [[
+                        { field: 'RequestCode', title: '任务单号', sortable:true, width: 150, formatter: Pagecom.BacklogFormatter },
+                        { field: 'RequestTypeName', title: '任务类型', sortable: true, width: 150 },
+                        { field: 'ActivityName', title: '任务节点', sortable: true, width: 150 },
+                        { field: 'OperationName', title: '任务操作', sortable: true, width: 100 },
+                        {
+                            field: 'OperationTime', title: '操作时间', sortable: true, width: 120, formatter: function (value, row, index) {
+                                return YarGrid.DatetimeFormatter(value);
+                            }
+                        },
+                        { field: 'RequestorName', title: '申请人', sortable: true, width: 80 },
+                        { field: 'RequestTime', title: '申请时间', sortable: true, width: 120, formatter: function (value, row, index) {
+                            return YarGrid.DatetimeFormatter(value);
+                        }
+                        },                                                
+                    ]]
+                }
+            }
+        };
+
+        self.Init = function () {
+        };
+
+        self.OnRefresh = function () {
+            var rt = $("#ddlRequestTypeSelector").select2("data");
+            var data = {
+                legal:   self.displayData.dlLegalEntityID(),
+                type:    (rt && rt.length > 0) ? rt[0].id : '',
+                code:    self.displayData.dlRequestCode(),
+                status: self.displayData.dlApproveStatus(),
+                operation: self.displayData.dlOperationStatus()
+            };
+
+            $('#gridList').datagrid('load', data);
+        };
+
+
+        self.OnView = function (strOpts) {
+            //debugger;
+            var opts = JSON.parse(decodeURI(strOpts));
+            MainApp.ShowDialog(global.GetActionUrl("_BizWorkflowService", "ApproveWorkflowView", { resId: opts.requestID, type: 'preview', businessId: opts.bizID, workflowAction: '', viewAction: opts.pvName}), {});
+            
+        };
+    };
+
+    var data = @this.Raw(Model.Data);
+    var viewModel = new ViewModel(data);
+
+    Pagecom.ViewModel = viewModel;
+
+    ko.applyBindings(viewModel);
+
+    viewModel.Init();
+    viewModel.OnRefresh();
+</script>
+
+<script id="ContentInitCss" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
+</script>
+
+<script id="ContentInitScript" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
+</script>

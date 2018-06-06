@@ -13,7 +13,7 @@
             <div class="portlet light">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-tag"></i>法人管理
+                        <i class="fa fa-tag"></i>公司管理
                     </div>
 
                 </div>
@@ -40,8 +40,12 @@
                                 <div class="col-md-4">
                                     <div style="float: right; display: inline-block;">
                                         <a class="gt2_btn_search" href="javascript:;" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
-                                        <a id="btnAdd" class="gt2_btn_add" href="javascript:;" data-bind="click:OnCreate" data-toggle="tooltip" data-placement="top" title="新增法人实体"><i class="fa fa-plus-circle"></i> 新增 </a>
-                                        <a class="gt2_btn_delete" href="javascript:;" data-bind="click:OnDeleteall"><i class="fa fa-remove"></i> 删除 </a>
+@if (!Yar.Enterprise.ServerVersionType.IsFree())
+{
+    <a id="btnAdd" class="gt2_btn_add" href="javascript:;" data-bind="click:OnCreate" data-toggle="tooltip" data-placement="top" title="新增法人实体"><i class="fa fa-plus-circle"></i> 新增 </a>
+    <a class="gt2_btn_delete" href="javascript:;" data-bind="click:OnDeleteall"><i class="fa fa-remove"></i> 删除 </a>
+}
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +93,7 @@
                     ele: "#gridlist",
                     SizeOpt: {
                         pid: "#griddiv",
-                        top: 311
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 131
                     }
                 },
                 sops: {
@@ -189,26 +193,17 @@
 
 </script>
 
+
 <script id="ContentInitCss" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")',
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss"),
     '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/css/city-picker.css")']
 </script>
 
 <script id="ContentInitScript" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.zh-CN.js")',
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs"),
     '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/js/city-picker.data.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/js/city-picker.js")' ,
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/js/city-picker.js")']
 </script>
 

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<BizGroupModel>
+  <Nodes>
+    <BizNode ID="sys_api" Name="DbAppApi" Level="4" >
+      <Nodes>
+        <BizNode ID="api_data" NodeType="api" Role="Guest" Name="Data" UrlPath="Data" BusinessId="BizApiData" />
+      </Nodes>
+    </BizNode>
+  </Nodes>
+</BizGroupModel>

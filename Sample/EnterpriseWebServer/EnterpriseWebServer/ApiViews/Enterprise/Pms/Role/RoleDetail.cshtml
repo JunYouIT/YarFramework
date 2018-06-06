@@ -79,7 +79,7 @@
                 </div>
                 <div class="portlet-body">
                     <div style="height:300px;">
-                        <table id="gridlist1" style="width:auto;"></table>
+                        <table id="gridlist1" style="width:200px;height:300px;"></table>
                     </div>
                 </div>
             </div>
@@ -105,7 +105,7 @@
             </div>
         </div>
     </div>
-    @if (!bNew)
+    @if (!bNew && !Yar.Enterprise.ServerVersionType.IsFree())
     {
         <div class="row" style="display:@(resid == "admin" ? "none" : "block");">
             <div class="col-md-12">
@@ -238,6 +238,7 @@
               { field: 'Desc', title: '描述', width: 200 }
                   ]],
                   onLoadSuccess: function (data) {
+                      //debugger;
                       $('input[dataid]').on("click", function () {
                           if (!Pagecom.bFunprlchange) Pagecom.bFunprlchange = true;
                       });
@@ -331,20 +332,11 @@
 </script>
 
 <script id="ContentInitCss" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/jquery.validator.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")']       
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
 </script>
 
 <script id="ContentInitScript" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/jquery.validator.js?local=zh-CN")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	   
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
 </script>

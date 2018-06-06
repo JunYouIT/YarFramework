@@ -1,0 +1,94 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div id="">
+                    <div class="col-md-12" style="margin-top:5px;" id="traindiv">
+                        <table data-bind="grid:uiSources.trainlist" id="trainlist" style="height:400px;width:100%;"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+
+   
+            if (context.ViewModel && context.ViewModel.BizName && context.ViewModel.SubBizName) {
+                self.ViewTool = new YarClient.ViewModel(context.ViewModel.BizName, "@tokenId");
+                self.BizName = context.ViewModel.BizName;
+                self.SubBizName = context.ViewModel.SubBizName;
+                self.DispMode = context.ViewModel.DispMode;
+            }
+            else {
+                self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            }
+
+            //
+            self.dataSources = data.dataSources;
+
+            self.Init = function()
+            {
+                $('#trainlist').datagrid('load');
+            };
+
+            self.uiSources = {
+                trainlist: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#trainlist",
+                        SizeOpt: {
+                            pid: "#traindiv",
+                            top: ((self.DispMode && self.DispMode == "singleTab") ? 970 : @Yar.Service.UIHelper.GetMasterInterval(context) + 200)
+                        }
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", (self.SubBizName ? self.SubBizName + ".GetTrainingList" : "GetTrainingList"), { resId: data.form.empId }),
+                        fitColumns:true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                        pageSize: 10,
+                        columns: [[
+                        { field: 'TrainingName', title: '培训内容',sortable:false, width: 200 },
+                        { field: 'StartTime', title: '开始日期',sortable:false, width: 150 },
+                        { field: 'EndTime', title: '结束日期',sortable:false, width: 150 },
+                        //{ field: 'PersonalApportionmentAmount', title: '费用',sortable:true, width: 120 },
+                        { field: 'Remark', title: '备注',sortable:false, width: 200 }
+                        ]]
+                    }
+                }
+            };
+
+            self.OnRefresh = function () {
+                var data = {
+                };
+                $('#trainlist').datagrid('load', data);
+            };
+        };
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+        Pagecom.EditViewModel = viewModel;
+
+        ko.applyBindings(viewModel, $(eleId)[0]);
+        viewModel.Init();
+
+    })(eleId, context, callback);
+</script>

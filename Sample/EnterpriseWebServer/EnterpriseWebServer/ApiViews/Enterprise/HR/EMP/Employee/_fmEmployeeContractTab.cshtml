@@ -1,0 +1,95 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div id="">
+                    <div class="col-md-12" style="margin-top:5px;" id="contractdiv">
+                        <table data-bind="grid:uiSources.contractlist" id="contractlist" style="width:100%; height: 420px;"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+
+            if (context.ViewModel && context.ViewModel.BizName && context.ViewModel.SubBizName) {
+                self.ViewTool = new YarClient.ViewModel(context.ViewModel.BizName, "@tokenId");
+                self.BizName = context.ViewModel.BizName;
+                self.SubBizName = context.ViewModel.SubBizName;
+                self.DispMode = context.ViewModel.DispMode;
+            }
+            else {
+                self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            }
+
+            //
+            self.dataSources = data.dataSources;
+
+            self.Init = function() {
+                $('#contractlist').datagrid('load');
+            };
+
+            self.uiSources = {
+                contractlist: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#contractlist",
+                        SizeOpt: {
+                            pid: "#contractdiv",
+                            top: ((self.DispMode && self.DispMode == "singleTab") ? 0 : 400)
+                        }
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", (self.SubBizName ? self.SubBizName + ".GetContractList" : "GetContractList"), { resId: data.form.empId }),
+                        fitColumns:true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                        pageSize: 10,
+                        columns: [[
+                        { field: 'EmployeeContractNumber', title: '合同编号',sortable:true, width: 200 },
+                        { field: 'ContractType', title: '合同类型',sortable:true, width: 200 },
+                        { field: 'EmployeeContractBeginDate', title: '开始日期',sortable:true, width: 200 },
+                        { field: 'EmployeeContractEndDate', title: '结束日期',sortable:true, width: 200 },
+                        { field: 'SignDate', title: '签订日期',sortable:true, width: 200 },
+                        //{ field: 'SignedTimes', title: '签订次数',sortable:true, width: 200 },
+                        //{ field: 'HaveTrialDate', title: '试用期',sortable:true, width: 200 }
+                        ]]
+                    }
+                }
+            };
+
+            self.OnRefresh = function () {
+                var data = {
+                };
+                $('#contractlist').datagrid('load', data);
+            };
+        };
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+        Pagecom.EditViewModel = viewModel;
+
+        ko.applyBindings(viewModel, $(eleId)[0]);
+
+        viewModel.Init();
+
+    })(eleId, context, callback);
+</script>

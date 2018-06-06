@@ -11,11 +11,11 @@
             return vars;
         },
         Register: function () {
-            debugger;
+            //debugger;
             var that = this;
             $("#btnCreate").attr("disabled", "disabled");
             $('form').isValid(function (v) {
-                debugger;
+                //debugger;
                 if (v) {
                     var tenantId = $("#tenantId").val();
                     $.ajax({
@@ -24,16 +24,16 @@
                             '_crsfToken': $("input[name^=_crsfToken]").first().val(),
                         },
                         type: 'POST',
-                        data: $.toJSON({ TenantCode: $("#tenantId").val(), TenantName: $("#tenantName").val() }),
+                        data: $.toJSON({ TenantCode: $("#tenantId").val(), TenantName: $("#tenantName").val(), Email: $("#tenantMail").val(), Mobile: $("#tenantMobile").val()}),
                         cache: false,
                         dataType: "text",
                         success: function (text) {
-                            debugger;
+                            //debugger;
                             var data = eval('(' + text + ')');
                             if (data.StatusCode == "Success") {
                                 swal({
-                                    title: "租户创建成功!",
-                                    text: "您可使用<span style='color:red;'>admin@" + tenantId.toLowerCase() + ".com</span> 密码:<span style='color:red;'>111111</span> 登陆",
+                                    title: "公司注册成功!",
+                                    text: "请查看注册邮件登录系统",
                                     html: true,
                                     type: "success",
                                     showCancelButton: false,

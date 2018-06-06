@@ -194,56 +194,55 @@
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
     <Reference Include="Yar.BizModule, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.BizModule.dll</HintPath>
+      <HintPath>..\packages\YarFramework.Library.1.0.2\lib\net45\Yar.BizModule.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Yar.Core, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Core.dll</HintPath>
+      <HintPath>..\packages\YarFramework.Library.1.0.2\lib\net45\Yar.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Yar.Data, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Data.dll</HintPath>
+      <HintPath>..\packages\YarFramework.Library.1.0.2\lib\net45\Yar.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Yar.DbApp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.DbApp.dll</HintPath>
+      <HintPath>..\packages\YarFramework.Library.1.0.2\lib\net45\Yar.DbApp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Yar.Enterprise, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.Enterprise.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.3\lib\net451\Yar.Enterprise.dll</HintPath>
     </Reference>
     <Reference Include="Yar.Enterprise.Organization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.Enterprise.Organization.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.3\lib\net451\Yar.Enterprise.Organization.dll</HintPath>
+    </Reference>
+    <Reference Include="Yar.Enterprise.TenantFree">
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.3\lib\net451\Yar.Enterprise.TenantFree.dll</HintPath>
     </Reference>
     <Reference Include="Yar.EnterpriseCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.EnterpriseCommon.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.3\lib\net451\Yar.EnterpriseCommon.dll</HintPath>
     </Reference>
     <Reference Include="Yar.EnterpriseService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.EnterpriseService.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.3\lib\net451\Yar.EnterpriseService.dll</HintPath>
     </Reference>
     <Reference Include="Yar.EnterpriseWorkflow, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.1\lib\net451\Yar.EnterpriseWorkflow.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\YarFramework.EnterpriseBase.1.0.3\lib\net451\Yar.EnterpriseWorkflow.dll</HintPath>
     </Reference>
     <Reference Include="Yar.Process, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Process.dll</HintPath>
+      <HintPath>..\packages\YarFramework.Library.1.0.2\lib\net45\Yar.Process.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Yar.Process.Database, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Process.Database.dll</HintPath>
+      <HintPath>..\packages\YarFramework.Library.1.0.2\lib\net45\Yar.Process.Database.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Yar.Service, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YarFramework.Library.1.0.1\lib\net451\Yar.Service.dll</HintPath>
+      <HintPath>..\packages\YarFramework.Library.1.0.2\lib\net45\Yar.Service.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\BundleRender.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
@@ -720,7 +719,9 @@
     <Content Include="ApiViews\Scripts\ExcelExport\js-xlsx\xlsx.js" />
     <Content Include="ApiViews\Scripts\fontcss\font-awesome.min.css" />
     <Content Include="ApiViews\Scripts\fontcss\simple-line-icons.min.css" />
+    <Content Include="ApiViews\Scripts\fonts\fontawesome-webfont.svg" />
     <Content Include="ApiViews\Scripts\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="ApiViews\Scripts\fonts\Simple-Line-Icons.svg" />
     <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\CHANGELOG.txt" />
     <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\CONTRIBUTING.txt" />
     <Content Include="ApiViews\Scripts\fullcalendar-3.0.1\fullcalendar.css" />
@@ -815,6 +816,7 @@
     <Content Include="ApiViews\Scripts\jquery.json-2.4.min.js" />
     <Content Include="ApiViews\Scripts\jquery.min.1.11.1.js" />
     <Content Include="ApiViews\Scripts\jquery.min.js" />
+    <Content Include="ApiViews\Scripts\jquery.nicescroll.min.js" />
     <Content Include="ApiViews\Scripts\jquery.slimscroll.min.js" />
     <Content Include="ApiViews\Scripts\JQueryFileUpload\jquery.fileupload-process.js" />
     <Content Include="ApiViews\Scripts\JQueryFileUpload\jquery.fileupload-validate.js" />
@@ -831,6 +833,7 @@
     <Content Include="ApiViews\Scripts\knockout.mapping.js" />
     <Content Include="ApiViews\Scripts\knockoutextend.js" />
     <Content Include="ApiViews\Scripts\knockout\knockout-3.4.1.js" />
+    <Content Include="ApiViews\Scripts\Login\install.js" />
     <Content Include="ApiViews\Scripts\Login\register.js" />
     <Content Include="ApiViews\Scripts\Login\login.css" />
     <Content Include="ApiViews\Scripts\Login\login.js" />
@@ -847,6 +850,7 @@
     <Content Include="ApiViews\Scripts\NiceValidator\local\zh-CN.js" />
     <Content Include="ApiViews\Scripts\NiceValidator\local\zh-TW.js" />
     <Content Include="ApiViews\Scripts\PageMainApp.js" />
+    <Content Include="ApiViews\Scripts\PersonalHome.js" />
     <Content Include="ApiViews\Scripts\select2\select2-bootstrap.css" />
     <Content Include="ApiViews\Scripts\select2\select2.full.js" />
     <Content Include="ApiViews\Scripts\select2\select2.full.min.js" />
@@ -1206,6 +1210,51 @@
     <Content Include="ApiViews\Enterprise\Workflow\_fmWorkflowApprove.cshtml" />
     <Content Include="ApiViews\Enterprise\Register.cshtml" />
     <Content Include="ApiViews\Enterprise\Pms\Common\_fmSelectUser.cshtml" />
+    <Content Include="ApiViews\Scripts\fonts\fontawesome-webfont.ttf" />
+    <Content Include="ApiViews\Scripts\fonts\FontAwesome.otf" />
+    <Content Include="ApiViews\Scripts\fonts\Simple-Line-Icons.eot" />
+    <Content Include="ApiViews\Scripts\fonts\Simple-Line-Icons.ttf" />
+    <Content Include="ApiViews\Scripts\fonts\Simple-Line-Icons.woff" />
+    <Content Include="ApiViews\Scripts\fonts\Simple-Line-Icons.woff2" />
+    <Content Include="ApiViews\Enterprise\Install.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\_fmCommonApproveEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\_fmCommonApprovePreview.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\_fm_Select_RequestType.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\BacklogView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\CommonApproveView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\CommonRequestManagerView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\FinishBacklogView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\MyBacklogView.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\_fmWorkflowSelectPositionCreate.cshtml" />
+    <Content Include="ApiViews\Enterprise\Workflow\_fmWorkflowSingleApprove.cshtml" />
+    <Content Include="ApiViews\Enterprise\System\SysSession.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\Common\_fmSelectLegal.cshtml" />
+    <Content Include="ApiViews\Enterprise\Org\Common\_fmSelectUserPosition.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\Common\_fmSelectOfficeArea.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\Common\_fmSelectUser.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\View_Employee.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeContractTab.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeEducationEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeEducationTab.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeFamilyMemberEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeFamilyMemberTab.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeIJobTab.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeJobEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeJobTab.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeNJobTab.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeOtherContactEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeOtherContactTab.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeePreview.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeTrainingTab.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_fmEmployeeWorkHistoryTab.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\Employee\_frmEmployeeWorkHistoryEdit.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\SalaryLevel\View_SalaryLevel.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\SalaryLevel\_fm_SalaryLevel_Edit.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\EMP\SalaryLevel\_fm_SalaryLevel_Preview.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\OfficeArea\View_OfficeArea.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\OfficeArea\_fm_OfficeArea_Edit.cshtml" />
+    <Content Include="ApiViews\Enterprise\HR\OfficeArea\_fm_OfficeArea_Preview.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -1228,7 +1277,9 @@
     <Content Include="System\Enterprise\PortalNode.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="System\Enterprise\Sql\InitScript.sql" />
+    <Content Include="System\Enterprise\SqlData\InitDatabase\1.InitSqlScript.sql" />
+    <Content Include="System\Enterprise\SqlData\InitTenantData\1.InitTenantData.sql" />
+    <Content Include="System\Enterprise\SqlData\InitTenantData\2.InitPersonalHome.sql" />
     <Content Include="System\Enterprise\YarSystem.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -1283,7 +1334,12 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Yar.Enterprise.HR\Yar.Enterprise.HR.csproj">
+      <Project>{d1b7eb40-1f88-4a0f-8f5e-277fd5f8d581}</Project>
+      <Name>Yar.Enterprise.HR</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

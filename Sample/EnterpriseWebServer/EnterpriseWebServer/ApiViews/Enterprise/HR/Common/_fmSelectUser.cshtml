@@ -1,0 +1,314 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+    var isMulti = context.Request["isMulti"] == null ? false : "1".Equals(context.Request["isMulti"]);
+    var notLimitLegal = context.Request["notLimitLegal"] == null ? false : "1".Equals(context.Request["notLimitLegal"]);
+    var includeOnBoarding = context.Request["includeOnBoarding"] == null ? false : "1".Equals(context.Request["includeOnBoarding"]);
+    var orgId = context.Request.Contains("orgId") && !string.IsNullOrWhiteSpace(context.Request["orgId"]) ? context.Request["orgId"] : string.Empty;
+}
+
+<div style="padding: 5px 20px 5px;">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="portlet box blue" style="margin-bottom:2px;">
+                <div class="portlet-title">
+                    <div class="caption">
+                        组织机构
+                    </div>
+                </div>
+                <div class="portlet-body" style="height:365px;overflow:auto;">
+                    <ul id="hr_common_selectuser_orgTree"></ul> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="portlet box blue" style="margin-bottom:2px;">
+                <div class="portlet-title">
+                    <div class="caption">
+                        员工
+                    </div>
+                    <label class="control-label col-md-2" data-bind="value:selectedList.length" />
+                </div>
+                <div class="portlet-body" style="height:365px;">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="control-label bold col-md-2">姓名：</label>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" id="selectUserName" />
+                                        @*<input type="text" data-bind="textboxValue:displaydata.name" class="easyui-textbox" style="width: 100%" />*@
+                                    </div>
+                                    <label class="control-label bold col-md-2">工号：</label>
+                                    <div class="col-md-3">
+                                        <input type="text" class="form-control" id="selectUserNO" />
+                                        @*<input type="text" data-bind="textboxValue:displaydata.userno" class="easyui-textbox" style="width: 100%" />*@
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="" style="float: right; display: inline-block;">
+                                            <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-5">
+                                        <label><input type="checkbox" data-bind="checked:displaydata.showChild" />显示下属机构人员</label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <label><input type="checkbox" data-bind="checked:displaydata.showSideline" />显示兼职人员</label>
+                                    </div>
+                                    @*<div class="col-md-2">
+                                            <div class="" style="float: right; display: inline-block;">
+                                                <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+                                            </div>
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div style="margin: 1px; height: 265px;">
+                                <table data-bind="grid:uiSources.gridList" id="hr_common_selectuser_gridlist" style=""></table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+        Array.prototype.containsThenRemove = function (obj) {
+            var i = this.length;
+
+            while (i--) {
+                if (this[i] === obj) {
+                    this.splice(i, 1);
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        Array.prototype.contains = function (obj) {
+            var i = this.length;
+
+            while (i--) {
+                if (this[i] === obj) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        (function (eleId, context, callback) {
+            //debugger;            
+            $.parser.parse(eleId);
+            var ViewModel = function (data) {
+                var self = this;
+
+                self.ViewTool = new YarClient.ViewModel("BizEmployeeService", "@tokenId");
+
+                var displaydata = { name: '', userno: '', showChild: true, showSideline: '' };
+
+                self.displaydata = ko.mapping.fromJS(displaydata);
+                self.selectedList = new Array();
+
+                self.displaydata.showSideline.subscribe(function(newValue){
+                    self.selectedList.splice(0, self.selectedList.length);
+                    $('#hr_common_selectuser_gridlist').datagrid("unselectAll");
+                });
+
+                self.uiSources = {
+                    gridList: {
+                        ops: {
+                            ClientPage: false,
+                            ele: "#hr_common_selectuser_gridlist",
+                        },
+                        sops: {
+                            url: self.ViewTool.GetActionUrl("Post", "Biz_Select_OrgUser.GetEmployeeByOrg", context),
+                            fit: true,
+                            fitColumns: true,
+                            selectOnCheck: true,
+                            checkOnSelect: true,
+                            pageSize: 5,
+                            onSelect: function (index, row) {
+                                if (!self.selectedList.contains(row.EmployeeID + ',' + row.PositionID)) {
+                                    self.selectedList.push(row.EmployeeID + ',' + row.PositionID);
+                                };
+                            },
+                            onSelectAll: function (rows) {
+                                rows.each(function (element, index) {
+                                    if (!self.selectedList.contains(element.EmployeeID + ',' + element.PositionID)) {
+                                        self.selectedList.push(element.EmployeeID + ',' + element.PositionID);
+                                    };
+                                });
+                            },
+                            onUnselect: function (index, row) {
+                                self.selectedList.containsThenRemove(row.EmployeeID + ',' + row.PositionID);
+                            },
+                            onUnselectAll: function (rows) {
+                                rows.each(function (element, index) {
+        
+                                    self.selectedList.containsThenRemove(element.EmployeeID + ',' + element.PositionID);
+                                });
+                            },
+                            onLoadSuccess: function (data) {
+                                data.rows.each(function (element, index) {
+             
+                                    if (self.selectedList.length > 0 && self.selectedList.contains(element.EmployeeID + ',' + element.PositionID))
+                                    {
+                                        $('#hr_common_selectuser_gridlist').datagrid('selectRow', index);
+                                    };
+                                });
+                            },
+                            @if (isMulti)
+                            {
+                                <text> singleSelect: false,</text>
+                            }
+                            else
+                            {
+                                <text> singleSelect: true,</text>
+                            }
+                            columns: [[
+                              { field: 'ck', checkbox: true },
+                              { field: 'EmployeeNumber', title: '工号', width: 100 },
+                              { field: 'EmployeeNameCN', title: '姓名', width: 100 },
+                              {
+                                  field: 'PositionName', title: '职位', width: 100, formatter: function (value, row, index) {
+                                      if (row.IsMain)
+                                          return value;
+                                      else
+                                          return value + '[兼]';
+                                  }
+                              },
+                              { field: 'OrganizationName', title: '部门', width: 100 }
+                            ]]
+                        }
+                    }
+                };
+                self.Init = function () {
+                    $('#hr_common_selectuser_orgTree').tree({
+                        url: self.ViewTool.GetActionUrl("Post", "Biz_Select_OrgUser.GetOrgTree", { notLimitLegal: '@(notLimitLegal? "1": "0")'}),
+                        onLoadSuccess: function (node, data) {
+                            $('#hr_common_selectuser_orgTree').tree("collapseAll");
+
+                            var root = $('#hr_common_selectuser_orgTree').tree("getRoot");
+
+                            if (root) {
+                                if ("@orgId") {
+                                    var selNode = $('#hr_common_selectuser_orgTree').tree("find", "@orgId");
+
+                                    if (selNode) {
+                                        $('#hr_common_selectuser_orgTree').tree("select", selNode.target);
+                                        $('#hr_common_selectuser_orgTree').tree("expandTo", selNode.target);
+                                    }
+                                }
+                                else {
+                                    $('#hr_common_selectuser_orgTree').tree("select", root.target);
+                                    $('#hr_common_selectuser_orgTree').tree("expand", root.target);
+                                }
+                            }
+                        },
+                        onSelect: function (node) {
+                            self.OnRefresh();
+                        }
+                    });
+                };
+                self.OnRefresh = function () {
+                    var data = {
+                        name: $('#selectUserName').val(),
+                        userno: $('#selectUserNO').val(),
+                        //name: self.displaydata.name(),
+                        //userno: self.displaydata.userno(),
+                        showChild: self.displaydata.showChild(),
+                        showSideline: self.displaydata.showSideline(),
+                        orgId: '',
+                        notLimitLegal:'@(notLimitLegal?"1":"0")',
+                        includeOnBoarding:'@(includeOnBoarding ? "1":"0")'
+                    };
+                    var node = $('#hr_common_selectuser_orgTree').tree('getSelected');
+                    if (node) {
+                        data.orgId = node.id;
+                    }
+                    $('#hr_common_selectuser_gridlist').datagrid('load', data);
+                };
+                self.OnOk = function (finishcall) {
+                    //debugger;
+                    //var rows = $('#hr_common_selectuser_gridlist').datagrid('getChecked');
+                    @*var data = {
+                        name: $('#selectUserName').val(),
+                        userno: $('#selectUserNO').val(),
+                        showChild: self.displaydata.showChild(),
+                        showSideline: self.displaydata.showSideline(),
+                        orgId: '',
+                        notLimitLegal: '@(notLimitLegal?"1":"0")',
+                        includeOnBoarding: '@(includeOnBoarding ? "1":"0")'
+                    };*@
+                
+                    var postdata = {
+                        ids: self.selectedList.join(';'),
+                        name: $('#selectUserName').val(),
+                        userno: $('#selectUserNO').val(),
+                        showChild: self.displaydata.showChild(),
+                        showSideline: self.displaydata.showSideline(),
+                        orgId: '',
+                        notLimitLegal: '@(notLimitLegal?"1":"0")',
+                        includeOnBoarding: '@(includeOnBoarding ? "1":"0")'
+                    };
+                    var node = $('#hr_common_selectuser_orgTree').tree('getSelected');
+
+                    if (node) {
+                        postdata.orgId = node.id;
+                    }
+                    var url = self.ViewTool.GetActionUrl("Post", "Biz_Select_OrgUser.GetEmployeeByIDs", data);
+
+                    YarClient.AjaxPost(url, postdata, {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            //debugger;
+                            if (returnData.Result.length > 0) {
+                                var selected = [];
+                                for (var i = 0; i < returnData.Result.length; i++) {
+                                    //selected.push({
+                                    //    EmployeeID: rows[i].EmployeeID,
+                                    //    EmployeeNameCN: rows[i].EmployeeNameCN,
+                                    //    EmployeeNameEN: rows[i].EmployeeNameEN,
+                                    //    EmployeeNumber: rows[i].EmployeeNumber,
+                                    //    ExtCode: rows[i].ExtCode,
+                                    //    OfficeAreaID: rows[i].OfficeAreaID,
+                                    //    PositionID: rows[i].PositionID,
+                                    //    PositionCode: rows[i].PositionCode,
+                                    //    PositionName: rows[i].PositionName,
+                                    //    OrganizationID: rows[i].OrganizationID,
+                                    //    OrganizationCode: rows[i].OrganizationCode,
+                                    //    OrganizationName: rows[i].OrganizationName,
+                                    //    IsMain: rows[i].IsMain
+                                    //});
+
+                                    selected.push(returnData.Result[i]);
+                                }
+                                //debugger;
+                                finishcall(selected, callback);
+                            }
+                        }
+                    });
+                };
+            };
+
+            var viewModel = new ViewModel({});
+            
+            MainApp.DialogModel(eleId, '选择员工', 800, 440, viewModel.OnOk, null, function () {
+                
+                ko.applyBindings(viewModel, $(eleId)[0]);  
+                viewModel.Init();
+            });
+
+        })(eleId, context, callback);
+</script>

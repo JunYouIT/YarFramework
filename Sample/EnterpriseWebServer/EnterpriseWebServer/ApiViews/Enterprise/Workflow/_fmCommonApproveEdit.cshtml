@@ -1,0 +1,365 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var BizName = context.Params["BusinessName"];
+}
+
+<style>
+    .modalContainer {
+        margin: 10px 10px 0 10px;
+    }
+
+    .modalContainer {
+        padding-bottom:10px;
+    }
+
+    .modalContainer .row {
+        margin-bottom: 10px;
+    }
+
+    .select2-container {
+        z-index: 9000 !important;
+    }
+
+    #myModal .numberbox .textbox-text {
+        width: 100% !important;
+    }
+</style>
+
+<div class="modalContainer">
+  
+    <!-- 申请信息 -->
+    <div class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                申请信息
+            </div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse" title="申请信息"> </a>
+            </div>
+        </div>
+        <div class="portlet-body collapse in" id="panel-project">
+            <div class="form form-horizontal">
+                <div class="form-body">
+                    <div class="row">
+                        <label class="control-label col-md-2 bold"><span style="color: red;">*</span>申请事由</label>
+                        <div class="col-md-10">
+                            <textarea class="form-control easyui-validatebox" rows="5" data-bind="value:formdata.Memo" data-options="required:true,validType:'length[0,512]'"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">完成审批时<br />邮件通知</label>
+                                <div class="col-md-10">
+                                    <input type="checkbox" data-bind="SwitchValue:formdata.IsNotifyResult">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="WriteMemoPanel">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2 bold">填写说明</label>
+                                <div class="col-md-10">
+                                    <label class="control-label" id="WriteMemo"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 申请信息结束 -->
+    <!-- 模板信息 -->
+    <div class="portlet box blue" id="divTemplate">
+        <div class="portlet-title">
+            <div class="caption">
+                模板信息
+            </div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse" title="模板信息"> </a>
+            </div>
+        </div>
+        <div class="portlet-body collapse in" id="panel-project">
+            <div class="form form-horizontal">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>文件名</th>
+                            <th width="80%">说明</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:templateAttachments">
+                        <tr>
+                            <td>
+                                <a class="alert-link form-control" data-bind="text: FileName, attr:{href:href}"></a>
+                            </td>
+                            <td>
+                                <label data-bind="text:AttachmentRemark" class="form-control" type="text"></label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- 模板信息结束 -->
+    <!-- 附件信息 -->
+    <div class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                附件信息
+            </div>
+            <div class="tools">
+                <a href="javascript:;" class="expand" title="附件信息"> </a>
+            </div>
+        </div>
+        <div class="portlet-body" style="display:none;" id="panel-accessory" >
+            <div class="form form-horizontal">
+                <div style="float: right;display: inline-block;">
+                    <a class="gt2_btn_add" style="position:relative;overflow:hidden;">
+                        <span class="fileinput-button"><span><i class="fa fa-plus-circle"></i> 添加附件</span><input id="fileupload" type="file" name="file"></span>
+                    </a>
+                    <a href="javascript:void 0" class="btn btn-sm btn-danger" data-bind="click:removeAllAttachments"><i class="fa fa-trash-o"></i> 全部删除 </a>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>文件类型</th>
+                            <th>文件名</th>
+                            <th>功能</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach:attachments">
+                        <tr>
+                            <td>
+                                <label class="form-control" type="text">附件</label>
+                            </td>
+                            <td>
+                                <a class="alert-link form-control" data-bind="text: FileName, attr:{href:href}"></a>
+                            </td>
+                            <td>
+                                <a href="javascript:void 0" title="删除" data-bind="click:$root.removeAttachment"><i class="fa fa-trash-o fa-grid"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function (eleId, context, callback) {
+        $.parser.parse(eleId);
+
+        var successCallBack = callback;
+
+
+        // 声明ViewModel构造函数
+        var ViewModel = function (data, orgAndPos) {
+            var self = this;
+
+            //debugger;
+            self.Action = data.dataSources.Action;
+            self.ResId = "";
+            self.ResId = data.form.ResId;
+            
+
+            self.AttachmentTypeCode = "Att051";
+            self.orgAndPos = orgAndPos;
+            self.RequestTypeCode = data.dataSources.FormCode;
+            self.MasterRequestCode = data.dataSources.MasterRequestCode; /*context.MasterRequestCode;*/
+            self.dataSources = data.dataSources;
+            self.ViewTool = new YarClient.ViewModel("@BizName", "@tokenId");
+
+            // 表单上的信息设为双向绑定
+            self.formdata = ko.mapping.fromJS(data.form);
+
+            //2017.03.17 Meeny
+            $("#WriteMemoPanel").hide();
+
+            var writememo=self.dataSources.WriteMemo;
+
+            if (writememo){
+                $("#WriteMemoPanel").show();
+                $("#WriteMemo").text(writememo);
+            }
+
+            if (self.dataSources.requestTypeName&&self.dataSources.requestTypeName!=="") {
+                $("#titleInfo").text(String.format("{0}列表",self.dataSources.requestTypeName));
+            }
+
+            self.Init = function () {
+                $.Yar.Attachement.AttachmentUpload($('#fileupload'),self.dataSources.legalId,self.ResId,self.RequestTypeCode, self.AttachmentTypeCode, function(result){
+                    var href = global.GetActionUrl("_BizAttachmentService", "GetAttachment", { AttachmentId: result.Result.AttachementID });
+                    self.attachments.push({AttachementID:result.Result.AttachementID,FileName:result.Result.FileName, href:href});
+                });
+            };
+
+            if (data.dataSources.templateAttachments.length<1) {
+                $("#divTemplate").hide();
+            }
+
+            $.each(data.dataSources.attachments, function (index, item) {
+                item.href = global.GetActionUrl("_BizAttachmentService", "GetAttachment", { AttachmentId: item.AttachementID });
+            });
+
+            $.each(data.dataSources.templateAttachments,function(index,item){
+                item.href = global.GetActionUrl("_BizAttachmentService", "GetAttachment", { AttachmentId: item.AttachementID });
+            });
+
+            self.attachments = ko.observableArray(data.dataSources.attachments);
+            self.templateAttachments = ko.observableArray(data.dataSources.templateAttachments);
+
+            self.removeAttachment = function(attachment){
+                swal({
+                    title: "确认删除么?",
+                    text: "删除之后将不能还原！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的, 删除!",
+                    closeOnConfirm: true
+                },
+                function () {
+                    YarClient.AjaxGet(global.GetActionUrl("_BizAttachmentService", "DeleteAttachment",{ AttachmentId:attachment.AttachementID, FormId:self.ResId }), {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            swal("删除成功!", "附件已删除.", "success");
+                            self.attachments.remove(attachment);
+                        }
+                    });
+                });
+            };
+
+            self.removeAllAttachments = function() {
+                var attachments = self.attachments();
+                var attachmentIds= [];
+
+                if (attachments && attachments.length > 0) {
+                    attachments.each(function (value, index) {
+                        attachmentIds.push(value.AttachementID);
+                    });
+                    swal({
+                        title: "确认删除么?",
+                        text: "删除之后将不能还原！",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "是的, 删除!",
+                        closeOnConfirm: true
+                    },
+                    function () {
+                        var url = global.GetActionUrl("_BizAttachmentService", "DeleteMultipleAttachments");
+
+                        YarClient.AjaxPost(url, { data: attachmentIds,formId:self.ResId }, {
+                            success: function (result) {
+                                swal("删除成功!", "附件已删除.", "success");
+                                self.attachments.removeAll();
+                            },
+                            error: function () {
+                            }
+                        })
+                    }
+                    );
+                }
+            };
+
+            self.OnClose = function (finishcall){
+                swal({
+                    title: "确认关闭么?",
+                    text: "关闭后未保存的数据将会丢失！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的, 关闭!",
+                    closeOnConfirm: true,
+                    cancelButtonText:"保存"
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        finishcall();
+                    } 
+                    else {
+                        self.OnSave(finishcall,false);
+                    }
+                });
+            };
+            self.OnSave = function (finishcall, isSubmit) {
+                var url = self.ViewTool.GetActionUrl("Post", "Edit", { resId: self.ResId });
+                var postdata = { formdata: MainApp.GetDataChange(self.formdata, data.form, true) };
+                if (MainApp.FormValidate()) {
+                    if (self.Action == "CreateView") {
+                        //new workflow
+                        MainApp.ShowDialog(MainApp.GetUrl("_BizWorkflowService", "Get", "CreateWorkflowView", { requestTypeCode: self.RequestTypeCode, resId: self.ResId }), {},
+                            function (data) {
+                                var wfParam = {
+                                    isNotify: self.dataSources.IsNortifyResult,
+                                    resId: self.ResId,
+                                    requestTypeCode: self.RequestTypeCode,
+                                    positionId: data.PosId,
+                                    orgId: data.OrgId,
+                                    folioId: data.FolioId,
+                                    requestStatus: isSubmit ? 1 : 0,
+                                    requireFields: {}
+                                };
+                                YarClient.AjaxPost(MainApp.GetUrl("_BizWorkflowService", "Post", "CreateWorkflow"), wfParam, {
+                                    IsWarning: true,
+                                    success: function (returnData) {
+                                        YarClient.AjaxPost(url, postdata, {
+                                            IsWarning: true,
+                                            success: function (returnData) {
+                                                swal("提交成功!", "您的信息发布请求已提交。", "success");
+                                                finishcall(returnData, callback);
+                                            }
+                                        });
+                                    }
+                                });                                
+                            });
+                    } else {
+                        //save
+                        YarClient.AjaxPost(url, postdata, {
+                            IsWarning: true,
+                            success: function (returnData) {
+                                finishcall(returnData, callback);
+                            }
+                        });
+                    }
+                }
+                
+            };
+
+        };
+
+        // 从后台获取数据
+        //debugger;
+        var data = @this.Raw(Model.Data);
+
+        var viewModel = new ViewModel(data, context.selectedPos);
+
+        // 绑定ko
+        var arrButtons = [];
+        if (viewModel.Action == "CreateView") {
+            arrButtons.push({
+                text: '发布', click: function (finishcall) {
+                    viewModel.OnSave(finishcall,true);
+                }
+            });
+        }
+        arrButtons.push({
+            css: "l-btn-draft", text: "保存", click: function (finishcall) {
+                viewModel.OnSave(finishcall,false);
+            }
+        });
+        arrButtons.push({ text: "关闭", click: function (finishcall) { viewModel.OnClose(finishcall); } });
+        //eleId, title, width, height, customButtons
+        MainApp.DialogCustomButton(eleId, (viewModel.Action == "CreateView" ? "新增" : "编辑"), 1000, 650, arrButtons, function () {
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+        });
+        
+    })(eleId, context, callback);
+</script>

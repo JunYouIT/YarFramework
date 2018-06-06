@@ -1052,7 +1052,7 @@ if (typeof jQuery === 'undefined') {
     this.backdrop(function () {
       that.$body.removeClass('modal-open')
       that.resetScrollbar()
-      that.$element.trigger('hidden.bs.modal')
+      that.$element.triggerHandler('hidden.bs.modal')
     })
   }
 

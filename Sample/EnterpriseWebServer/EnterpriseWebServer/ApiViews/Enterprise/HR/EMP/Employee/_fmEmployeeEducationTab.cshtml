@@ -1,0 +1,248 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+    var isView = "1".Equals(context.Request["isView"]);
+}
+
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div id="education">
+                    @if (!isView)
+                    {
+                        <div class="col-md-12" style="text-align: right">
+                            <div style="display: inline-block;">
+                                <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnCreateEducation"><i class="fa fa-plus-circle"></i> 新增 </a>
+
+                                <a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnDeleteAllEducation"><i class="fa fa-trash-o"></i> 删除 </a>
+                            </div>
+                        </div>
+                    }@*End IsView*@
+                    <div class="col-md-12" style="margin-top:5px;" id="educationdiv">
+                        <table data-bind="grid:uiSources.educationlist" id="educationlist" style="height:420px;width:100%;"></table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+
+            if (context.ViewModel && context.ViewModel.BizName && context.ViewModel.SubBizName) {
+                self.ViewTool = new YarClient.ViewModel(context.ViewModel.BizName, "@tokenId");
+                self.BizName = context.ViewModel.BizName;
+                self.SubBizName = context.ViewModel.SubBizName;
+                self.DispMode = context.ViewModel.DispMode;
+            }
+            else {
+                self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            }
+
+            //
+            self.dataSources = data.dataSources;
+
+            self.Init = function() {
+                $('#educationlist').datagrid('load');
+            };
+
+            self.uiSources = {
+                educationlist: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#educationlist",
+                        SizeOpt: {
+                            pid: "#educationdiv",
+                            top: ((self.DispMode && self.DispMode == "singleTab") ? 0 : 430)
+                        }
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", (self.SubBizName ? self.SubBizName + ".GetEducationList" : "GetEducationList"), { resId: data.form.empId }),
+                        fitColumns:true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                        pageSize: 10,
+                        columns: [[
+                        @if (!isView)
+                        {
+                            <text>
+                            { field: 'ck', checkbox:true },
+                            </text>
+                        }
+                        { field: 'School', title: '学校',sortable:true, width: 200 },
+                        { field: 'Speciality', title: '专业',sortable:true, width: 200 },
+                        { field: 'BG', title: '学历',sortable:true, width: 200 },
+                        { field: 'Degree', title: '学位',sortable:true, width: 200 },
+                        { field: 'EduDegreeNumber', title: '学位证编号',sortable:true, width: 200 },
+                        { field: 'EduBeginDate', title: '开始日期',sortable:true, width: 200 },
+                        { field: 'EduEndDate', title: '结束日期',sortable:true, width: 200 },
+                        { field: 'Highest', title: '最高学历',sortable:true, width: 200, formatter: function(value, row, index){
+                            var s = String.format('<a class="btn btn-xs btn-success" disabled="disabled" onclick="Pagecom.EditViewModel.OnModifyIsHighestDiplomaState(\'{0}\')">{1}</a>',row.EducationID,value);
+                            if(value=='否')
+                                s = String.format('<a class="btn btn-xs btn-default" @(isView? " disabled='disabled' title='点击设为最高学历' " : "") data-toggle="tooltip" onclick="Pagecom.EditViewModel.OnModifyIsHighestDiplomaState(\'{0}\')">{1}</a>',row.EducationID,value);
+                            return  s;
+                        } },
+                        @if (!isView) {
+                            <text>
+                        { field: 'EducationID', title: '功能',formatter: function(value, row, index){
+
+                            var s =String.format('<a class="btn_default" href="#" onclick="Pagecom.EditViewModel.OnEducationEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.EducationID);
+
+
+                            return s;
+                        }
+                        }
+                            </text>
+                        }@*End IsView*@
+                        ]]
+                    }
+                }
+            };
+
+            self.OnRefresh = function () {
+                var data = {
+                };
+                $('#educationlist').datagrid('load', data);
+            };
+            @if (!isView) {
+                <text>
+            self.OnCreateEducation = function () {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateEducationView", { empId: data.form.empId ,legalId: data.form.legalId}), { ViewModel: self, data: {} },
+                function (data) {
+                    if (data.EduInfo) {
+                        Pagecom.EditEmpViewModel.OnChangeEducation(data.EduInfo.name);
+                    }
+                    self.OnRefresh();
+                });
+            };
+            self.OnEducationEdit = function (eduId) {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditEducationView", { resId: eduId,empId:data.form.empId,legalId: data.form.legalId }), { ViewModel: self, data: {} },
+                function (data) {
+                    if (data.EduInfo) {
+                        Pagecom.EditEmpViewModel.OnChangeEducation(data.EduInfo.name);
+                    }
+                    self.OnRefresh();
+                });
+            };
+            self.OnDeleteAllEducation = function () {
+                var rows = $("#educationlist").datagrid('getChecked');
+                var array = [];
+                var names = [];
+                //debugger;
+                if (rows && rows.length > 0) {
+                    rows.each(function(value, index) {
+                        array.push(value.EducationID);
+                        names.push(value.School+'['+value.Speciality+']');
+                    });
+                    swal({
+                        title: "你是否确认删除如下信息?",
+                        text: names.join('、'),
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        confirmButtonText:'是的，删除！'
+                    },  function () {
+                        //alert(array.join(';'));
+                        YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAllEducation", { ids: array.join(';') }), {
+                            IsWarning: true,
+                            success: function(returnData) {
+                                self.OnRefresh();
+                                swal("删除成功", "", "success");
+                            }
+                        });
+
+                    });
+                } else {
+                    swal("请选中需要删除的数据", "", "warning");
+                }
+
+            };
+            //self.OnEducationDelete = function () {
+            //    var row = $('#educationlist').datagrid('getSelected');
+            //    if (row) {
+            //        $.messager.confirm('确认', '你确定想删除此数据?', function (r) {
+            //            if (r) {
+            //                $.ajax({
+            //                    url: self.ViewTool.GetActionUrl("Get", "DeleteEducation", { resId: row.EducationID, logicDeletes: 1 }),
+            //                    success: function (text) {
+            //                        self.OnRefresh();
+            //                    },
+            //                    error: function () {
+            //                    }
+            //                });
+            //            }
+            //        });
+            //    }
+            //};
+            self.OnModifyIsHighestDiplomaState = function (eeid) {
+
+                var rows = $('#educationlist').datagrid('getRows');
+                var row;
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].EducationID == eeid) {
+                        row = rows[i];
+                        break;
+                    }
+                }
+                if (row) {
+                    swal({
+                        title: "你是否确认将最高学历变更为：" + row.BG + "?",
+                        text: String.format('学校：{0}　专业：{1}　学历：{2}', row.School, row.Speciality, row.BG),
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: false
+                    }, function() {
+                        YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "ModifyIsHighestDiplomaState", { resId: eeid }), {
+                            IsWarning: true,
+                            success: function(returnData) {
+                                if (returnData) {
+                                    Pagecom.EditEmpViewModel.OnChangeEducation(row.BG);
+                                    self.OnRefresh();
+                                    swal("变更成功", "", "success");
+                                }
+                            }
+                        });
+                    });
+
+                } else {
+                    swal("设置失败", "", "warning");
+                }
+
+
+                //$.ajax({
+                //    url: self.ViewTool.GetActionUrl("Get", "ModifyIsHighestDiplomaState", { resId: companyId }),
+                //    success: function (text) {
+                //        self.OnRefresh();
+                //    },
+                //    error: function () {
+                //    }
+                //});
+            };
+
+            </text>
+            }@*End IsView*@
+
+        };
+
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+        Pagecom.EditViewModel = viewModel;
+
+        ko.applyBindings(viewModel, $(eleId)[0]);
+        viewModel.Init();
+
+    })(eleId, context, callback);
+</script>

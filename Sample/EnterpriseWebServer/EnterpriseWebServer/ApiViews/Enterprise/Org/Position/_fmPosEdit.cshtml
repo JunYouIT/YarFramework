@@ -16,7 +16,7 @@
                                                           
                                     <input id="txtOrganizationName" type="text" readonly="readonly" class="form-control" data-bind="value:formdata.OrganizationName" data-options="required:true" style="height: 34px; width: 100%; text-align: left;" placeholder="" />
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" data-bind="click:OnSelectOrgUnit" type="button">选择组织</button>
+                                        <button class="btn btn-default" data-bind="click:OnSelectOrgUnit" type="button" @(Yar.Enterprise.ServerVersionType.IsFree()? "disabled" : "")>选择组织</button>
                                     </span>                                
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                             <div class="input-group">
                                 <input type="text" readonly="readonly" class="form-control" data-options="required:true" data-bind="value:formdata.ReportToPositionName" style="height: 34px; width: 100%; text-align: left;" placeholder="" />
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" data-bind="click:OnSelectOrgPosition" type="button">选择职位</button>
+                                    <button class="btn btn-default" data-bind="click:OnSelectOrgPosition" type="button" @(Yar.Enterprise.ServerVersionType.IsFree()? "disabled" : "")>选择职位</button>
                                 </span>
                                 @*<input type="text" data-bind="comboboxValue:formdata.ReportToPositionID,dataSource:dataSources.dsPosList" style="height: 34px;" class="easyui-combobox" data-options="buttonText:'从全部职位选择',editable:false" />*@
                             </div>
@@ -69,9 +69,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>所属职务</label>
+                        <label class="control-label bold col-md-4">所属职务</label>
                         <div class="col-md-8">
-                            <input type="text" data-bind="comboboxValue:formdata.JobID,dataSource:dataSources.dsJobList" style="width: 100%;" class="easyui-combobox" data-options="required:true" />
+                            <input type="text" data-bind="comboboxValue:formdata.JobID,dataSource:dataSources.dsJobList" style="width: 100%;" class="easyui-combobox" data-options="" />
                         </div>
                     </div>
                 </div>
@@ -93,15 +93,18 @@
             <div class="col-md-12">
                 <div class="col-md-6" style="padding-left:0;">
                     <div class="form-group">
-                        <label class="control-label bold col-md-4">职位定员数</label>
+                        <label class="control-label bold col-md-4">所属职级</label>
                         <div class="col-md-8">
-                            <input type="number" class="easyui-numberbox" data-bind="textboxValue:formdata.Headcount" min="0" data-options="required:true,validType:'PositiveInteger'" style="width: 100%;">
+                            <input type="text" data-bind="comboboxValue:formdata.PositionLevelID,dataSource:dataSources.dsPosLevelList" style="width: 100%;" class="easyui-combobox" data-options="" />
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="col-md-12">
-                        @*<input type="checkbox" data-bind="checked:formdata.IsAppraisal"> 参与绩效考核*@
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">职位定员数</label>
+                        <div class="col-md-8">
+                            <input type="number" class="easyui-numberbox" data-bind="textboxValue:formdata.Headcount" min="0" data-options="required:true,validType:'PositiveInteger'" style="width: 100%;">
+                        </div>
                     </div>
                 </div>   
             </div>
@@ -110,7 +113,7 @@
                     <div class="form-group">
                         <label class="control-label bold col-md-2">对应角色</label>
                         <div class="col-md-7">
-                            <input type="text" readonly="readonly" data-bind="textboxValue:formdata.SelectRoles" data-options="multiline:true" class="easyui-textbox" style="height: 120px; background-color: #FFFFE6; width: 100%;" />
+                            <input type="text" id="selectRoles" data-bind="tagboxValue:displaydata.SelectRoleIds,dataSource:dataSources.dsSelectedRoles,hasArrow:false" style="width: 100%;" />
                         </div>
                         <div class="col-md-3">
                             <span class="input-group-btn">
@@ -148,8 +151,9 @@
         }
 
         data.form.IsFunctionPosition = data.form.IsFunctionPosition.toString();  
-	  self.formdata = ko.mapping.fromJS(data.form);
-	  debugger;
+        self.formdata = ko.mapping.fromJS(data.form);
+        self.displaydata = ko.mapping.fromJS(data.display);
+
 	  self.dataSources = data.dataSources;
       self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
           var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist",{id:data.form.ResId,OrganizationID:data.form.OrganizationID});
@@ -178,7 +182,7 @@
 
       self.OnSelectOrgPosition = function () {
           MainApp.ShowDialog(MainApp.GetUrl("_BizOrganizationService", "Get", "Biz_Select_OrgPosition.PositionView"), {isMulti: 0}, function (data) {
-              debugger;
+
               self.formdata.ReportToPositionName(data[0].OrgPositionName);
               self.formdata.ReportToPositionID(data[0].Id);
           });
@@ -189,40 +193,32 @@
           var posId = self.formdata.ResId();
           MainApp.ShowDialog(MainApp.GetUrl("_BizPermissionService", "Get", "Biz_Select_Role.RoleView"), {}, function (data) {
               //alert(data[0].Name);
-              var existRoles = self.formdata.SelectRoles() ;
-              var existRoleIds = self.formdata.SelectRoleIds();
+              var existRoleIds = self.displaydata.SelectRoleIds();
 
-              var arrayids = [];
-              var arraynames = [];
               //debugger;
               if(data && data.length > 0){
                   data.each(function (value, index) {
                       if(existRoleIds.indexOf(value.Id) == -1)
                       {
-                          arrayids.push(value.Id);
-                          arraynames.push(value.Name);
+                          var isexsit = false;
+                          $.each(self.dataSources.dsSelectedRoles, function (index, item) {
+                              if (item.ID == value.Id) {
+                                  isexsit = true;
+                              }
+                          });
+                          if (!isexsit) {
+                              self.dataSources.dsSelectedRoles.push({ ID: value.Id, Name: value.Name });
+                          }
+                          self.displaydata.SelectRoleIds.push(value.Id);
                       }
                   })}                         
-
-              if(arrayids.length>0)
-              {
-                  if(existRoles.length>0)
-                  {
-                      self.formdata.SelectRoles( existRoles + ';' + arraynames.join(';'));
-                      self.formdata.SelectRoleIds( existRoleIds + ';'+ arrayids.join(';'));   
-                  }
-                  else
-                  {
-                      self.formdata.SelectRoles( arraynames.join(';'));
-                      self.formdata.SelectRoleIds( arrayids.join(';'));   
-                  }
-              }
+              $("#selectRoles").tagbox('loadData', self.dataSources.dsSelectedRoles);                  
+             
           });
       };
 
-      self.OnDeleteRole = function () {          
-              self.formdata.SelectRoles("");
-              self.formdata.SelectRoleIds("");             
+      self.OnDeleteRole = function () {                        
+          self.displaydata.SelectRoleIds.removeAll();             
       };
 
       self.OnSave = function (finishcall) {
@@ -230,7 +226,7 @@
         var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
         if(MainApp.FormValidate())
         {
-            debugger;
+       
             //if(self.formdata.ReportToPositionName() == "")
             //{
             //    swal("请选择上级职位", "", "warning");
@@ -253,10 +249,10 @@
                 IsWarning: true,
                 success : function(returnData) {
                     finishcall(returnData,callback);
-                    debugger;
+                    //debugger;
                     if(self.Action == 'new'){
                         $.ajax({                  
-                            url: self.ViewTool.GetActionUrl("Get", "UpdateRolesPos", { ids: self.formdata.SelectRoleIds(), resId:returnData.Result.ResId }),
+                            url: self.ViewTool.GetActionUrl("Get", "UpdateRolesPos", { ids: self.displaydata.SelectRoleIds(), resId:returnData.Result.ResId }),
                             success: function (text) {
                             },
                             error: function () {
@@ -264,7 +260,7 @@
                         });    
                     } else{
                         $.ajax({                  
-                            url: self.ViewTool.GetActionUrl("Get", "UpdateRolesPos", { ids: self.formdata.SelectRoleIds(), resId:data.form.ResId }),
+                            url: self.ViewTool.GetActionUrl("Get", "UpdateRolesPos", { ids: self.displaydata.SelectRoleIds(), resId:data.form.ResId }),
                             success: function (text) {
                             },
                             error: function () {
@@ -290,9 +286,10 @@
       var data = @this.Raw(Model.Data);
       var viewModel = new ViewModel(data);
 
-      ko.applyBindings(viewModel, $(eleId)[0]);
-	  viewModel.Init();
-      MainApp.DialogModel(eleId,viewModel.Action == "new"? '职位新增' : '职位修改',800,450,viewModel.OnSave);
+      MainApp.DialogModel(eleId, viewModel.Action == "new" ? '职位新增' : '职位修改', 800, 450, viewModel.OnSave, null, function () {
+          ko.applyBindings(viewModel, $(eleId)[0]);
+          viewModel.Init();
+      });
 
     })(eleId, context, callback);
 </script>

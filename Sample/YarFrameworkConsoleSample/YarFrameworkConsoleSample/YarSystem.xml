@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<System Id="ConsoleApp" Name ="ConsoleApp"  DefaultApp="DbAppApi">
+  <connectionStrings>
+  </connectionStrings>
+  <appSettings>
+  </appSettings>
+  <Applications>
+    <Application Id="system" Name ="system">
+      <Services>
+        <Service id="Yar.Service.IViewService,Yar.Service" type="Yar.Service.View.ViewService,Yar.Service">
+          <Properties>
+            <Property Name="ViewPath" Value="ApiViews\" />
+            <Property Name="IsCache" Value="false" />
+          </Properties>
+        </Service>
+        <Service id="Yar.Service.IBizNodeService,Yar.Service" type="Yar.Service.BizNodeService,Yar.Service">
+          <Properties>
+            <Property Name="Path" Value="BizGroup.xml" />
+          </Properties>
+        </Service>
+        <Service id="Yar.Service.IBusinessService,Yar.Service" type="Yar.Service.BusinessService,Yar.Service"/>
+        <Service id="Yar.Process.IProcessService,Yar.Process" type="Yar.Process.DefaultProcessService,Yar.Process"/>
+        <Service id="Yar.Service.IHttpServerService,Yar.Service" type="Yar.Service.HttpServerService,Yar.Service">
+          <Properties>
+            <Property Name="Home" Value="localhost" />
+            <Property Name="Port" Value="8084" />
+          </Properties>
+        </Service>
+      </Services>
+      <Modules>
+      </Modules>
+    </Application>
+    <Application Id="DbAppApi" Level="4" AppType="api" AuthType="basic" Name ="DbAppApi" UrlPath="api" BizSystem="BizAdminApi">
+      <Modules>
+        <Module Name="DbAppApi" Type="Yar.Service.SystemModule,Yar.Service">
+          <Bizs>
+            <Biz Id="BizAdminApi" Type="Yar.BizModule.BizDynamicActionSystem,Yar.BizModule" IsGlobal="true">
+              <Properties>
+              </Properties>
+            </Biz>
+            <Biz Id="BizApiData" Type="YarFrameworkConsoleSample.BizApiData,YarFrameworkConsoleSample" IsGlobal="true" />
+          </Bizs>
+        </Module>
+      </Modules>
+    </Application>
+  </Applications>
+</System>

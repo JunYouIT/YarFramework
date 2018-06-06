@@ -1,0 +1,148 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+
+<style>
+    input[class~='easyui-textbox'][data-options*='multiline:true'][class~='multi-content'] + span > textarea {
+        height: 100px !important;
+    }
+</style>
+
+<div style="padding:5px; background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>名称</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.SalaryLevelName" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>数值</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.SalaryLevelValue" data-options="required:true,validType:'length[0,100]'" class="easyui-numberbox" validtype="SalaryLevel" precision="0" min="1" max="100" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">类型</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="comboboxValue:formdata.SalaryLevelType,dataSource:dataSources.dsSalaryLevelTypes" style="width: 100%; height: 34px;" class="easyui-combobox" data-options="required:true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">备注</label>
+                        <div class="col-md-10">
+                            <input type="text" data-bind="textboxValue:formdata.Description" data-options="validType:'length[0,128]',multiline:true" class="easyui-textbox multi-content" style="height: 80px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $.extend($.fn.validatebox.defaults.rules, {
+            SalaryLevel: {
+                validator: function (value) {
+                    var fValue = parseInt(value);
+
+                    if (fValue > 0) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                },
+                message: '岗位等级数值要大于0'
+            }
+        });
+    });
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+            //
+            self.Action = 'new';
+            self.ResId = '';
+
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+                self.Action = 'edit';
+                self.ResId = data.form.ResId;
+            }
+            else {
+                self.ResId = YarClient.NewGuid();
+            }
+
+            self.formdata = ko.mapping.fromJS(data.form);
+            self.dataSources = data.dataSources;
+
+            if (self.Action == 'new') {
+                self.formdata.ResId(self.ResId);
+                self.formdata.SalaryLevelID(self.ResId);
+            }
+
+            //
+            var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist",{ id: data.form.ResId });
+            var valid = String.format("cremote['{0}','name','名称已存在']", checkUrl);
+
+            self.Init = function() {
+
+            };
+
+            self.OnSave = function (finishcall) {
+
+                var postdata = { formdata : MainApp.GetDataChange(self.formdata, data.form, true) };
+
+                if (MainApp.FormValidate()) {
+                    var url = '';
+
+                    if (self.Action == 'new'){
+                        url = self.ViewTool.GetActionUrl("Post", "Create",{ resId: self.ResId });
+                    }
+                    else {
+                        url = self.ViewTool.GetActionUrl("Post", "Edit",{ resId: self.ResId });
+                    }
+
+                    YarClient.AjaxPost(url, postdata, {
+                        IsWarning: true,
+                        success : function(returnData) {
+                            finishcall(returnData, callback);
+                        }
+                    });
+                }
+                else {
+                    swal("提示！", "输入数据有误，请检查后再次提交！", "warning");
+                }
+            };
+        };
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+        MainApp.DialogModel(eleId, viewModel.Action == "new" ? '岗位等级新增' : '岗位等级修改', 750, 300, viewModel.OnSave, null, function () {
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+        });
+
+    })(eleId, context, callback);
+</script>

@@ -49,24 +49,6 @@ var bizId = Model.BizId;
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label bold col-md-4">法人代表/负责人</label>
-                        <div class="col-md-8">
-                            <span type="text" data-bind="text:formdata.LegalRepresentativeName" class="form-control-static"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label bold col-md-4">统一社会信用代码</label>
-                        <div class="col-md-8">
-                            <span type="text" data-bind="text:formdata.UnifiedCreditRecord" class="form-control-static"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
                         <label class="control-label bold col-md-4">有效期开始日期</label>
                         <div class="col-md-8">
                             <span type="text" data-bind="text:formdata.BizBeginDate" class="form-control-static"></span>
@@ -82,6 +64,25 @@ var bizId = Model.BizId;
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">法人代表/负责人</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.LegalRepresentativeName" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">统一社会信用代码</label>
+                        <div class="col-md-8">
+                            <span type="text" data-bind="text:formdata.UnifiedCreditRecord" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -184,7 +185,7 @@ var bizId = Model.BizId;
             {
             };
             self.OnSave = function (finishcall) {
-                debugger;
+
                 var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
                 if(MainApp.FormValidate())
                 {
@@ -214,9 +215,10 @@ var bizId = Model.BizId;
        var data = @this.Raw(Model.Data);
        var viewModel = new ViewModel(data);
 
-       ko.applyBindings(viewModel, $(eleId)[0]);
-       viewModel.Init();
-       MainApp.DialogCustomButton(eleId, '查看法人信息', 900, 600, [{ text: '关闭', cancel: true }]);
+       MainApp.DialogCustomButton(eleId, '查看法人信息', 900, 600, [{ text: '关闭', cancel: true }], function () {
+           ko.applyBindings(viewModel, $(eleId)[0]);
+           viewModel.Init();
+       });
        // MainApp.DialogCustomButton(eleId, '查看法人实体信息', 900, 600, [{ text: '关闭', cancel: true },
        //     {text:'打印',click: function(){viewModel.print();}}]);
 

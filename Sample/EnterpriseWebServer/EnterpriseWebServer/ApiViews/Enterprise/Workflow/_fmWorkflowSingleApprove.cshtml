@@ -1,0 +1,482 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+
+<style type="text/css">
+    .modalContainer {
+        margin: 10px 10px 0 10px;
+        padding-bottom: 20px;
+    }
+
+    .panel-body {
+        overflow-x: hidden;
+    }
+</style>
+
+<div class="modalContainer">
+    <!-- masterApp info -->
+    <div id="divBasic" class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                申请人信息
+            </div>
+            <div class="tools">
+                <a href="javascript:void(0);" class="collapse" title="申请人信息"> </a>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="form form-horizontal">
+                <div class="form-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label col-md-4 bold">申请人</label>
+                            <div class="col-md-8">
+                                <label data-bind="text:basicData.EmployeeName" class="form-control-static"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label col-md-4 bold">申请类别</label>
+                            <div class="col-md-8">
+                                <label data-bind="text:basicData.AppType" class="form-control-static"></label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label col-md-4 bold" id="lblEmployeeNo">员工/雇员编号</label>
+                            <div class="col-md-8">
+                                <label data-bind="text:basicData.EmployeeNum" class="form-control-static"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label col-md-4 bold">公司</label>
+                            <div class="col-md-8">
+                                <label data-bind="text:basicData.LegalName" class="form-control-static"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label col-md-4 bold">职位</label>
+                            <div class="col-md-8">
+                                <label data-bind="text:basicData.PositionName" class="form-control-static"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label col-md-4 bold" id="lblDepartment">部门/归属</label>
+                            <div class="col-md-8">
+                                <label data-bind="text:basicData.DeptName" class="form-control-static"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label col-md-4 bold">申请时间</label>
+                            <div class="col-md-8">
+                                <label data-bind="text:basicData.CreateTime" class="form-control-static"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label col-md-4 bold">最后更新时间</label>
+                            <div class="col-md-8">
+                                <label data-bind="text:basicData.UpdateTime" class="form-control-static"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="row">
+                        <div class="col-md-6">
+                            <label class="control-label col-md-4 bold">是否邮件通知</label>
+                            <div class="col-md-8">
+                                <input type="checkbox" data-bind="SwitchValue:basicData.IsNotifyResult" disabled="disabled">
+                            </div>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divBizInfo" class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                申请信息
+            </div>
+            <div class="tools">
+                <a href="javascript:void(0);" class="collapse" title="申请人信息"> </a>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div id="bizInfo"></div>
+        </div>
+       
+    </div>
+    <!-- masterApp info End <-->
+    <div id="approveInfo" class="portlet box blue">
+
+        <div class="portlet-title">
+            <div class="caption">
+                申请流程信息
+            </div>
+            <div class="tools">
+                <a href="javascript:void(0);" class="collapse" title="审批流程信息"> </a>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="form form-horizontal">
+                <div class="form-body">
+                    <table class="table table-hover table-responsive">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">处理日期</th>
+                                <th style="width: 10%;">步骤名称</th>
+                                <th style="width: 10%;">处理人</th>
+                                <th style="width: 10%;">处理结果</th>
+                                <th style="width: 30%;">处理意见</th>
+                                <th style="width: 20%;">附件</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach:approveData">
+                            <tr>
+                                <td><label class="form-control-static" data-bind="text:Time"></label></td>
+                                <td><label class="form-control-static" data-bind="text:AcName"></label></td>
+                                <td><label class="form-control-static" data-bind="text:OpUser"></label></td>
+                                <td><label class="form-control-static" data-bind="text:OpName"></label></td>
+                                <td><label class="form-control-static" data-bind="html:comment" style="word-wrap:break-word;word-break:break-all"></label></td>
+                                <td><span data-bind="html:attachment"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="attachmentModal" role="dialog" aria-labelledby="cashModallLabel" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-toggle="modal" data-target="#attachmentModal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">审批信息录入</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- modal-body -->
+
+                    <div class="row">
+                        <label class="control-label col-md-4 bold">原因描述</label>
+                        <div class="col-md-8">
+                            <textarea class="form-control easyui-validatebox" data-bind="value:comment" rows="3" data-options="validType:'length[0,512]'"></textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 5px;">
+                        <label class="control-label col-md-4 bold">选择文件</label>
+                        <div class="col-md-8">
+                            <a class="gt2_btn_add" style="position:relative;overflow:hidden;">
+                                <span class="fileinput-button"><span>上传附件</span><input id="fileupload" type="file" name="file"></span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row" data-bind="visible:attachmentList().length>0">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>文件名</th>
+                                    <th>功能</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach:attachmentList">
+                                <tr>
+                                    <td>
+                                        <a class="alert-link form-control-static" data-bind="text: Name, attr:{href:Url}"></a>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void 0" title="删除" data-bind="click:$root.removeAtt"><i class="fa fa-trash-o fa-grid"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- modal-body end -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bind="click:submitApprove">确定</button>
+                    <button type="button" class="btn btn-warning" data-bind="click:closeApprove" >取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    (function(eleId, context, callback){
+
+        $.parser.parse(eleId);
+
+        var Attachment = function(id,name,url){
+            var self  = this;
+            self.Id   = id;
+            self.Name = name;
+            self.Url  = url;
+        };
+
+        var ApproveInfo = function(id,time,activityName,opName,opUser,comment,attList){
+            var self        = this;
+            self.Id         = ko.observable(id);
+            self.Time       = ko.observable(time);
+            self.AcName     = ko.observable(activityName);
+            self.OpName     = ko.observable(opName);
+            self.OpUser     = ko.observable(opUser);
+            self.comment    = ko.observable(comment);
+            self.attList    = ko.observable(attList);
+            self.attachment = ko.computed(function(){
+                if(self.attList()){
+                    var temp = JSON.parse(self.attList());
+                    var retList = new Array();
+                    var tool    = new YarClient.ViewModel("BizPermission", "@tokenId");
+                    if(temp && temp.length>0){
+                        temp.forEach(function(item){
+                            var itemArray = item.split("|");
+                            if(itemArray.length==2){
+                                var itemId = itemArray[0] ;
+                                var itemname = itemArray[1];
+                                var url = global.GetActionUrl("_BizAttachmentService", "GetAttachment", { AttachmentId: itemId });
+                                retList.push(String.format('<a class="alertlink form-control-static" href={1}>{0}</a>',itemname,url));
+                            }
+                        });
+                    }
+                    var retVal="";
+                    retList.forEach(function(item){
+                        retVal += item;
+                        retVal += " </br>";
+                    });
+                    return retVal;
+                }
+            });
+        };
+        var ViewModel = function(data){
+            var self = this;
+
+            self.resId          = data.resId;
+            self.IsActiveBizView = ko.observable(false);
+            self.basicData      = ko.mapping.fromJS(data.basicData);
+
+            //self.approveData    = ko.mapping.fromJS(data.approveData);
+            self.approveData = ko.observableArray();
+
+            if(data.approveData){
+                var temp = data.approveData;
+                temp.forEach(function(item){
+                    self.approveData.push(new ApproveInfo(item.AudittrailID,item.OperationTime,item.ActivityName,item.OperationName,item.OperatorName,item.Comments,item.Attachment));
+                });
+            }
+
+            self.legalId        = data.legalId;
+            self.requestType    = data.requestType;
+            self.audittrailId   = data.audittrailId;
+            self.audittrail = data.audittrail;
+            self.action         = ko.observable();
+            self.comment        = ko.observable();
+            self.attachmentList = ko.observableArray();
+            self.paramFields = {};
+            self.onAction = function (bizAction) {
+                if (Pagecom.approveVM.CheckWFParamFields) {
+                    if (Pagecom.approveVM.CheckWFParamFields(bizAction)) {
+                        self.showApproveModal();
+                        self.action(bizAction);
+                    }
+                } else {
+                    self.showApproveModal();
+                    self.action(bizAction);
+                }
+                
+            };
+
+            self.testList = ko.observableArray();
+            self.testList.push({'name':'1'})
+
+            self.showApproveModal = function(){
+                $.Yar.Attachement.AttachmentUpload($('#fileupload'),self.legalId,self.resId,self.requestType,self.audittrailId, function(result){
+                    if(result){
+                        self.attachmentList.push(new Attachment(result.Result.AttachementID,result.Result.FileName,global.GetActionUrl("_BizAttachmentService", "GetAttachment", { AttachmentId: result.Result.AttachementID })))
+                    }
+                });
+                $("#attachmentModal").modal('show');
+            };
+
+            self.closeApprove = function (data, event){
+                // 把附件设为删除
+                var attachmentIds= [];
+                if (self.attachmentList() && self.attachmentList().length > 0){
+                    self.attachmentList().forEach(function(item){
+                        attachmentIds.push(item.Id);
+                    });
+                    var url = global.GetActionUrl("_BizAttachmentService", "DeleteMultipleAttachments");
+                    global.AjaxPost(url, { data: attachmentIds,formId:self.resId }, {});
+                }
+                //debugger;
+                event.stopPropagation();
+                // 关闭模态框
+                //$("#attachmentModal").hide();
+                $("#attachmentModal").modal("hide");
+                //$('#attachmentModal').closest('.modal').modal('hide');
+            };
+
+            self.removeAtt = function(item){
+                self.attachmentList.remove(item);
+                var url = global.GetActionUrl("_BizAttachmentService", "DeleteAttachment",{AttachmentId:item.Id,FormId:self.resId});
+                global.AjaxPost(url,{}, {
+                });
+
+            };
+
+            self.submitApprove = function(){
+                //debugger;
+                if (Pagecom.approveVM.SubmitAction) {
+                    Pagecom.approveVM.SubmitAction({
+                        resId: self.resId,
+                        audittrailId: self.audittrailId,
+                        activityCode: self.audittrail.ActivityCode,
+                        action: self.action().Action,
+                        comment: self.comment(),
+                        paramFields: self.paramFields
+                    }, function (submitactiondata) {
+                        if (submitactiondata.IsCallWfAction) {
+                            global.AjaxPost(global.GetActionUrl("_BizWorkflowService", "ApproveWorkflow"),
+                                {
+                                    resId: self.resId,
+                                    audittrailId: self.audittrailId,
+                                    activityCode: self.audittrail.ActivityCode,
+                                    action: self.action().Action,
+                                    comment: self.comment(),
+                                    paramFields: self.paramFields,
+                                    data: submitactiondata.data
+                                }
+                                , {
+                                    IsWarning: true,
+                                    success: function (returnData) {
+                                        swal("保存成功!", "您的审批意见已经提交", "success");
+                                        //$(eleId).window('destroy');
+                                        self.dialog.close();
+                                        returnData.action = self.action();
+                                        callback(returnData);
+                                    }
+                                });
+                        } else {
+                            swal("保存成功!", "您的审批意见已经提交", "success");
+                            //$(eleId).window('destroy');
+                            self.dialog.close();
+                            submitactiondata.action = self.action();
+                            callback(submitactiondata);
+                        }
+                        });
+                } else {
+                    global.AjaxPost(global.GetActionUrl("_BizWorkflowService", "ApproveWorkflow"),
+                        {
+                            resId: self.resId,
+                            audittrailId: self.audittrailId,
+                            activityCode: self.audittrail.ActivityCode,
+                            action: self.action().Action,
+                            comment: self.comment(),
+                            paramFields: self.paramFields
+                        }
+                        , {
+                            IsWarning: true,
+                            success: function (returnData) {
+                                swal("保存成功!", "您的审批意见已经提交", "success");
+                                //$(eleId).window('destroy');
+                                self.dialog.close();
+                                returnData.action = self.action();
+                                callback(returnData);
+                            }
+                        });
+                }
+                
+            };
+
+        };
+        var
+        resId        = "@Model.ResId",
+        legalId      = '@Model.LegalId',
+        requestType  = '@Model.RequestType',
+        audittrailId = '@Model.AudittrailId',
+        businessId = '@Model.BusinessId',
+        viewAction = '@Model.ViewAction',
+        basicData    = @this.Raw(Model.BasicInfo),
+        approveData  = @this.Raw(Model.ApproveInfo),
+        actionList   = @this.Raw(Model.ActionList),
+        audittrail = @this.Raw(Model.Audittrail),
+        workflowActionName = "@Model.WorkFlowActionName",
+        viewModel = new ViewModel({ resId: resId, audittrail: audittrail,basicData:basicData,approveData:approveData,legalId:legalId,requestType:requestType,audittrailId:audittrailId});
+
+        Pagecom.approveVM = viewModel;
+        // 绑定ko
+        
+
+        var btnArray = new Array();
+
+        if(actionList && actionList.length>0){
+            actionList.forEach(function(val){
+                if(val.Action.toLowerCase()=="approve"){
+                    btnArray.push({text:val.Name,css:'l-btn-approve',click:function(){
+                        Pagecom.approveVM.onAction(val);}});
+                } else if(val.Action.toLowerCase()=="reject"){
+                    btnArray.push({text:val.Name,css:'l-btn-reject',click:function(){
+                        Pagecom.approveVM.onAction(val);}});
+                } else if(val.Action.toLowerCase()=="back"){
+                    btnArray.push({text:val.Name,css:'l-btn-reject',click:function(){
+                        Pagecom.approveVM.onAction(val);}});
+                } else {
+                    btnArray.push({text:val.Name,click:function(){
+                        Pagecom.approveVM.onAction(val);}});
+                }
+            });
+        }
+
+        if(context.customActionList!=null && !isNaN(context.customActionList.length) && context.customActionList.length > 0)
+        {
+            context.customActionList.forEach(function(action){
+                btnArray.push({
+                    text:action.text,
+                    css:action.css,
+                    click:action.click
+                });
+            });
+        }
+
+        btnArray.push({ text: '关闭', cancel: true });
+
+        var titleActionName = workflowActionName;
+
+        viewModel.dialog = MainApp.DialogCustomButton(eleId,
+           titleActionName+basicData.AppType+"(单号:"+basicData.AppCode+")",
+           900,620,
+            btnArray, function () {
+               // ko.cleanNode($(eleId)[0]);
+               ko.applyBindings(viewModel, $(eleId)[0]);
+               if (typeof App != 'undefined') App.blockUI();
+               if (businessId && viewAction) {
+
+                   // 如果context或bizName为空则不加载下面partialview(即业务信息)
+                   MainApp.LoadPartialView("bizInfo", global.GetActionUrl(businessId, viewAction, { resId: resId, displayMode: '1' }), {}, null, function () {
+                       if (typeof App != 'undefined') App.unblockUI();
+                   });
+               } else {
+                   divBiz.hide();
+               }
+           });
+
+        
+        
+
+    })(eleId, context, callback);
+</script>

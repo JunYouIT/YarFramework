@@ -28,7 +28,7 @@ var bizId = Model.BizId;
   (function (eleId, context, callback) {
     $.parser.parse(eleId);
 
-    var ViewModel = function (data,context,posId,deptId,requestTypeCode,resId) {
+    var ViewModel = function (data,context,requestTypeCode,resId) {
       var self = this;
 
       self.pathList = ko.mapping.fromJS(data);
@@ -46,11 +46,12 @@ var bizId = Model.BizId;
          swal("保存失败", "您选择的审批路径不存在!", "warning");
          return false;
        }
-        debugger;
+        //debugger;
         var
         isNotify      = context.isNotify,
         requireFields = context.requireFields,
-        workflowInfoId          = self.selectedPath().Id(),
+        workflowInfoId = self.selectedPath().Id(),
+
         flowCode = self.selectedPath().FlowCode();
 
 
@@ -58,8 +59,9 @@ var bizId = Model.BizId;
         isNotify   : isNotify,
         workflowInfoId       : workflowInfoId,
          resId : resId,
-        positionId      : posId,
-        orgId     : deptId,
+         positionId: context.positionId === undefined ? null : context.positionId,
+         orgId: context.orgId === undefined ? null : context.orgId,
+         requestStatus: context.requestStatus === undefined ? 1 : context.requestStatus,
         requireFields : requireFields,
       };
 
@@ -71,15 +73,13 @@ var bizId = Model.BizId;
     };
 
     };
-    debugger;
+    //debugger;
   var
   data            = @this.Raw(Model.WorkflowInfos),
-  posId           =  "@Model.positionId",
-  deptId          = "@Model.orgId",
   requestTypeCode = "@Model.requestTypeCode",
   workflowId      = "@Model.workflowId",
   resId           = "@Model.resId",
-  viewModel       = new ViewModel(data,context,posId,deptId,requestTypeCode,resId),
+  viewModel       = new ViewModel(data,context,requestTypeCode,resId),
   pathCnt         = data.length;
 
   ko.applyBindings(viewModel, $(eleId)[0]);

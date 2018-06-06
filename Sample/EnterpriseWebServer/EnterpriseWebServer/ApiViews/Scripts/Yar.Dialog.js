@@ -11,7 +11,8 @@
 	$.Yar = $.Yar || {};
 	
 	var YarDialog = {};
-    YarDialog.Show = function (eleId, title, width, height, okcall, cancelcall, onshown){
+    YarDialog.Show = function (eleId, title, width, height, okcall, cancelcall, onshown) {
+        //debugger;
             var closable = cancelcall ? false : true;
             if (typeof App != 'undefined') {
                 //debugger;
@@ -21,22 +22,28 @@
                     height: e['clientHeight']
                 };
                 //var client = App.getViewPort();
-                if (client.height <= height + 102) {
-                    height = client.height - 142;
+                if (client.height <= height + 122) {
+                    height = client.height - 122;
                 }
-                if (client.width <= width + 14) {
-                    width = client.width - 18;
+                if (client.width <= width + 22) {
+                    width = client.width - 22;
                 }
             }
-            BootstrapDialog.show({
+            //$(eleId).width(width);
+            var isshow = false;
+            return BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_DEFAULT,
                 title: title,
                 size: BootstrapDialog.SIZE_CUSTOM,
-                width: width + 14,
-                height: height + 30,
+                width: width + 22,
+                height: height,
                 message: $(eleId),
                 onshown: function (dialog) {
+                    if (isshow) return;
                     if (onshown) { onshown(dialog); }
+                   
+                    if (!isshow) isshow = true;
+                    
                 },
                 onhidden: function (dialog) {
 
@@ -66,9 +73,8 @@
                 }]
             });
     };
-		YarDialog.ShowCustom = function (eleId, title, width, height, customButtons,onshown) {
-
-            debugger;
+    YarDialog.ShowCustom = function (eleId, title, width, height, customButtons, onshown) {
+        //debugger;
             ///<summary>自定义对话框按钮</summary>
             ///<param name="customButtons" type="Array" >button array {cancel:true,text,icon,click,css}</param>
             ///cancel:true-取消行为,false-确定行为, text:按钮文本,css:按钮颜色css class,icon:按钮图标,click:按钮事件
@@ -79,11 +85,11 @@
                     width: e['clientWidth'],
                     height: e['clientHeight']
                 };
-                if (client.height <= height + 102) {
-                    height = client.height - 142;
+                if (client.height <= height + 122) {
+                    height = client.height - 122;
                 }
-                if (client.width <= width + 14) {
-                    width = client.width - 18;
+                if (client.width <= width + 22) {
+                    width = client.width - 22;
                 }
             }
 
@@ -103,7 +109,9 @@
                     button.cssClass = item.css;
                 } else {
                     if (item.cancel) {
-                        button.cssClass = 'l-btn-warning';
+                        //button.cssClass = 'dialogcancel';
+                    } else {
+                        button.cssClass = 'btn-primary';
                     }
                     //                    else {
                     //                        button.css = 'dialogok';
@@ -138,18 +146,32 @@
                 }
                 buttons.push(button);
             });
-
-            BootstrapDialog.show({
+            //debugger;
+            //$(eleId).width(width);
+            var isshow = false;
+           return BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_DEFAULT,
                 title: title,
                 size: BootstrapDialog.SIZE_CUSTOM,
-                width: width + 14,
-                height: height + 30,
+                width: width + 22,
+                height: height,
                 message: $(eleId),
                 buttons: buttons,
-                onshown: onshown
+                onshow: function () {
+                    //debugger;
+                },
+                onshown: function (dialog) {
+                    if (isshow) return;
+
+                    if (onshown)
+                        onshown(dialog);
+                    
+                    
+                    if (!isshow) isshow = true;
+                }
             });
-          
+            //debugger;
+            
         };
 	$.Yar.Dialog = YarDialog;
 }));

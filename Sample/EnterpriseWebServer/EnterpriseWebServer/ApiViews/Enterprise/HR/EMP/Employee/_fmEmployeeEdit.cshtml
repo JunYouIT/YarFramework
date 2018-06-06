@@ -1,0 +1,1287 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+    var entityAction = Model.EntityAction;
+}
+
+<style>
+    .select2-container {
+        z-index: 10000 !important;
+    }
+
+    .sweet-alert h2 {
+        font-size: 18px;
+        line-height: 24px;
+    }
+</style>
+
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal" id="divEmployeeEdit">
+        <div class="form-body">
+            <div class="row" style="margin-top:10px;">
+                <div id="leftTabBox" class="col-md-1" style="padding-left: 5px; padding-right: 0;">
+                    <ul id="leftTab" class="nav nav-tabs tabs-left">
+                        <li id="liEmployee" class="active">
+                            <a href="#employee" data-toggle="tab" aria-expanded="true"> 基本信息 </a>
+                        </li>
+                        <li class="">
+                            <a href="#job" data-toggle="tab" data-bind="click:OnJobTabView" aria-expanded="false"> 任职信息 </a>
+                        </li>
+                        <li class="">
+                            <a href="#Contract" data-toggle="tab" data-bind="click:OnContractRefresh"> 合同信息 </a>
+                        </li>
+                        <li class="">
+                            <a href="#workHistory" data-toggle="tab" data-bind="click:OnWorkHistoryTabView" aria-expanded="false"> 工作履职 </a>
+                        </li>
+                        <li class="">
+                            <a href="#education" data-toggle="tab" data-bind="click:OnEducationTabView" aria-expanded="false"> 学历信息 </a>
+                        </li>
+                        <li class="">
+                            <a href="#familyMember" data-toggle="tab" data-bind="click:OnfamilyMemberTabView" aria-expanded="false"> 家庭成员 </a>
+                        </li>
+                        <li class="">
+                            <a href="#otherContact" data-toggle="tab" data-bind="click:OnOtherContactTabView" aria-expanded="false"> 联系方式 </a>
+                        </li>
+                        @*<li class="">
+                            <a href="#Training" data-toggle="tab" data-bind="click:OnTrainingRefresh"> 在司培训 </a>
+                        </li>*@
+                    </ul>
+                </div>
+                <div id="rightBox" class="col-md-11">
+                    <div class="tab-content">
+                        @*员工信息*@
+                        <div class="tab-pane in active" id="employee">
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        员工基本信息(<span style="color: red;">新增在职员工默认登陆密码为111111</span>)
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form form-horizontal">
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="row">
+                                                        <div class="col-md-7">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-4"><span style="color: red;">*</span>员工工号</label>
+                                                                <div class="col-md-8">
+                                                                    <div class="input-group">
+                                                                        <input type="text" readonly="readonly" id="txtEmployeeNumber" class="form-control easyui-validatebox" data-bind="value:formdata.EmployeeNumber" data-options="required:true, missingMessage:'请输入员工工号'" placeholder=""></input>
+                                                                        <span class="input-group-btn" data-bind="visible:!formdata.EmployeeNumber()">
+                                                                            <button class="btn btn-default" data-bind="click:OnAddEmployeeNumber" type="button">获取工号</button>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5" style="padding-right: 0">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-6">婚姻状况</label>
+                                                                <div class="col-md-6">
+                                                                    <input type="text" data-bind="comboboxValue:formdata.MaritalStatus,dataSource:dataSources.dsMaritalStatus" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-7">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-4"><span style="color: red;">*</span>员工姓名</label>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" data-bind="textboxValue:formdata.EmployeeNameCN" data-options="required:true,validType:'length[0,36]', missingMessage:'请输入员工姓名'" class="easyui-textbox" style="width: 100%;"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5" style="padding-right: 0">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-6">政治面貌</label>
+                                                                <div class="col-md-6">
+                                                                    <input id="txtPoliticalStatus" type="text" data-bind="comboboxValue:formdata.PoliticalStatus,dataSource:dataSources.dsPoliticalStatus" data-options="required:false" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-7">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-4">员工英文名</label>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" data-bind="textboxValue:formdata.EmployeeNameEN" class="easyui-textbox" data-options="required:false,validType:'length[0,36]'" style="width: 100%;"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-5" style="padding-right: 0">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-6">职称</label>
+                                                                <div class="col-md-6">
+                                                                    <input type="text" data-bind="comboboxValue:formdata.ProfessionalTitle,dataSource:dataSources.dsProfessionalTitle" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-7">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-4">证件类型</label>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" id="txtIDType" data-bind="comboboxValue:formdata.IDType,dataSource:dataSources.dsIDType" data-options="" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5" style="padding-right: 0">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-6">性别</label>
+                                                                <div class="col-md-6">
+                                                                    <input type="text" id="txtGender" data-bind="comboboxValue:formdata.Gender,dataSource:dataSources.dsGender" data-options="" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div>
+                                                        <img data-bind="attr:{src:formdata.photoUrl}" style="width: 100%" onerror="this.src = '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Content/images/noman.jpg")'" />
+                                                    </div>
+                                                    <div style="text-align: center; padding-top: 5px;">
+                                                        <a class="gt2_btn_add" style="position: relative; overflow: hidden;">
+                                                            <span class="fileinput-button"><span>上传照片</span><input id="photoupload" type="file" name="file"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">证件号码</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" id="txtIDNumber" data-bind="textboxValue:formdata.IDNumber" data-options="" validtype="idcard" class="easyui-textbox" style="width: 100%;" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">出生日期</label>
+                                                        <div class="col-md-8">
+                                                            <input id="txtBirthday" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.Birthday" data-options="" placeholder="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">民族</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="comboboxValue:formdata.Ethnic,dataSource:dataSources.dsEthnic" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">户口所在地</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" class="form-control" data-bind="value:formdata.HukouAddress" data-options="required:false,validType:'length[0,128]'" data-toggle="city-picker" data-level="city" data-placeholder="请选择省市" />
+                                                            @*<input type="text" data-bind="textboxValue:formdata.HukouAddress" class="easyui-textbox"  />*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">国籍</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="comboboxValue:formdata.Nationality,dataSource:dataSources.dsNationality" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">参加工作日期</label>
+                                                        <div class="col-md-8">
+                                                            <input id="txtFirstWorkedDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.FirstWorkedDate" data-options="" placeholder="" />
+                                                            @*<input type="text" data-bind="datetimeboxValue:formdata.FirstWorkedDate" class="easyui-textbox"  />*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="display:@(entityAction == "CreateView" ? "none": "block")">
+                                                
+                                                <div class="col-md-6">
+                                                    <div class="form-group" >
+                                                        <label class="control-label bold col-md-4">最高学历</label>
+                                                        <div class="col-md-8">
+                                                            <span type="text" readonly="readonly" class="form-control-static" data-bind="text:formdata.Education" />
+                                                            @*<input type="text" data-bind="textboxValue:formdata.Education" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox"  />*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">紧急联系电话</label>
+                                                        <div class="col-md-8">
+                                                            <span type="text" data-bind="text:formdata.EmergencyCellPhone" class="form-control-static" style="height: 34px; width: 100%;" placeholder="" />
+                                                            @*<input type="text" data-bind="textboxValue:formdata.EmergencyCellPhone" data-options="required:true" class="easyui-textbox"  />*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">手机号码</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.PersonalCellPhone" class="easyui-textbox" data-options="required:false,validType:'length[0,36]'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">个人邮箱</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.PersonalEmail" data-options="validType:'email'" class="easyui-textbox" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">入党/团时间</label>
+                                                        <div class="col-md-8">
+                                                            <input id="txtPartyJoinInDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.PartyJoinInDate" data-options="edit:false" placeholder="" />
+                                                            @*<span type="text" data-bind="text:formdata.TrialBeginDate" class="form-control-static" style="height: 34px; width: 100%;" placeholder="" />*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        工作信息
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form form-horizontal">
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>任职部门</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-group">
+                                                                <input id="txtOrganizationName" type="text" class="form-control" readonly="readonly" data-bind="value:formdata.OrganizationName" data-options="required:true" />
+                                                                <input id="txtOrganizationID" type="hidden" data-bind="value:formdata.OrganizationID" />
+                                                                <input id="txtLegalEntityID" type="hidden" data-bind="value:formdata.LegalEntityID" />
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" data-bind="click:onSelectOrgUnit" type="button">选择部门</button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>职位</label>
+                                                        <div class="col-md-8" data-bind="visible:!formdata.isCreate()">
+                                                            <span type="text" data-bind="text:formdata.MainJobPositionName" class="form-control-static" style="height: 34px; width: 100%;" placeholder=""></span>
+                                                        </div>
+                                                        <div class="col-md-8" data-bind="visible:formdata.isCreate">
+                                                            <input id="txtJobPosition" type="text" data-bind="comboboxValue:formdata.JobPositionID" data-options="" style="width:100%;" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>状态</label>
+                                                        <div class="col-md-8">
+                                                            <input id="txtEmpStatus" type="text" data-bind="comboboxValue:formdata.EmpStatus,dataSource:dataSources.dsEmpStatus" data-options="required:true" class="easyui-combobox" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">员工身份</label>
+                                                        <div class="col-md-8">
+                                                            <input id="comEmployeeStatus" type="text" data-bind="comboboxValue:formdata.EmployeeStatus,dataSource:dataSources.dsEmployeeStatus" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">系统登录账号</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" id="txtUserName" data-bind="textboxValue:formdata.UserName" data-options="required:false,validType:'length[0,36]'" class="easyui-textbox" style="width:100%;" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">员工类型</label>
+                                                        <div class="col-md-8">
+                                                            @*<input id="txtEmployeeType" type="text" data-bind="comboboxValue:formdata.EmployeeType,dataSource:dataSources.dictEmployeeType" />*@
+                                                            <input id="ctEmployeeType" class="easyui-combotree" data-bind="" data-options="cascadeCheck:false,checkbox:true,multiple:true,onlyLeafCheck:true,required:true" placeholder="" style="height: 34px; background-color: #FFFFE6; width: 100%;" type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">入职日期</label>
+                                                        <div class="col-md-8">
+                                                            <input id="txtOnboardDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.OnboardDate" data-options="" placeholder="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">薪资级别</label>
+                                                        <div class="col-md-8">
+                                                            <input id="cmdSalaryLevelSelector" type="text" data-bind="comboboxValue:formdata.SalaryLevelID,dataSource:dataSources.dsSalaryLevels" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">无试用期</label>
+                                                        <div class="col-md-8" style="margin-top: 8px;">
+                                                            <input type="checkbox" data-bind="checked: formdata.NoTrial" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" data-bind="visible: !formdata.NoTrial()">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4"><i id="traialRequiredIconS" disabled="none" class="fa fa-req" />试用开始日期</label>
+                                                        <div class="col-md-8">
+                                                            <input id="txtTraialBeginDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.TrialBeginDate" data-options="required:false" placeholder="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4"><i id="traialRequiredIconE" disabled="none" class="fa fa-req" />试用结束日期</label>
+                                                        <div class="col-md-8">
+                                                            <input id="txtTraialEndDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.TrialEndDate" data-options="required:false" placeholder="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">离职日期</label>
+                                                        <div class="col-md-8">
+                                                            <span type="text" data-bind="text:formdata.TerminationDate" class="form-control-static" style="height: 34px; width: 100%;" placeholder="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">离职类型</label>
+                                                        <div class="col-md-8">
+                                                            <span type="text" data-bind="text:formdata.TerminationTypeName" class="form-control-static" style="height: 34px; width: 100%;" placeholder="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">工作邮箱</label>
+                                                        <div class="col-md-8">
+                                                            <input id="txtEmployeeEMail" type="text" data-bind="textboxValue:formdata.EmployeeEMail" data-options="required:false,validType:'email', validType:'length[0,50]', missingMessage:'请输入工作邮箱'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">直线电话</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.TeleCode" class="easyui-textbox" data-options="required:false,validType:'length[0,32]'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">办公区域</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-group">
+                                                                <input id="txtOFDetailAddress" class="form-control" readonly="readonly" data-bind="value:formdata.OFDetailAddress" data-options="" style="width:100%;"/>
+                                                                <input type="hidden" data-bind="value:formdata.OfficeAreaID" />
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" data-bind="click:OnSelectOfficeArea" type="button">选择区域</button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">分机号码</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.ExtCode" class="easyui-textbox" data-options="required:false,validType:'length[0,32]'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">公积金账号</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.CPFAccount" class="easyui-textbox" data-options="required:false,validType:'length[0,36]'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">补充公积金账号</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.SupplHousingAccount" class="easyui-textbox" data-options="required:false,validType:'length[0,36]'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">档案转入日期</label>
+                                                        <div class="col-md-8">
+                                                            <input class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.FileTransferInDate" data-options="" placeholder="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">档案转出日期</label>
+                                                        <div class="col-md-8">
+                                                            <input class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.FileTransferOutDate" data-options="" placeholder="" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-2">标签</label>
+                                                        <div class="col-md-10">
+                                                            <input type="text" data-bind="textboxValue:formdata.TAG" class="easyui-textbox" data-options="required:false,validType:'length[0,128]'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-2">备注</label>
+                                                        <div class="col-md-10">
+                                                            <textarea data-bind="textboxValue:formdata.Description" data-options="required:false,validType:'length[0,500]',multiline:true" class="easyui-textbox" style="height: 80px; width: 100%;" placeholder=""></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        家庭地址信息
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form form-horizontal">
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-2">联系住址</label>
+                                                        <div class="col-md-10">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <input type="text" id="txtCountry" data-bind="comboboxValue:formdata.Country,dataSource:dataSources.dsCountry" data-options="validType:'length[0,36]'" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="请填写国家" />
+                                                                </div>
+                                                                <div class="col-md-7">
+                                                                    <input id="txtArea" type="text" data-bind="value:formdata.Area" class="form-control easyui-validatebox" data-options="required:false,validType:'length[0,128]', missingMessage:'请选择联系住址省/市/区'" data-toggle="city-picker" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top: 5px;">
+                                                                <div class="col-md-12">
+                                                                    <input type="text" id="txtAddress" data-bind="textboxValue:formdata.Address" data-options="required:false,prompt:'具体联系住址', validType:'length[0,256]'" class="form-control easyui-textbox" placeholder="" style="width:100%;" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @*<div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label bold col-md-2">具体住址</label>
+                                                            <div class="col-md-8">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>*@
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">住址邮编</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.ZipCode" class="easyui-textbox" data-options="required:false,validType:'length[0,36]'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">住址家庭电话</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.AddressPhone" class="easyui-textbox" data-options="required:false,validType:'length[0,36]'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-2">户籍地</label>
+                                                        <div class="col-md-10">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <input type="text" data-bind="comboboxValue:formdata.HujiCountry,dataSource:dataSources.dsCountry" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="请填写国家" />
+                                                                </div>
+                                                                <div class="col-md-7">
+                                                                    <input id="txtHujiArea" type="text" data-bind="value:formdata.HujiArea" class="form-control" data-options="required:false,validType:'length[0,128]'" data-toggle="city-picker" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top: 5px;">
+                                                                <div class="col-md-12">
+                                                                    <input type="text" data-bind="textboxValue:formdata.HujiAddress" class="form-control" data-options="prompt:'具体联系住址'" placeholder="具体户籍地址" style="width:100%;"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">户籍地邮编</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.HujiZipCode" class="easyui-textbox" data-options="required:false,validType:'length[0,36]'" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">户籍地电话</label>
+                                                        <div class="col-md-8">
+                                                            <input type="text" data-bind="textboxValue:formdata.HujiAddressPhone" class="easyui-textbox" style="width:100%;"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        工资银行卡信息
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form form-horizontal">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label bold col-md-4">卡号</label>
+                                                    <div class="col-md-8">
+                                                        <input type="text" id="txtBankNumber" data-bind="textboxValue:formdata.BankNumber" data-options="required:false,validType:'length[0,36]'" class="easyui-textbox" style="width:100%;"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    @*<label class="control-label bold col-md-4"><span style="color: red;">*</span>开户行</label>*@
+                                                    <label class="control-label bold col-md-4">银行名称</label>
+                                                    <div class="col-md-8">
+                                                        <input id="txtBankName" type="text" data-bind="comboboxValue:formdata.BankName,dataSource:dataSources.dsBankName" data-options="" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label bold col-md-4">开户城市</label>
+                                                    <div class="col-md-8">
+                                                        <input id="txtBankCity" class="form-control" type="text" data-bind="value:formdata.BankCity" data-options="required:false" data-toggle="city-picker" data-level="city" data-placeholder="请选择省市" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    @*<label class="control-label bold col-md-4"><span style="color: red;">*</span>网点</label>*@
+                                                    <label class="control-label bold col-md-4">开户行</label>
+                                                    <div class="col-md-8">
+                                                        @*<input type="text" id="txtBankAddress" data-bind="textboxValue:formdata.BankAddress" class="easyui-textbox" />*@
+                                                        <select id="ddlBankBranchCode" data-action="QueryBankBranchs" data-bind="SearchValue:bank" data-biz="Biz_BankBranchService" placeholder="按名称搜索" pre-element="txtBankName" width="100%"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label bold col-md-4">开户名</label>
+                                                    <div class="col-md-8">
+                                                        <input id="txtAccountName" type="text" data-bind="textboxValue:formdata.AccountName" data-options="validType:'length[0,36]'" class="easyui-textbox" style="width:100%;"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*工作任职信息*@
+                        <div class="tab-pane" id="job"></div>
+                        @*工作履职信息*@
+                        <div class="tab-pane" id="workHistory"></div>
+                        @*学历信息*@
+                        <div class="tab-pane" id="education"></div>
+                        @*家庭成员信息*@
+                        <div class="tab-pane" id="familyMember"></div>
+                        @*其他联系方式*@
+                        <div class="tab-pane" id="otherContact"></div>
+                        @*在司培训信息*@
+                        <div class="tab-pane" id="Training"></div>
+                        @*合同信息*@
+                        <div class="tab-pane" id="Contract"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.extend($.fn.validatebox.defaults.rules, {
+        idcard: {// 验证身份证
+            validator: function (value) {
+     
+                if (value.length > 36) {
+                    var rules = $.fn.validatebox.defaults.rules;
+                    rules.idcard.message = '证件号码不能超过36位';
+                    return false;
+                }
+                else {
+                    var mResult = $.ajax(
+                        {
+                            url: Pagecom.EditEmpViewModel.ViewTool.GetActionUrl("Post", "CheckIDNumberExists"),
+                            dataType: "json",
+                            data: {
+                                legalEntityId: Pagecom.EditEmpViewModel.formdata.LegalEntityID(),
+                                employeeId: Pagecom.EditEmpViewModel.formdata.empId(),
+                                gender: Pagecom.EditEmpViewModel.formdata.Gender(), idType: Pagecom.EditEmpViewModel.formdata.IDType(), IDNumber: value
+                            },
+                            type: "POST",
+                            async: false,
+                            cache: false
+                        }
+                    ).responseText;
+       
+                    if (mResult == "false" || mResult == false) {
+                        var rules = $.fn.validatebox.defaults.rules;
+                        rules.idcard.message = '身份证号码格式不正确或者已存在';
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
+                }
+            },
+            message: ''
+        }
+    });
+    (function (eleId, context, callback) {
+        //debugger;
+
+        var ViewModel = function (data) {
+
+            var bankBranchCode='';
+
+            var self = this;
+
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+            self.Action = 'new';
+            data.form.isCreate = true;
+            data.form.JobPositionID = '';
+
+            //debugger;
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+                self.Action = 'edit';
+                data.form.isCreate = false;
+            }
+
+            //var photoUrl = self.ViewTool.GetActionUrl("Get", "GetAttachment", {AttachmentId:data.form.PhotoAttachmentID});
+            //data.form.photoUrl = photoUrl;
+            //debugger;
+            self.formdata = ko.mapping.fromJS(data.form);
+
+            self.bank = { id: data.form.BankBranchCode, text: data.form.BankBranchName };
+
+            self.formdata.photoUrl = ko.computed(function() {
+                if (self.formdata.PhotoAttachmentID() && self.formdata.PhotoAttachmentID() != '00000000-0000-0000-0000-000000000000')
+                    return global.GetActionUrl("_BizAttachmentService", "GetAttachment", { AttachmentId: self.formdata.PhotoAttachmentID()});
+                else {
+                    return '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Content/images/noman.gif")';
+                }
+            });
+            var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckUserNameExists", { id: data.form.ResId });
+            var valid = String.format("cremote['{0}','name','登录账号已存在']", checkUrl);
+            self.dataSources = data.dataSources;
+
+            //var checkIDNumberUrl = self.ViewTool.GetActionUrl("Post", "CheckIDNumberExists",{id:data.form.ResId, legalEntityId:self.formdata.LegalEntityID(), gender:self.formdata.Gender() });
+            //var validIDNumber = String.format("cremote['{0}','IDNumber','证件号码已存在或无效','{param:\"idType\",selector:\"#txtIDType\"}']", checkIDNumberUrl);
+
+            //$("#txtIDNumber").textbox({
+            //    required: true,
+            //    validType: ['length[0,36]',validIDNumber]
+            //});
+
+            //状态变动
+            //$("#txtEmpStatus").combobox({ onChange: function(newValue, oldValue) {
+            //    //debugger;
+
+            //} });
+            self.formdata.EmployeeStatus.subscribe(function(val){
+                self.ResetTraialDateStatus();
+            });
+
+            self.formdata.EmployeeNameCN.subscribe(function (val) {
+                if (val) {
+                    self.formdata.AccountName(val);
+                }
+            });
+
+            self.formdata.TrialBeginDate.subscribe(function(val){
+                $('#txtTraialEndDate').datepicker('setStartDate',val==""?false:val);
+            });
+
+            self.formdata.TrialEndDate.subscribe(function(val){
+                $('#txtTraialBeginDate').datepicker('setEndDate',val==""?false:val);
+            });
+
+            self.formdata.IDNumber.subscribe(function (val) {
+                if (self.formdata.IDType() == "0|HR_EMP_IDType" &&
+                    val.length == 18) {
+     
+                    var birth = val.substring(6, 10) + "-" + val.substring(10, 12) + "-" + val.substring(12, 14);
+
+                    if (birth) {
+                        self.formdata.Birthday(birth);
+                    }
+
+                    if (parseInt(val.substr(16, 1)) % 2 == 1) {
+                        self.formdata.Gender("0|HR_EMP_Gender");
+                    }
+                    else {
+                        self.formdata.Gender("1|HR_EMP_Gender");
+                    }
+                }
+            });
+
+            self.ResetTraialDateStatus = function() {
+                if($("#comEmployeeStatus").combobox('getText') == "试用期员工")
+                {
+                    document.getElementById("traialRequiredIconS").style.display="";
+                    document.getElementById("traialRequiredIconE").style.display="";
+                    //$("#txtTraialBeginDate").textbox({ required: true });
+                    //$("#txtTraialEndDate").textbox({ required: true });
+                }
+                else
+                {
+                    document.getElementById("traialRequiredIconS").style.display="none";
+                    document.getElementById("traialRequiredIconE").style.display="none";
+                    //$("#txtTraialBeginDate").textbox({ required: false });
+                    //$("#txtTraialEndDate").textbox({ required: false });
+                }
+
+            }
+            
+            self.Init = function () {
+
+                $("#txtUserName").textbox({
+                    required: false,
+                    validType: ['length[0,36]', valid]
+                });
+
+                $('[data-toggle="city-picker"]').citypicker();
+                viewModel.formdata.EmpStatus.subscribe(function (newValue) {
+                    viewModel.OnEmpStatusChange();
+                });
+
+                viewModel.formdata.Country.subscribe(function (newValue) {
+                    viewModel.OnCountryChange(newValue);
+                });
+
+                viewModel.OnCountryChange(viewModel.formdata.Country());
+
+                viewModel.formdata.HujiCountry.subscribe(function (newValue) {
+                    viewModel.OnHujiCountryChange(newValue);
+                });
+
+                viewModel.OnHujiCountryChange(viewModel.formdata.HujiCountry());
+
+                viewModel.OnEmpStatusChange();
+
+                viewModel.formdata.LegalEntityID.subscribe(function (newValue) {
+                    YarClient.AjaxGet(viewModel.ViewTool.GetActionUrl("Get", "GetSalaryLevelList", { legalId: newValue }), {
+                        IsWarning: true,
+                        success: function (returnData) {
+     
+                            $("#cmdSalaryLevelSelector").combobox('loadData', returnData.Result);
+                        }
+                    });
+                });
+
+                viewModel.ChangeJobPositionDataSource(viewModel.formdata.OrganizationID(), viewModel.formdata.LegalEntityID());
+                $.Yar.Attachement.AttachmentUpload($('#photoupload'), data.form.LegalEntityID, data.form.empId, '', 'Att034', function (result) {
+                    //$.messager.alert('Message', JSON.stringify(result), 'info');
+                    self.formdata.PhotoAttachmentID(result.Result.AttachementID);
+                }, 'imgages');
+                self.ResetTraialDateStatus();
+
+                $('#ctEmployeeType').combotree('loadData',self.dataSources.employeeTypeTree);
+
+                $('#ctEmployeeType').combotree({
+                    onLoadSuccess: function(){
+                        $('#ctEmployeeType').combotree('setValues',self.formdata.EmployeeType());
+                    }
+                });
+            };
+
+            self.OnSave = function (finishcall) {
+                var isValid = false;
+                var isValidBankBranchCode = true;
+                var isValidEmployeeType = true;
+                var bankBranchCode = '';
+                var bankBranchName = '';
+                if (self.formdata.EmpStatus() != '1|HR_EMP_EmpStatus') {
+                    //if(self.formdata.BankBranchCode()==null){
+                    //    swal("请输入开户行.", "", "warning");
+                    //    return;
+                    //}
+
+                    if($('#ddlBankBranchCode').select2('data')[0]==undefined){
+                        //isValidBankBranchCode = false;
+                        //swal("请输入开户行.", "", "warning");
+                    }
+                    else{
+                        bankBranchCode=encodeURI($('#ddlBankBranchCode').select2('data')[0].id);
+                        bankBranchName=encodeURI($('#ddlBankBranchCode').select2('data')[0].text);
+                    }
+
+                    self.bank='';
+                }
+                else {//待入职
+                }
+
+                var bankName=$('#txtBankName').combobox('getValue');
+
+                self.formdata.BankBranchCode('');
+
+                var employeeType = $('#ctEmployeeType').combotree('getValues');
+
+                if(employeeType=='-1|HR_EMP_EmployeeType'){
+                    //isValidEmployeeType = false;
+                    //swal('请选择员工类型.', null, 'warning');
+                    //return;
+                }
+
+                var postdata = { formdata : MainApp.GetDataChange(self.formdata, data.form, true)};
+
+                if (MainApp.FormValidate("#divEmployeeEdit") && isValidBankBranchCode && isValidEmployeeType) {
+ 
+                    //不检查成本中心
+                    if ($("#comEmployeeStatus").combobox('getText') == "试用期员工") {
+                        if (self.formdata.TrialBeginDate() == null ||
+                            self.formdata.TrialBeginDate() == "" ||
+                            self.formdata.TrialEndDate() == null ||
+                            self.formdata.TrialEndDate() == "") {
+                            swal('试用期员工必须填写正确的试用期开始/结束时间！', null, 'warning');
+                            return;
+                        }
+                    }
+
+                    //debugger;
+                    //if (self.formdata.EmpStatus() != '1|HR_EMP_EmpStatus') {
+                    //    if (!self.validateBankInfo()) {
+                    //        swal('银行卡信息不完整', null, 'warning');
+                    //        return;
+                    //    }
+                    //}
+
+                    var url = '';
+
+                    if (self.Action == 'new') {
+                        url = self.ViewTool.GetActionUrl("Post", "Create", { resId: data.form.ResId, EmployeeType: employeeType, BankName: bankName, BankBranchCode: bankBranchCode, BankBranchName: bankBranchName });
+                    } else {
+                        url = self.ViewTool.GetActionUrl("Post", "Edit", { resId: data.form.ResId, EmployeeType: employeeType, BankName: bankName, BankBranchCode: bankBranchCode, BankBranchName: bankBranchName });
+                    }
+
+                    YarClient.AjaxPost(url, postdata, {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            finishcall(returnData, callback);
+                        }
+                    });
+
+                }
+                else {
+                    //var vbs = $("#divEmployeeEdit").find('.validatebox-text:not(:disabled)').validatebox('validate');
+                    //var invalidbox = $("#divEmployeeEdit").find('.validatebox-invalid');
+                    //var message = '';
+                    //debugger;
+                    //if(invalidbox.length > 0){
+                    //    for (var i = 0; i < invalidbox.length; i++) {
+                    //        if(invalidbox[i].id){
+                    //            if (invalidbox[i].id == 'txtBankCity') {
+                    //                if (!isValidBankBranchCode) {
+                    //                    message+=$(invalidbox[i]).data().validatebox.message+'\n\r';
+                    //                    message+='请输入开户行\n\r';
+                    //                    continue;
+                    //                }
+                    //            }
+                    //        }
+                    //        else{
+                    //            if ($(invalidbox[i]).data().validatebox.message == '请输入系统登录账号') {
+                    //                if (!isValidEmployeeType) {
+                    //                    message+=$(invalidbox[i]).data().validatebox.message+'\n\r';
+                    //                    message+='请选择员工类型\n\r';
+                    //                    continue;
+                    //                }
+                    //            }
+                    //        }
+                    //        message+=$(invalidbox[i]).data().validatebox.message+'\n\r';
+                    //    }
+                    //}
+                    //else if(invalidbox.length == 0)
+                    //{
+                    //    if (!isValidBankBranchCode) {
+                    //        message+='请输入开户行\n\r';
+                    //    }
+                    //    if (!isValidEmployeeType) {
+                    //        message+='请选择员工类型\n\r';
+                    //    }
+                    //}
+                    swal("验证失败", null, 'warning');
+                }
+            };
+
+            self.validateBankInfo=function() {
+                var bankCardNumber=self.formdata.BankNumber();
+                var bankName=$('#txtBankName').combobox('getValue');
+                var bankCity=self.formdata.BankCity();
+
+                if ((!bankCardNumber && !bankName && !bankCity) || (bankCardNumber && bankName && bankCity)) {
+                    return true;
+                }
+                return false;
+            }
+
+            //设置tab禁用
+            if(self.Action == 'new') {
+                $("#leftTabBox").hide();
+                $("#rightBox").removeClass('col-md-11').addClass('col-md-12');
+            }
+
+            self.OnContractRefresh = function () {
+                ko.cleanNode($('#Contract')[0]);
+                MainApp.LoadPartialView('Contract', self.ViewTool.GetActionUrl("Get", "EmpContractTabView", { resId: data.form.ResId,legalId: data.form.LegalEntityID }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnTrainingRefresh = function() {
+                //debugger;
+                //MainApp.LoadPartialView('Training', self.ViewTool.GetActionUrl("Get", "EmpTrainingTabView", { resId: data.form.ResId,legalId: data.form.LegalEntityID }), { ViewModel: self, data: {} },
+                //function (data) {
+
+                //});
+                //$("#trainlist").datagrid('load');
+            }
+
+            self.OnJobTabView = function () {
+                ko.cleanNode($('#job')[0]);
+                MainApp.LoadPartialView('job', self.ViewTool.GetActionUrl("Get", "JobTabView", { resId: data.form.ResId,legalId: data.form.LegalEntityID }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnWorkHistoryTabView = function () {
+                ko.cleanNode($('#workHistory')[0]);
+                MainApp.LoadPartialView('workHistory', self.ViewTool.GetActionUrl("Get", "WorkHistoryTabView", { resId: data.form.ResId,legalId: data.form.LegalEntityID }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnEducationTabView = function () {
+                ko.cleanNode($('#education')[0]);
+                MainApp.LoadPartialView('education', self.ViewTool.GetActionUrl("Get", "EducationTabView", { resId: data.form.ResId ,legalId: data.form.LegalEntityID}), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnfamilyMemberTabView = function () {
+                ko.cleanNode($('#familyMember')[0]);
+                MainApp.LoadPartialView('familyMember', self.ViewTool.GetActionUrl("Get", "FamilyMemberTabView", { resId: data.form.ResId ,legalId: data.form.LegalEntityID}), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnOtherContactTabView = function () {
+                ko.cleanNode($('#otherContact')[0]);
+                MainApp.LoadPartialView('otherContact', self.ViewTool.GetActionUrl("Get", "OtherContactTabView", { resId: data.form.ResId ,legalId: data.form.LegalEntityID}), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnEmpStatusChange=function() {
+                var newValue = self.formdata.EmpStatus();
+                if (newValue == '1|HR_EMP_EmpStatus') {
+                    $("i.fa-req", $("#txtEmployeeNumber,#txtBirthday,#txtOFDetailAddress,#txtOnboardDate,#txtEmployeeEMail,#txtFirstWorkedDate,"
+                        + "#txtUserName,#txtBankNumber,#txtBankCity,#txtBankAddress,#txtAccountName,#ddlBankBranchCode").parents(".form-group")).hide();
+                    $("i.fa-req", $("#txtPoliticalStatus,#txtBankName").parents(".form-group")).hide();
+                    $("#txtEmployeeEMail,#txtUserName,#txtBankNumber,#txtBankAddress,#txtAccountName").textbox({required:false});
+                    $("#txtEmployeeNumber,#txtBirthday,#txtOFDetailAddress,#txtOnboardDate,#txtFirstWorkedDate,#txtBankCity").validatebox({ required: false });
+                    $("#txtPoliticalStatus,#txtBankName").each(function() {
+                        var val = $(this).combobox('getValue');
+                        $(this).combobox({ required: false });
+                        $(this).combobox('setValue', val);
+                    });
+
+                    if (self.formdata.isCreate()) {
+                        $("i.fa-req", $("#txtJobPosition").parents(".form-group")).hide();
+                        var val = $("#txtJobPosition").combobox('getValue');
+                        $("#txtJobPosition").combobox({ required: false });
+                        self.ChangeJobPositionDataSource(self.formdata.OrganizationID(), self.formdata.LegalEntityID());
+                        $("#txtJobPosition").combobox('setValue', val);
+                    }
+                }
+                else {
+                    $("i.fa-req", $("#txtEmployeeNumber,#txtOFDetailAddress,#txtBirthday,#txtOnboardDate,#txtEmployeeEMail,#txtFirstWorkedDate,"
+                        + "#txtUserName,#txtBankNumber,#txtBankCity,#txtBankAddress,#txtAccountName,#ddlBankBranchCode").parents(".form-group")).show();
+                    $("i.fa-req", $("#txtPoliticalStatus,#txtBankName").parents(".form-group")).show();
+                    //$("#txtEmployeeEMail,#txtUserName,#txtBankNumber,#txtBankAddress,#txtAccountName").textbox({required:true});
+                    //$("#txtEmployeeNumber,#txtBirthday,#txtOFDetailAddress,#txtOnboardDate,#txtBankCity").validatebox({ required: true });//#txtFirstWorkedDate,#txtBankCity").validatebox({ required: true });
+
+                    $("#txtPoliticalStatus,#txtBankName").each(function() {
+                        var val = $(this).combobox('getValue');
+                        $(this).combobox({ required: false });
+                        $(this).combobox('setValue', val);
+                    });
+
+                    if (self.formdata.isCreate()) {
+                        $("i.fa-req", $("#txtJobPosition").parents(".form-group")).show();
+                        var val = $("#txtJobPosition").combobox('getValue');
+                        $("#txtJobPosition").combobox({ required: true, missingMessage:'请选择职位名称' });
+                        self.ChangeJobPositionDataSource(self.formdata.OrganizationID(), self.formdata.LegalEntityID());
+                        $("#txtJobPosition").combobox('setValue', val);
+                        $("#txtUserName").textbox({
+                            required: true,
+                            validType: ['length[0,36]', valid]
+                        });
+                    }
+                }
+            }
+
+            self.OnRefresh = function () {
+
+
+            };
+
+            self.OnModifyIsHighestDiplomaState = function (companyId) {
+                $.ajax({
+                    url: self.ViewTool.GetActionUrl("Get", "ModifyIsHighestDiplomaState", { resId: companyId }),
+                    success: function (text) {
+                        self.OnRefresh();
+                    },
+                    error: function () {
+                    }
+                });
+            };
+
+            self.OnModifyIsEmergencyState = function (companyId) {
+                $.ajax({
+                    url: self.ViewTool.GetActionUrl("Get", "ModifyIsEmergencyState", { resId: companyId }),
+                    success: function (text) {
+                        self.OnRefresh();
+                    },
+                    error: function () {
+                    }
+                });
+            };
+
+            self.OnModifyIsMainState = function (companyId) {
+                $.ajax({
+                    url: self.ViewTool.GetActionUrl("Get", "ModifyIsMainState", { resId: companyId }),
+                    success: function (text) {
+                        self.OnRefresh();
+                    },
+                    error: function () {
+                    }
+                });
+            };
+
+            self.OnAddEmployeeNumber = function () {
+                $.ajax({
+                    url: self.ViewTool.GetActionUrl("Get", "AddEmployeeNumber", {legalId:self.formdata.LegalEntityID()}),
+                    success: function (data) {
+                        self.formdata.EmployeeNumber(data);
+                        self.formdata.UserName(data);
+                        self.OnRefresh();
+                    },
+                    error: function () {
+                    }
+                });
+            };
+
+            self.OnSelectOfficeArea = function () {
+                MainApp.ShowDialog(MainApp.GetUrl("BizHRService", "Get", "Biz_Select_OfficeArea.OfficeAreaView"), {}, function (data) {
+                    self.formdata.OFDetailAddress(data.Name);
+                    self.formdata.OfficeAreaID(data.Id);
+                    self.OnRefresh();
+                    //alert(JSON.stringify(data));
+                });
+            };
+
+            self.onSelectOrgUnit = function () {
+                MainApp.ShowDialog(MainApp.GetUrl("Biz_HR_OrganizationService", "Get", "Biz_Select_OrgUnit.OrgView",{notLimitLegal:'1'}), {isMulti: 0}, function (data) {
+                    self.formdata.OrganizationName(data[0].Name);
+                    self.formdata.OrganizationID(data[0].Id);
+                    self.formdata.LegalEntityID(data[0].LegalEntityID);
+                    self.formdata.JobPositionID('');
+                    self.ChangeJobPositionDataSource(self.formdata.OrganizationID(),self.formdata.LegalEntityID());
+                    //self.OnRefresh();
+                    //alert(JSON.stringify(data));
+                });
+            };
+
+            self.ChangeJobPositionDataSource=function(orgId, legalId) {
+                //debugger;
+                YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "GetJobPositionList", { orgId: orgId, legal:legalId, isFP:1 }),{
+                    IsWarning: true,
+                    success: function(returnData) {
+                        //debugger;
+                        $("#txtJobPosition").combobox('loadData', returnData.Result);
+                    }
+                });
+            }
+
+            //外部变更主职位
+            self.OnChangeMainJobPosition=function(id,name,orgName) {
+                if(name!='')
+                    self.formdata.MainJobPositionName(name+'('+orgName+')');
+                else {
+                    self.formdata.MainJobPositionName('');
+                }
+                self.formdata.MainJobPositionID(id);
+            }
+
+            //外部变更最高学历
+            self.OnChangeEducation=function(eduName) {
+                self.formdata.Education(eduName);
+            }
+
+            //外部变更紧急联系人电话
+            self.OnChangeEmergencyCellPhone=function(cellPhone) {
+                self.formdata.EmergencyCellPhone(cellPhone);
+            }
+
+            self.OnCountryChange=function(val) {
+                if (val == '中华人民共和国') {
+                    $('.city-picker-span',$("#txtArea").parent()).show();
+                    //$("#txtArea").validatebox({ required: true });
+                } else {
+                    $('.city-picker-span',$("#txtArea").parent()).hide();
+                    self.formdata.Area('');
+                    $("#txtArea").validatebox({ required: false });
+                    $("#txtArea").citypicker('reset', true);
+                }
+            }
+
+            self.OnHujiCountryChange=function(val) {
+                if (val == '中华人民共和国') {
+                    $('.city-picker-span',$("#txtHujiArea").parent()).show();
+                } else {
+                    $('.city-picker-span',$("#txtHujiArea").parent()).hide();
+                    self.formdata.HujiArea('');
+                    $("#txtHujiArea").citypicker('reset', true);
+                }
+            }
+        };
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+        Pagecom.EditEmpViewModel = viewModel;
+
+
+
+        MainApp.DialogModel(eleId, viewModel.Action == "new" ? '新增员工信息' : '编辑员工信息', 900, 650, viewModel.OnSave, null, function () {
+            $.parser.parse(eleId);
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+            viewModel.OnRefresh();
+        });
+
+
+
+    })(eleId, context, callback);
+</script>

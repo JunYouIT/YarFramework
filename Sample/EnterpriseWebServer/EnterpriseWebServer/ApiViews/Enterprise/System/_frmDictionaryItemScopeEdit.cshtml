@@ -62,7 +62,7 @@
                         { field: 'State', title: '状态', sortable: true,
                             formatter: function(value, row, index){
                                 var str;
-                                debugger;
+                                //debugger;
                                 if(value==="启用")
                                     str = String.format('<a href="#" title="启用" onclick="Pagecom.ViewModel4.OnDisabled(\'{0}\')">启用</a>',row.Id);
                                 else
@@ -104,7 +104,7 @@
             self.OnSave = function () {
                 var rows = $("#gridlistDicItemScope").datagrid('getData').rows;
                 var array = [];
-                debugger;
+                //debugger;
                 if(rows && rows.length > 0){
                     rows.each(function (value, index) {
                         if(value.State==="启用")
@@ -131,8 +131,7 @@
         };
         var data = @this.Raw(Model.Data);
         var viewModel = new ViewModel(data);
-        ko.applyBindings(viewModel, $(eleId)[0]);
-        viewModel.OnRefresh();
+        
         Pagecom.ViewModel4 = viewModel;
         MainApp.DialogCustomButton(eleId,'编辑字典项范围', 500, 420,
         [{ text: "关闭", cancel: true,click:function()
@@ -140,6 +139,9 @@
             viewModel.OnClose();
         }
         }]
-        );
+            , function () {
+                ko.applyBindings(viewModel, $(eleId)[0]);
+                viewModel.OnRefresh();
+            });
     })(eleId, context, callback);
 </script>

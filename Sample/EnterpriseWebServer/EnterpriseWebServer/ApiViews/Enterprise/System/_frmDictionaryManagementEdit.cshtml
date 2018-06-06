@@ -293,8 +293,7 @@
             };
             var data = @this.Raw(Model.Data);
             var viewModel = new ViewModel(data);
-            ko.applyBindings(viewModel, $(eleId)[0]);
-            viewModel.Init();
+            
             Pagecom.ViewModel2 = viewModel;
 
             MainApp.DialogCustomButton(eleId, viewModel.Action == "new" ? '添加业务字典信息' : '编辑业务字典信息', 900, 600,
@@ -308,6 +307,9 @@
                 viewModel.OnClose();
             }
             }]
-            );
+                , function () {
+                    ko.applyBindings(viewModel, $(eleId)[0]);
+                    viewModel.Init();
+                });
         })(eleId, context, callback);
     </script>

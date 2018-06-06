@@ -11,14 +11,16 @@
     border-radius: 1px;
 }
 
-.bootstrap-table .table:not(.table-condensed),
-.bootstrap-table .table:not(.table-condensed) > tbody > tr > th,
-.bootstrap-table .table:not(.table-condensed) > tfoot > tr > th,
-.bootstrap-table .table:not(.table-condensed) > thead > tr > td,
-.bootstrap-table .table:not(.table-condensed) > tbody > tr > td,
-.bootstrap-table .table:not(.table-condensed) > tfoot > tr > td {
-    padding: 8px;
-}
+    .bootstrap-table .table:not(.table-condensed),
+    .bootstrap-table .table:not(.table-condensed) > tbody > tr > th,
+    .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th,
+    .bootstrap-table .table:not(.table-condensed) > thead > tr > td,
+    .bootstrap-table .table:not(.table-condensed) > tbody > tr > td,
+    .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td {
+        padding: 8px;
+        font-size: 14px;
+        border-color: #e4eaec;
+    }
 
 .bootstrap-table .table.table-no-bordered > thead > tr > th,
 .bootstrap-table .table.table-no-bordered > tbody > tr > td {
@@ -164,6 +166,8 @@
 .fixed-table-pagination .pagination-info {
     line-height: 34px;
     margin-right: 5px;
+    font-size: 14px;
+    margin-top: 3px;
 }
 
 .fixed-table-pagination .btn-group {
@@ -178,6 +182,7 @@
 
 .fixed-table-pagination .page-list {
     display: inline-block;
+    margin-top: 5px;
 }
 
 .fixed-table-toolbar .columns-left {

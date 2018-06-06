@@ -78,7 +78,7 @@
       {
       };
       self.OnSave = function (finishcall) {
-        debugger;
+ 
         var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
         if(MainApp.FormValidate())
         {
@@ -103,10 +103,11 @@
       var data = @this.Raw(Model.Data);
       var viewModel = new ViewModel(data);
 
-      ko.applyBindings(viewModel, $(eleId)[0]);
-	  viewModel.Init();
       //MainApp.DialogModel(eleId,viewModel.Action == "new"? '查看职务' : '查看职务',750,400,viewModel.OnSave);
-	  MainApp.DialogCustomButton(eleId, '查看职务信息', 900, 230, [{ text: '关闭', cancel: true }]);
+      MainApp.DialogCustomButton(eleId, '查看职务信息', 900, 230, [{ text: '关闭', cancel: true }], function () {
+          ko.applyBindings(viewModel, $(eleId)[0]);
+          viewModel.Init();
+      });
 
     })(eleId, context, callback);
 </script>

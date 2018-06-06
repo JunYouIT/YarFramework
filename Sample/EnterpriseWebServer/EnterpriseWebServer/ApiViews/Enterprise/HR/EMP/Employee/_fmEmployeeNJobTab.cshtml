@@ -1,0 +1,169 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+    var isView = "1".Equals(context.Request["isView"]);
+}
+<div style="padding:5px;    background-color: #fff;">
+    @if (!isView)
+    {
+        <div class="col-md-12" style="text-align: right">
+            <div style="display: inline-block;">
+                <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnCreateJob"><i class="fa fa-plus-circle"></i> 新增 </a>
+            </div>
+        </div>
+    }@*End IsView*@
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div id="njob">
+                    <div class="col-md-12" style="padding-right: 0; padding-left: 0; margin-top: 5px;" id="njobdiv">
+                        <table data-bind="grid:uiSources.njoblist" id="njoblist" style="height: 390px;width:100%;"></table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+
+
+            if (context.ViewModel && context.ViewModel.BizName && context.ViewModel.SubBizName) {
+                self.ViewTool = new YarClient.ViewModel(context.ViewModel.BizName, "@tokenId");
+                self.BizName = context.ViewModel.BizName;
+                self.SubBizName = context.ViewModel.SubBizName;
+                self.DispMode = context.ViewModel.DispMode;
+            }
+            else {
+                self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            }
+
+            //
+            self.dataSources = data.dataSources;
+
+            self.Init = function()
+            {
+                $('#njoblist').datagrid('load');
+            };
+
+            self.uiSources = {
+                njoblist: {
+                    ops: {
+                        ClientPage: false,
+                        ele: "#njoblist",
+                        SizeOpt: {
+                            pid: "#njobdiv",
+                            top: ((self.DispMode && self.DispMode == "singleTab") ? 0 : 490)
+                        }
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", (self.SubBizName ? self.SubBizName + ".GetNJobList" : "GetNJobList"), { resId: data.form.empId }),
+                        fitColumns:true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                        pageSize: 10,
+                        columns: [[
+                        //{ field: 'ck', checkbox:true },
+                        { field: 'PositionCode', title: '职位编号',sortable:true, width: 200 },
+                        { field: 'LegalEntityName', title: '法人公司',sortable:true, width: 200 },
+                        { field: 'OrganizationName', title: '部门',sortable:true, width: 200 },
+                        { field: 'PositionName', title: '职位',sortable:true, width: 200 },
+                        //{ field: 'PositionName', title: '绑定角色',sortable:true, width: 200 },
+                        { field: 'OfficeBeginDate', title: '开始日期',sortable:true, width: 200 },
+                        { field: 'OfficeEndDate', title: '结束日期',sortable:true, width: 200 },
+                        @if (!isView) {
+                        <text>
+                        { field: 'PostInformationID', title: '功能',formatter: function(value, row, index){
+                            var s = String.format('<a class="btn_default" href="#" title="编辑" data-toggle="tooltip" onclick="Pagecom.EditViewModel.OnJobEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.PostInformationID) +
+                                    String.format('<a class="btn_default" href="#" title="删除" data-toggle="tooltip" onclick="Pagecom.EditViewModel.OnJobDelete(\'{0}\')"><i class="fa fa-trash-o"></i></a>',row.PostInformationID);
+
+                            return s;
+                        } }
+                        </text>
+                        }@*End IsView*@
+                        ]]
+                    }
+                }
+            };
+
+            self.OnRefresh = function () {
+                var data = {
+                };
+                $('#njoblist').datagrid('load');
+            };
+
+            @if (!isView) {
+                <text>
+            self.OnCreateJob = function () {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateJobView", { empId: data.form.empId,legalId: data.form.legalId,fp:'false'}), { ViewModel: self, data: {} },
+                function (data) {
+   
+                    self.OnRefresh();
+                });
+            };
+            self.OnJobEdit = function (jobId) {
+                MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditJobView", {resId:jobId, empId: data.form.empId,legalId: data.form.legalId }), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefresh();
+                });
+            };
+            self.OnJobDelete = function (jobId) {
+                var rows = $('#njoblist').datagrid('getRows');
+                var row;
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].PostInformationID == jobId) {
+                        row = rows[i];
+                        break;
+                    }
+                }
+
+                if (row) {
+                    var names = String.format('编号：{0}\r\n职位：{1}\r\n部门：{2}\r\n法人：{3}',row.PositionCode,row.PositionName,row.OrganizationName,row.LegalEntityName)
+                    swal({
+                        title: "你是否确认删除如下信息?",
+                        text: names,
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        confirmButtonText:'是的，删除！'
+                    }, function() {
+
+                        YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteJob",{  resId: row.PostInformationID, logicDeletes: 1  }), {
+                            IsWarning: true,
+                            success: function (returnData) {
+                                if(returnData){
+                                    self.OnRefresh();
+                                    swal("删除成功", "", "success");
+                                }
+                            }
+                        });
+                    });
+
+                }
+            };
+            </text>
+            }@*End IsView*@
+
+        };
+
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+        Pagecom.EditViewModel = viewModel;
+
+        ko.applyBindings(viewModel, $(eleId)[0]);
+        viewModel.Init();
+
+    })(eleId, context, callback);
+</script>

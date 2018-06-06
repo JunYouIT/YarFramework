@@ -1,0 +1,239 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+
+<style>
+    .modalContainer {
+        margin: 10px 10px 0 10px;
+    }
+
+    .row {
+        /*margin-bottom: 10px;*/
+    }
+</style>
+
+<div class="modalContainer">
+    <div class="portlet-body">
+        <div class="form form-horizontal">
+            <div class="form-body">
+                <!--基本信息-->
+                <label class="control-label col-md-3 bold" data-bind="attr:{CreateUserID:formdata.CreateUserID}"></label>
+                <label class="control-label" data-bind="attr:{CreateUserID:formdata.CreateTime}" />
+                <label class="control-label col-md-3 bold" data-bind="attr:{CreateUserID:formdata.UpdateUserID}"></label>
+                <label class="control-label" data-bind="attr:{CreateUserID:formdata.UpdateTime}" />
+                <!--END-->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 bold"><span class="importantitem">*</span>区域编号</label>
+                            <div class="col-md-9">
+                                <input type="text" id="AreaCode" data-bind="textboxValue:formdata.AreaCode" class="easyui-textbox" placeholder="" style="width:100%;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 bold"><span class="importantitem">*</span>区域名称</label>
+                            <div class="col-md-9">
+                                <input type="text" id="AreaName" data-bind="textboxValue:formdata.AreaName" class="easyui-validatebox" data-options="required: true,validType:'length[1,32]'" placeholder="" style="width:100%;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 bold"><span class="importantitem">*</span>办公面积</label>
+                            <div class="col-md-9">
+                                <input type="text" id="AreaSize" data-bind="numberboxValue:formdata.AreaSize" class="easyui-numberbox" value="0.00" data-options="required: true,min:0,precision:2" style="width: 100%;"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3" style="text-align:left"> m<sup>2</sup></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="width:100%;height: 51px;">
+                        <label class="control-label col-md-2 bold" style="width:107px;"><span class="importantitem">*</span>地址信息</label>
+                        <div style="width:100%;">
+                            <div style="width:54px; float:left;border:0px none;margin-left: 15px;"><input type="text" id="Country" data-bind="textboxValue:formdata.Country" class="easyui-textbox" placeholder="" style="width: 100%;"/></div>
+                            <div class="col-md-9" style="width:253px;"><input id="txtArea" type="text" data-bind="value:formdata.Province" data-options="required: true,validType:'length[1,96]'" disabled data-toggle="city-picker" data-level="" data-placeholder="请选择省市区/县" style="height: 32px; background-color: #FFFFE6; width: 100%;" /></div>
+                            <div style="width:300px;float:left; border:0px none;">
+                                <input type="text" id="OtherAddress" data-bind="textboxValue:formdata.OtherAddress" class="easyui-textbox" style="width:100%;" data-placeholder="详细地址" data-options="required: true,validType:'length[1,64]'" />
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2  bold" style="width:12.667%"><span class="importantitem">*</span>具体地址</label>
+                            <div class="col-md-10" style="line-height: 36px;">
+                                <span id="DetailAddress" data-bind="text:formdata.DetailAddress" data-options="required: true,validType:'length[1,512]'" style="width: 100%;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 bold"><span class="importantitem">*</span>邮政编码</label>
+                            <div class="col-md-9">
+                                <input id="ZipCode" type="text" class="easyui-numberbox" data-bind="numberboxValue:formdata.ZipCode" value="0" data-options="min:0,precision:0,required: true,validType:'length[1,6]'" style="width:100%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 bold"><span class="importantitem">*</span>状态</label>
+                            <div class="col-md-9">
+                                <input type="text" data-bind="comboboxValue:formdata.IsUse,dataSource:dataSources.UseStatus" class="easyui-combobox" data-options="" style="width: 100%;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 bold"><span class="importantitem">*</span>启用时间</label>
+                            <div class="col-md-9">
+                                <input type="text" data-bind="dateboxValue:formdata.StartTime" class="easyui-datebox" style="width: 100%;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label col-md-2  bold" style="width:12.667%">备注</label>
+                            <div class="col-md-10" style="width:87.333%">
+                                <input type="text" id="Memo" data-bind="textboxValue:formdata.Memo" class="easyui-textbox" data-options="multiline:true,validType:'length[0,512]'" style="height: 100px; background-color: #FFFFE6;width: 100%; " placeholder="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+        var ViewModel = function (data) {
+            var self = this;
+
+
+            self.Action = 'new';
+            $('#BasicInfo').hide();
+            $('#Country').textbox('disable');
+            $('#CreateUser').textbox('disable');
+            $('#CreateTime').textbox('disable');
+            $('#UpdateUser').textbox('disable');
+            $('#UpdateTime').textbox('disable');
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000' ){
+                $('#BasicInfo').show();
+                self.Action = 'edit';
+                //$('#AreaCode').textbox('disable');
+                $('#UserStatus').combobox({ disabled: true });
+            }
+            self.IsEditMode = self.Action=='edit';
+
+
+            self.formdata = ko.mapping.fromJS(data.form);
+            self.formdata.DetailAddress =ko.computed(function() {
+                re=new RegExp("/","g");
+                return self.formdata.Country() + " " + self.formdata.Province().replace(re,' ') + " " + self.formdata.OtherAddress();
+            }, self);//地址联动
+            //self.LegalEntities = data.LegalEntities;
+            self.dataSources = data.dataSources;
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+            var checkWareCodeUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist", { field:"AreaCode", id: data.form.ResId });
+            var validWareCode = String.format("cremote['{0}','name','区域编号已存在']", checkWareCodeUrl);
+            $("#AreaCode").textbox({
+                required: true,
+                validType: ['length[1,36]',validWareCode]
+            });
+            //$('#AreaName').textbox({
+            //    required: true,
+            //    validType:'length[1,32]'
+            //});
+
+            //$('#OtherAddress').textbox({
+            //    required: true,
+            //    validType:'length[1,64]'
+            //});
+            //$('#ZipCode').textbox({
+            //    required: true,
+            //    validType:'length[1,32]'
+            //});
+
+
+            if (self.Action == "new") {
+
+            }
+
+            self.Init = function () {
+
+            };
+
+            self.OnSave = function (finishcall) {
+                if($("#txtArea").val()==""||$("#txtArea").val().split('/').length<2){
+                    //alert("请选择地址信息");
+                    swal({
+                        title: "请选择完整的地址信息！",//
+                        type: "warning",
+                        showCancelButton: false,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "确认",
+                        closeOnConfirm: false
+                    });
+                    return;
+                }
+
+                //self.formdata.AdminUserID = $('#AdminUser').attr('AdminUserID');
+                if (MainApp.FormValidate()) {
+                    var postdata = { formdata: MainApp.GetDataChange(self.formdata, data.form, true) };
+                    postdata.formdata.Province = $("#txtArea").val();
+                    postdata.formdata.AreaSize = $("#AreaSize").numberbox("getValue");
+                    var url = '';
+                    if (self.Action == 'new') {
+                        url = self.ViewTool.GetActionUrl("Post", "Create", { resId: data.form.ResId });
+                    } else {
+                        url = self.ViewTool.GetActionUrl("Post", "Edit", { resId: data.form.ResId });
+                    }
+                    YarClient.AjaxPost(url, postdata, {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            finishcall(returnData, callback);
+                        }
+                    });
+                }
+                else {
+
+                }
+            };
+        };
+
+        var data = @this.Raw(Model.Data);
+
+        var viewModel = new ViewModel(data);
+
+        MainApp.DialogModel(eleId, viewModel.Action == "new" ? '新增办公区域信息' : '修改办公区域信息', 900, 500, viewModel.OnSave, null, function () {
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+            $('[data-toggle="city-picker"]').citypicker();
+        });
+        
+    })(eleId, context, callback);
+</script>

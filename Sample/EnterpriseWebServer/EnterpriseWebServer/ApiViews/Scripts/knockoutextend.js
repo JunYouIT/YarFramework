@@ -1,4 +1,21 @@
 ﻿//knockout bingding
+//bind html and apply bingding context
+ko.bindingHandlers.bindHTML = {
+    init: function () {
+        // we will handle the bindings of any descendants
+        return { controlsDescendantBindings: true };
+    },
+    update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+        // must read the value so it will update on changes to the value
+        //var value = ko.utils.unwrapObservable(valueAccessor());
+        // create the child html using the value
+        //ko.applyBindingsToNode(element, { html: value });
+        // apply bindings on the created html
+        //ko.applyBindingsToDescendants(bindingContext, element);
+        ko.utils.setHtml(element, valueAccessor());
+        ko.applyBindingsToDescendants(bindingContext, element);
+    }
+};
 //dateboxValue binding
 ko.bindingHandlers.dateboxValue = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -125,13 +142,16 @@ ko.bindingHandlers.tagboxValue = {
         var defaultvalue = allBindings.defaultvalue;
         var modalVale = ko.utils.unwrapObservable(valueAccessor());
         var val = (modalVale == undefined || modalVale == null) ? defaultvalue : modalVale;
+        var readonly = (allBindings.readonly === undefined) ? true : allBindings.readonly;
+        var hasdownArrow = (allBindings.hasArrow === undefined) ? true : allBindings.hasArrow;
         var option = {
             editable: allBindings.editable || false,
             valueField: allBindings.valueField || 'ID',
             textField: allBindings.displayField || 'Name',
             data: allBindings.dataSource || [],
             limitToList: true,
-            hasDownArrow: true,
+            readonly: readonly,
+            hasDownArrow: hasdownArrow,
             onChange: function (newValue, oldValue) {
                 var val = valueAccessor();
                 if (ko.isObservable(val))
@@ -338,7 +358,7 @@ ko.bindingHandlers.boostraptable = {
 
 ko.bindingHandlers.dispalypanel = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        debugger;
+        //debugger;
         var val = valueAccessor();
         var initclose = val();
         $(element).panel({ noheader: true, closed: !initclose });
@@ -525,7 +545,7 @@ ko.bindingHandlers.SwitchValue = {
 
 ko.bindingHandlers.BatchOpertion = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-         debugger;
+         //debugger;
         var val = ko.utils.unwrapObservable(valueAccessor());
         var allBindings = allBindingsAccessor();
 
@@ -641,7 +661,7 @@ ko.bindingHandlers.BatchOpertion = {
         }
     },
     update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        debugger;
+        //debugger;
         var val = ko.utils.unwrapObservable(valueAccessor());
         var allBindings = allBindingsAccessor();
 

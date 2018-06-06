@@ -3,5 +3,5 @@
     <DictItem ResId="Common_State_0" Value="可用" />
     <DictItem ResId="Common_State_1" Value="禁用" />
     <DictItem ResId="User_PasswordCheckCoincide" Value="您输入的新密码与确认新密码不一致" />
-  </DataCategory>  
+  </DataCategory>
 </DataDict>

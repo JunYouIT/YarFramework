@@ -156,7 +156,7 @@
                 if(self.formdata.UserPhotoId() && self.formdata.UserPhotoId()!='00000000-0000-0000-0000-000000000000')
                     return global.GetActionUrl("_BizAttachmentService", "GetAttachment", {AttachmentId:self.formdata.UserPhotoId()});
                 else {
-                    return '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Content/images/noman.gif")';
+                    return '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Content/images/noman.jpg")';
                 }
             });
 
@@ -220,7 +220,7 @@
             };
 
 		  self.OnSave = function (finishcall) {
-			debugger;
+			//debugger;
 
               var postdata = { formdata: MainApp.GetDataChange(self.formdata, data.form, true) };
               var rel = $('#editform').isValid();

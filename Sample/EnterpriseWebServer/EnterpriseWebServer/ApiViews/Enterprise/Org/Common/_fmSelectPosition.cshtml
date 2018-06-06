@@ -96,7 +96,6 @@
 
                         },
                         onSelect: function (node) {
-                            debugger;
                             var data = {
                                 name: self.displaydata.name(),
                                 code: self.displaydata.code(),
@@ -123,7 +122,7 @@
                                 $('#hr_common_selectOrgPosition_gridlist').datagrid('load', data);
                             }
                             else {
-                                debugger;
+              
                                 var root = $('#hr_common_selectOrgPosition_orgTree').tree("getRoot");
                                 if (root) {
                                     $('#hr_common_selectOrgPosition_orgTree').tree("select", root.target);
@@ -134,7 +133,7 @@
                 };
 
                 self.OnOk = function (finishcall) {
-                    debugger;
+       
                     var rows = $("#hr_common_selectOrgPosition_gridlist").datagrid('getChecked');
                     if (rows.length > 0) {
                         var results = [];
@@ -151,9 +150,11 @@
             };
 
             var viewModel = new ViewModel({});
-            ko.applyBindings(viewModel, $(eleId)[0]);
-            viewModel.Init();
-            MainApp.DialogModel(eleId, '选择职位', 800, 350, viewModel.OnOk);
+
+            MainApp.DialogModel(eleId, '选择职位', 800, 350, viewModel.OnOk,null, function () {
+                ko.applyBindings(viewModel, $(eleId)[0]);
+                viewModel.Init();
+            });
             //viewModel.OnRefresh();
 
         })(eleId, context, callback);

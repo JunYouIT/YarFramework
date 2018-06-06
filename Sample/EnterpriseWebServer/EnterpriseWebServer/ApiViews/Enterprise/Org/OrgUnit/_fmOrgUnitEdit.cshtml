@@ -21,7 +21,7 @@
                     <div class="form-group">
                         <label class="control-label bold col-md-4">上级机构</label>
                         <div class="col-md-8">
-                            <input type="text" data-bind="comboboxValue:formdata.ParentID,dataSource:dataSources.dsParent" style="width: 100%;" class="easyui-combobox" data-options="" />
+                            <input type="text" data-bind="comboboxValue:formdata.ParentID,dataSource:dataSources.dsParent" style="width: 100%;" class="easyui-combobox" data-options="" @(Yar.Enterprise.ServerVersionType.IsFree()? "disabled" : "")/>
                         </div>
                     </div>
                 </div>
@@ -165,11 +165,11 @@
       {
       };
       self.OnSave = function (finishcall) {
-          debugger;
+   
           var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
           if(MainApp.FormValidate())
           {
-              debugger;
+      
               if(postdata.formdata.OrganizationType == '3|HR_ORG_OrganizationType' ){
                   //$.ajax({
                   //url: self.ViewTool.GetActionUrl("Get", "IsExistLegalTypeUnderCurrentLegal", { LegalEntityID: postdata.formdata.LegalEntityID }),
@@ -177,7 +177,7 @@
                                                                                                         ,resId:data.form.ResId });
                   YarClient.AjaxPost(getMasterRequestUrl,{}, {
                       success: function (returnData) {
-                          debugger;
+        
                           if(returnData!= null && returnData.StatusCode == "Error"){
                               swal("保存失败", "所选法人下已经存在法人类型部门!", "warning");
                               return;
@@ -220,7 +220,7 @@
       };
 
       self.onCreatePos = function(){
-          debugger;
+
           MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetBizActionUrl("Biz_HR_ORG_Position","Get", "CreateView"), { ViewModel: self, data: {} },
               function (data) {
               });
@@ -230,9 +230,10 @@
       var data = @this.Raw(Model.Data);
       var viewModel = new ViewModel(data);
 
-      ko.applyBindings(viewModel, $(eleId)[0]);
-	  viewModel.Init();
-      MainApp.DialogModel(eleId,viewModel.Action == "new"? '组织机构新增' : '组织机构修改',900,370,viewModel.OnSave);
+      MainApp.DialogModel(eleId, viewModel.Action == "new" ? '组织机构新增' : '组织机构修改', 900, 370, viewModel.OnSave, null, function () {
+          ko.applyBindings(viewModel, $(eleId)[0]);
+          viewModel.Init();
+      });
 
     })(eleId, context, callback);
 </script>

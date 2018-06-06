@@ -86,7 +86,7 @@
                     ele: "#gridlist",
                     SizeOpt: {
                         pid: "#griddiv",
-                        top: 311
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 131
                     }
                 },
                 sops: {
@@ -100,23 +100,23 @@
                     { field: 'RuleName', title: '名称',sortable:true, width: 80,formatter:YarGrid.StringContentFormatter},
                     { field: 'Description', title: '描述',sortable:true, width: 150,formatter:YarGrid.StringContentFormatter},
                     { field: 'LegalOrder', title: '法人序号',sortable:true, width: 40},
-                    { field: 'FixChar', title: '固定值',sortable:true, width: 40}, 
-                    { field: 'FixOrder', title: '固定序号',sortable:true, width: 40},  
-                     { field: 'TimeChar', title: '时间值',sortable:true, width: 40}, 
+                    { field: 'FixChar', title: '固定值',sortable:true, width: 40},
+                    { field: 'FixOrder', title: '固定序号',sortable:true, width: 40},
+                     { field: 'TimeChar', title: '时间值',sortable:true, width: 40},
                     { field: 'TimeOrder', title: '时间序号',sortable:true, width: 40},
-                     { field: 'FlowingChar', title: '流水值',sortable:true, width: 40}, 
-                    { field: 'FlowingOrder', title: '流水序号',sortable:true, width: 40},  
-                     { field: 'OtherCharType', title: '其他值',sortable:true, width: 40,formatter:YarGrid.StringContentFormatter}, 
-                    { field: 'OtherCharOrder', title: '其他序号',sortable:true, width: 40},  
-                    { field: 'LastTimeCode', title: '最后编码',sortable:true, width: 100,formatter:YarGrid.StringContentFormatter}, 
-                    { field: 'RuleProvider', title: 'RuleProvider',sortable:true, width: 100,formatter:YarGrid.StringContentFormatter}, 
+                     { field: 'FlowingChar', title: '流水值',sortable:true, width: 40},
+                    { field: 'FlowingOrder', title: '流水序号',sortable:true, width: 40},
+                     { field: 'OtherCharType', title: '其他值',sortable:true, width: 40,formatter:YarGrid.StringContentFormatter},
+                    { field: 'OtherCharOrder', title: '其他序号',sortable:true, width: 40},
+                    { field: 'LastTimeCode', title: '最后编码',sortable:true, width: 100,formatter:YarGrid.StringContentFormatter},
+                    { field: 'RuleProvider', title: 'RuleProvider',sortable:true, width: 100,formatter:YarGrid.StringContentFormatter},
                     { field: 'IsUse', title: '状态',halign:'center',align:'center', formatter: function(value, row, index){
                         if(value){
                             return '<i class="fa fa-check font-green" style="font-size:18px;"></i>';
                         } else {
                             return '<i class="fa fa-ban font-red" style="font-size:18px;"></i>';
                         }
-                       
+
                     }},
                     { field: 'RuleID', title: '功能',formatter: function(value, row, index){
 
@@ -130,7 +130,7 @@
         };
 
         self.OnRefresh = function () {
-            debugger;
+            //debugger;
             var data = {
                 name: Pagecom.ViewModel.displaydata.name(),
                 code:Pagecom.ViewModel.displaydata.code()
@@ -170,10 +170,10 @@
                             }
                         });
                     }
-                });                
+                });
             }
             else{
-                $.messager.alert('请选择需要删除的信息', '', 'warning');                
+                $.messager.alert('请选择需要删除的信息', '', 'warning');
             }
         };
 
@@ -189,19 +189,12 @@
 </script>
 
 <script id="ContentInitCss" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")']
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
 </script>
 
 <script id="ContentInitScript" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
 </script>
 

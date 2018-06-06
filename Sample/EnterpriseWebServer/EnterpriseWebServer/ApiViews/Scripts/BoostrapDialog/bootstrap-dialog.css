@@ -6,11 +6,11 @@
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
-.bootstrap-dialog .modal-body {
-        padding: 0;
+.bootstrap-dialog > .modal-dialog > .modal-content > .modal-body {
+    padding: 0;
 }
-.bootstrap-dialog .modal-footer {
-        padding: 10px;
+.bootstrap-dialog > .modal-dialog > .modal-content > .modal-footer {
+    padding: 10px;
 }
 .bootstrap-dialog .bootstrap-dialog-title {
   color: #fff;

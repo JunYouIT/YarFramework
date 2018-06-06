@@ -1,0 +1,1910 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EnterpriseDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="HR_EMP_Address">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AddressType" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="Country" Type="nvarchar" MaxLength="80" />
+          <Property Name="Province" Type="nvarchar" MaxLength="80" />
+          <Property Name="City" Type="nvarchar" MaxLength="80" />
+          <Property Name="District" Type="nvarchar" MaxLength="80" />
+          <Property Name="Address" Type="nvarchar" MaxLength="256" />
+          <Property Name="AddressPhone" Type="nvarchar" MaxLength="36" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="36" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_BankCard">
+          <Key>
+            <PropertyRef Name="BankID" />
+          </Key>
+          <Property Name="BankID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BankNumber" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="AccountName" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="BankName" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="BankCity" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="IsWageCard" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BankBranchCode" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="HR_EMP_Education">
+          <Key>
+            <PropertyRef Name="EducationID" />
+          </Key>
+          <Property Name="EducationID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="School" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="Speciality" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="EduBG" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="EduDegree" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="EduDegreeNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="EduBeginDate" Type="datetime" />
+          <Property Name="EduEndDate" Type="datetime" />
+          <Property Name="IsHighestDiploma" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="EmployeeNameCN" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="EmployeeNameEN" Type="nvarchar" MaxLength="36" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="80" />
+          <Property Name="IDType" Type="nvarchar" MaxLength="80" />
+          <Property Name="IDNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="Birthday" Type="datetime" />
+          <Property Name="MaritalStatus" Type="nvarchar" MaxLength="80" />
+          <Property Name="FirstWorkedDate" Type="datetime" />
+          <Property Name="Nationality" Type="nvarchar" MaxLength="80" />
+          <Property Name="OfficeAreaID" Type="uniqueidentifier" />
+          <Property Name="HukouAddress" Type="nvarchar" MaxLength="128" />
+          <Property Name="OnboardDate" Type="datetime" />
+          <Property Name="TerminationDate" Type="datetime" />
+          <Property Name="TerminationTypeName" Type="nvarchar" MaxLength="36" />
+          <Property Name="EmployeeEMail" Type="nvarchar" MaxLength="128" />
+          <Property Name="EmpStatus" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="EmployeeStatus" Type="nvarchar" MaxLength="36" />
+          <Property Name="OrganizationID" Type="uniqueidentifier" />
+          <Property Name="OrganizationCode" Type="nvarchar" MaxLength="36" />
+          <Property Name="OrganizationName" Type="nvarchar" MaxLength="36" />
+          <Property Name="MainJobPositionID" Type="uniqueidentifier" />
+          <Property Name="MainJobPostionName" Type="nvarchar" MaxLength="36" />
+          <Property Name="CurrentJobLevelName" Type="nvarchar" MaxLength="36" />
+          <Property Name="CurrentJobLevelValue" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="ExtCode" Type="nvarchar" MaxLength="32" />
+          <Property Name="TeleCode" Type="nvarchar" MaxLength="32" />
+          <Property Name="PersonalEmail" Type="nvarchar" MaxLength="128" />
+          <Property Name="Education" Type="nvarchar" MaxLength="36" />
+          <Property Name="PersonalCellPhone" Type="nvarchar" MaxLength="36" />
+          <Property Name="CPFAccount" Type="nvarchar" MaxLength="36" />
+          <Property Name="EmergencyCellPhone" Type="nvarchar" MaxLength="36" />
+          <Property Name="FileTransferInDate" Type="datetime" />
+          <Property Name="FileTransferOutDate" Type="datetime" />
+          <Property Name="PoliticalStatus" Type="nvarchar" MaxLength="80" />
+          <Property Name="TAG" Type="nvarchar" MaxLength="128" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="36" />
+          <Property Name="MLAccount" Type="nvarchar" MaxLength="36" />
+          <Property Name="TrialBeginDate" Type="datetime" />
+          <Property Name="TrialEndDate" Type="datetime" />
+          <Property Name="PhotoAttachmentID" Type="uniqueidentifier" />
+          <Property Name="Ethnic" Type="nvarchar" MaxLength="80" />
+          <Property Name="ProfessionalTitle" Type="nvarchar" MaxLength="80" />
+          <Property Name="SupplHousingAccount" Type="nvarchar" MaxLength="36" />
+          <Property Name="CostCenterMode" Type="int" />
+          <Property Name="CostCenterCode" Type="nvarchar" MaxLength="36" />
+          <Property Name="ADAccount" Type="nvarchar" MaxLength="100" />
+          <Property Name="ADPassword" Type="nvarchar" MaxLength="500" />
+          <Property Name="ZYPolicyNo" Type="nvarchar" MaxLength="128" />
+          <Property Name="PartyJoinInDate" Type="datetime" />
+          <Property Name="NCUserCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmployeeType" Type="nvarchar" MaxLength="500" />
+          <Property Name="NoTrial" Type="bit" />
+          <Property Name="SalaryLevelType" Type="nvarchar" MaxLength="80" />
+          <Property Name="SalaryLevelID" Type="uniqueidentifier" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_EmployeeContract">
+          <Key>
+            <PropertyRef Name="EmployeeContractID" />
+          </Key>
+          <Property Name="EmployeeContractID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SignMode" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="SignApplicationID" Type="uniqueidentifier" />
+          <Property Name="OriginalContractID" Type="uniqueidentifier" />
+          <Property Name="ContractType" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="EmployeeContractNumber" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="EmployeeContractBeginDate" Type="datetime" Nullable="false" />
+          <Property Name="EmployeeContractEndDate" Type="datetime" />
+          <Property Name="TrialBeginDate" Type="datetime" />
+          <Property Name="TrialEndDate" Type="datetime" />
+          <Property Name="AttachmentID" Type="uniqueidentifier" />
+          <Property Name="SignDate" Type="datetime" />
+          <Property Name="SignedTimes" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="512" />
+          <Property Name="IsUnfixedTerm" Type="bit" Nullable="false" />
+          <Property Name="IsAutoExpandDate" Type="bit" Nullable="false" />
+          <Property Name="HaveTrialDate" Type="bit" Nullable="false" />
+          <Property Name="ExpandDate" Type="datetime" />
+          <Property Name="ContractEndDateWarnDate" Type="datetime" />
+          <Property Name="TrialEndDateWarnDate" Type="datetime" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_EmployeeFamily">
+          <Key>
+            <PropertyRef Name="FamilyMemberID" />
+          </Key>
+          <Property Name="FamilyMemberID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="Relationships" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="IDType" Type="nvarchar" MaxLength="80" />
+          <Property Name="IDNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="ContactCellphone" Type="nvarchar" MaxLength="36" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="80" />
+          <Property Name="Birthday" Type="datetime" />
+          <Property Name="Job" Type="nvarchar" MaxLength="36" />
+          <Property Name="Company" Type="nvarchar" MaxLength="128" />
+          <Property Name="InsuranceNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="InsuranceStatus" Type="nvarchar" MaxLength="80" />
+          <Property Name="InsuranceStartDate" Type="datetime" />
+          <Property Name="InsuranceEndDate" Type="datetime" />
+          <Property Name="IsEmergency" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_OfficeArea">
+          <Key>
+            <PropertyRef Name="AreaID" />
+          </Key>
+          <Property Name="AreaID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AreaCode" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="AreaName" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="IsUse" Type="bit" Nullable="false" />
+          <Property Name="Country" Type="nvarchar" MaxLength="32" />
+          <Property Name="Province" Type="nvarchar" MaxLength="32" />
+          <Property Name="City" Type="nvarchar" MaxLength="32" />
+          <Property Name="District" Type="nvarchar" MaxLength="32" />
+          <Property Name="OtherAddress" Type="nvarchar" MaxLength="64" />
+          <Property Name="DetailAddress" Type="nvarchar" MaxLength="512" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="32" />
+          <Property Name="Memo" Type="nvarchar" MaxLength="512" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AreaSize" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_OtherContact">
+          <Key>
+            <PropertyRef Name="OtherContactID" />
+          </Key>
+          <Property Name="OtherContactID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Cellphone" Type="nvarchar" MaxLength="36" />
+          <Property Name="Email" Type="nvarchar" MaxLength="128" />
+          <Property Name="Telephone" Type="nvarchar" MaxLength="36" />
+          <Property Name="Address" Type="nvarchar" MaxLength="256" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_PostInformation">
+          <Key>
+            <PropertyRef Name="PostInformationID" />
+          </Key>
+          <Property Name="PostInformationID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsFunctionPosition" Type="bit" Nullable="false" />
+          <Property Name="PositionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrganizationID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OfficeBeginDate" Type="datetime" Nullable="false" />
+          <Property Name="OfficeEndDate" Type="datetime" />
+          <Property Name="IsMain" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_SalaryLevel">
+          <Key>
+            <PropertyRef Name="SalaryLevelID" />
+          </Key>
+          <Property Name="SalaryLevelID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SalaryLevelName" Type="nvarchar" MaxLength="36" />
+          <Property Name="SalaryLevelValue" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="SalaryLevelType" Type="nvarchar" MaxLength="80" />
+          <Property Name="Description" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_WorkHistory">
+          <Key>
+            <PropertyRef Name="WorkHistoryID" />
+          </Key>
+          <Property Name="WorkHistoryID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmployeeID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Company" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Department" Type="nvarchar" MaxLength="36" />
+          <Property Name="JobDuty" Type="nvarchar" MaxLength="36" />
+          <Property Name="WorkBeginDate" Type="datetime" Nullable="false" />
+          <Property Name="WorkEndDate" Type="datetime" />
+          <Property Name="Description" Type="nvarchar" MaxLength="256" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_Job">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="JobCode" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="JobName" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="128" />
+          <Property Name="JobGroup" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_JobLevel">
+          <Key>
+            <PropertyRef Name="JobLevelID" />
+          </Key>
+          <Property Name="JobLevelID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="JobLevelName" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="JobLevelNumber" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_LegalEntity">
+          <Key>
+            <PropertyRef Name="LegalEntityID" />
+          </Key>
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ParentID" Type="uniqueidentifier" />
+          <Property Name="LegalEntityName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="LegalEntityCode" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="EnterpriseType" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="LegalRepresentativeName" Type="nvarchar" MaxLength="36" />
+          <Property Name="UnifiedCreditRecord" Type="nvarchar" MaxLength="128" />
+          <Property Name="BizBeginDate" Type="datetime" />
+          <Property Name="BizEndDate" Type="datetime" />
+          <Property Name="Province" Type="nvarchar" MaxLength="80" />
+          <Property Name="City" Type="nvarchar" MaxLength="80" />
+          <Property Name="BusinessAddress" Type="nvarchar" MaxLength="512" />
+          <Property Name="PostNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="TelNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="FaxNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="Website" Type="nvarchar" MaxLength="128" />
+          <Property Name="BizScope" Type="nvarchar" MaxLength="512" />
+          <Property Name="Description" Type="nvarchar" MaxLength="512" />
+          <Property Name="AccountBookNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="LegalCodePath" Type="nvarchar(max)" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_Organization">
+          <Key>
+            <PropertyRef Name="OrganizationID" />
+          </Key>
+          <Property Name="OrganizationID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrganizationName" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="OrganizationCode" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="ParentID" Type="uniqueidentifier" />
+          <Property Name="CodePath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Sequence" Type="int" Nullable="false" />
+          <Property Name="OrganizationType" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="HeadPositionID" Type="uniqueidentifier" />
+          <Property Name="Description" Type="nvarchar" MaxLength="512" />
+          <Property Name="IsEnableHeadCountPeriod" Type="bit" Nullable="false" />
+          <Property Name="IsIndependentAccounting" Type="bit" Nullable="false" />
+          <Property Name="AccountBookNumber" Type="nvarchar" MaxLength="36" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
+          <Property Name="CostCenterCode" Type="nvarchar" MaxLength="36" />
+        </EntityType>
+        <EntityType Name="HR_ORG_Position">
+          <Key>
+            <PropertyRef Name="PositionID" />
+          </Key>
+          <Property Name="PositionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PositionCode" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="PositionName" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="IsFunctionPosition" Type="bit" Nullable="false" />
+          <Property Name="ReportToPositionID" Type="uniqueidentifier" />
+          <Property Name="PositionCodePath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Headcount" Type="int" Nullable="false" />
+          <Property Name="IsAppraisal" Type="bit" Nullable="false" />
+          <Property Name="IsHead" Type="bit" Nullable="false" />
+          <Property Name="IsPrincipal" Type="bit" Nullable="false" />
+          <Property Name="IsApprover" Type="bit" Nullable="false" />
+          <Property Name="IsApplier" Type="bit" Nullable="false" />
+          <Property Name="PositionDescription" Type="nvarchar" MaxLength="512" />
+          <Property Name="OrganizationID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="JobID" Type="uniqueidentifier" />
+          <Property Name="PositionLevelID" Type="uniqueidentifier" />
+          <Property Name="IsUse" Type="bit" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_PositionRoleList">
+          <Key>
+            <PropertyRef Name="PositionID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="PositionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_Audittrail">
+          <Key>
+            <PropertyRef Name="AudittrailID" />
+          </Key>
+          <Property Name="AudittrailID" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="RequestID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Operation" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="OperationName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="OperationTime" Type="datetime" />
+          <Property Name="ActivityName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ActivityCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OperatorID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OperatorGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="500" />
+          <Property Name="ActivityInstanceID" Type="int" />
+          <Property Name="RequestTypeCode" Type="nvarchar" MaxLength="36" />
+          <Property Name="DelegateeID" Type="uniqueidentifier" />
+          <Property Name="TenantId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_COM_BankBranch">
+          <Key>
+            <PropertyRef Name="BankBranchID" />
+          </Key>
+          <Property Name="BankBranchID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BankDictCode" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="BankBranchCode" Type="nvarchar" MaxLength="128" />
+          <Property Name="BankBranchName" Type="nvarchar" MaxLength="256" />
+          <Property Name="IsDisabled" Type="bit" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_RequestMaster">
+          <Key>
+            <PropertyRef Name="MasterRequestID" />
+          </Key>
+          <Property Name="MasterRequestID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RequestTypeCode" Type="nvarchar" MaxLength="36" />
+          <Property Name="MasterRequestCode" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="TypeInfoID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PositionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OrgUnitID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RequestTime" Type="datetime" Nullable="false" />
+          <Property Name="OperatorID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OperatorPositionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OperatorOUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ApproveStatus" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="BusinessStatus" Type="nvarchar" MaxLength="80" />
+          <Property Name="IsNotifyResult" Type="bit" Nullable="false" />
+          <Property Name="WorkflowID" Type="nvarchar" MaxLength="256" />
+          <Property Name="ExtendFormID" Type="uniqueidentifier" />
+          <Property Name="LastApprovedTime" Type="datetime" />
+          <Property Name="LastApproverID" Type="uniqueidentifier" />
+          <Property Name="Memo" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_RequestType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RequestTypeCode" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="RequestGroup" Type="nvarchar" MaxLength="36" />
+          <Property Name="RequestTypeName" Type="nvarchar" MaxLength="36" Nullable="false" />
+          <Property Name="Memo" Type="nvarchar" MaxLength="512" />
+          <Property Name="BusinessId" Type="nvarchar" MaxLength="100" />
+          <Property Name="VerifyView" Type="nvarchar" MaxLength="100" />
+          <Property Name="FormCode" Type="nvarchar" MaxLength="256" />
+          <Property Name="FlowCode" Type="nvarchar" MaxLength="256" />
+          <Property Name="FlowName" Type="nvarchar" MaxLength="50" />
+          <Property Name="FolioRuleCode" Type="nvarchar" MaxLength="80" />
+          <Property Name="WorkflowParam" Type="nvarchar(max)" />
+          <Property Name="WorkflowRemark" Type="nvarchar(max)" />
+          <Property Name="CanBatchApproval" Type="bit" Nullable="false" />
+          <Property Name="CanCommonApproval" Type="bit" Nullable="false" />
+          <Property Name="TypeLevel" Type="int" Nullable="false" />
+          <Property Name="ParentTypeCode" Type="nvarchar" MaxLength="36" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsHeadApproval" Type="bit" />
+          <Property Name="Text1" Type="nvarchar" MaxLength="80" />
+          <Property Name="Text2" Type="nvarchar" MaxLength="80" />
+          <Property Name="Text3" Type="nvarchar" MaxLength="80" />
+          <Property Name="Text4" Type="nvarchar" MaxLength="80" />
+          <Property Name="Text5" Type="nvarchar" MaxLength="80" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="UpdateUserID" Type="uniqueidentifier" />
+          <Property Name="LegalEntityID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TenantID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResId" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="ResState" Type="int" Nullable="false" />
+          <Property Name="Desc" Type="nvarchar" MaxLength="255" />
+          <Property Name="RoleType" Type="int" Nullable="false" />
+          <Property Name="AppFunctions" Type="nvarchar(max)" />
+          <Property Name="BizFunctions" Type="nvarchar(max)" />
+          <Property Name="InheritRoles" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="LegalId" Type="uniqueidentifier" />
+          <Property Name="TenantId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DataOwner" Type="nvarchar" MaxLength="100" />
+          <Property Name="DataScope" Type="nvarchar" MaxLength="100" />
+          <Property Name="Creator" Type="nvarchar" MaxLength="50" />
+          <Property Name="Updator" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="UpdateTime" Type="datetime" />
+          <Property Name="Kind" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SYS_User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ResId" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="LoginName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LoginId" Type="nvarchar" MaxLength="40" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Code" Type="nvarchar" MaxLength="20" />
+          <Property Name="InitPassword" Type="nvarchar" MaxLength="50" />
+          <Property Name="RoleList" Type="nvarchar(max)" />
+          <Property Name="UserRoleList" Type="nvarchar(max)" />
+          <Property Name="ResState" Type="int" Nullable="false" />
+          <Property Name="OrgId" Type="nvarchar" MaxLength="40" />
+          <Property Name="PositionId" Type="nvarchar" MaxLength="40" />
+          <Property Name="BelongOrg" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="20" />
+          <Property Name="UserStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserLevel" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserPhotoId" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserType" Type="nvarchar" MaxLength="20" />
+          <Property Name="DataSource" Type="nvarchar" MaxLength="30" />
+          <Property Name="Text1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Text2" Type="nvarchar" MaxLength="255" />
+          <Property Name="Text3" Type="nvarchar" MaxLength="255" />
+          <Property Name="Text4" Type="nvarchar" MaxLength="255" />
+          <Property Name="Text5" Type="nvarchar" MaxLength="255" />
+          <Property Name="Text6" Type="nvarchar" MaxLength="255" />
+          <Property Name="Text7" Type="nvarchar" MaxLength="255" />
+          <Property Name="Text8" Type="nvarchar" MaxLength="255" />
+          <Property Name="LegalId" Type="uniqueidentifier" />
+          <Property Name="TenantId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DataOwner" Type="nvarchar" MaxLength="100" />
+          <Property Name="DataScope" Type="nvarchar" MaxLength="100" />
+          <Property Name="Creator" Type="nvarchar" MaxLength="50" />
+          <Property Name="Updator" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="UpdateTime" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="EnterpriseDbModelStoreContainer">
+          <EntitySet Name="HR_EMP_Address" EntityType="Self.HR_EMP_Address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_BankCard" EntityType="Self.HR_EMP_BankCard" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_Education" EntityType="Self.HR_EMP_Education" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_Employee" EntityType="Self.HR_EMP_Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_EmployeeContract" EntityType="Self.HR_EMP_EmployeeContract" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_EmployeeFamily" EntityType="Self.HR_EMP_EmployeeFamily" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_OfficeArea" EntityType="Self.HR_EMP_OfficeArea" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_OtherContact" EntityType="Self.HR_EMP_OtherContact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_PostInformation" EntityType="Self.HR_EMP_PostInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_SalaryLevel" EntityType="Self.HR_EMP_SalaryLevel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_EMP_WorkHistory" EntityType="Self.HR_EMP_WorkHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_ORG_Job" EntityType="Self.HR_ORG_Job" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_ORG_JobLevel" EntityType="Self.HR_ORG_JobLevel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_ORG_LegalEntity" EntityType="Self.HR_ORG_LegalEntity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_ORG_Organization" EntityType="Self.HR_ORG_Organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_ORG_Position" EntityType="Self.HR_ORG_Position" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HR_ORG_PositionRoleList" EntityType="Self.HR_ORG_PositionRoleList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYS_Audittrail" EntityType="Self.SYS_Audittrail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYS_COM_BankBranch" EntityType="Self.SYS_COM_BankBranch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYS_RequestMaster" EntityType="Self.SYS_RequestMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYS_RequestType" EntityType="Self.SYS_RequestType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYS_Role" EntityType="Self.SYS_Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SYS_User" EntityType="Self.SYS_User" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EnterpriseDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="HR_EMP_PostInformation">
+          <Key>
+            <PropertyRef Name="PostInformationID" />
+          </Key>
+          <Property Name="PostInformationID" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeID" Type="Guid" Nullable="false" />
+          <Property Name="IsFunctionPosition" Type="Boolean" Nullable="false" />
+          <Property Name="PositionID" Type="Guid" Nullable="false" />
+          <Property Name="OrganizationID" Type="Guid" Nullable="false" />
+          <Property Name="OfficeBeginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OfficeEndDate" Type="DateTime" Precision="3" />
+          <Property Name="IsMain" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_Organization">
+          <Key>
+            <PropertyRef Name="OrganizationID" />
+          </Key>
+          <Property Name="OrganizationID" Type="Guid" Nullable="false" />
+          <Property Name="OrganizationName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OrganizationCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentID" Type="Guid" />
+          <Property Name="CodePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" />
+          <Property Name="OrganizationType" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HeadPositionID" Type="Guid" />
+          <Property Name="Description" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="IsEnableHeadCountPeriod" Type="Boolean" Nullable="false" />
+          <Property Name="IsIndependentAccounting" Type="Boolean" Nullable="false" />
+          <Property Name="AccountBookNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
+          <Property Name="CostCenterCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="HR_ORG_Position">
+          <Key>
+            <PropertyRef Name="PositionID" />
+          </Key>
+          <Property Name="PositionID" Type="Guid" Nullable="false" />
+          <Property Name="PositionCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PositionName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsFunctionPosition" Type="Boolean" Nullable="false" />
+          <Property Name="ReportToPositionID" Type="Guid" />
+          <Property Name="PositionCodePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Headcount" Type="Int32" Nullable="false" />
+          <Property Name="IsAppraisal" Type="Boolean" Nullable="false" />
+          <Property Name="IsHead" Type="Boolean" Nullable="false" />
+          <Property Name="IsPrincipal" Type="Boolean" Nullable="false" />
+          <Property Name="IsApprover" Type="Boolean" Nullable="false" />
+          <Property Name="IsApplier" Type="Boolean" Nullable="false" />
+          <Property Name="PositionDescription" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationID" Type="Guid" Nullable="false" />
+          <Property Name="JobID" Type="Guid" />
+          <Property Name="PositionLevelID" Type="Guid" />
+          <Property Name="IsUse" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_PositionRoleList">
+          <Key>
+            <PropertyRef Name="PositionID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="PositionID" Type="Guid" Nullable="false" />
+          <Property Name="RoleID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_Audittrail">
+          <Key>
+            <PropertyRef Name="AudittrailID" />
+          </Key>
+          <Property Name="AudittrailID" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RequestID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Operation" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OperationName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OperationTime" Type="DateTime" Precision="3" />
+          <Property Name="ActivityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ActivityCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OperatorID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OperatorGUID" Type="Guid" Nullable="false" />
+          <Property Name="Comments" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ActivityInstanceID" Type="Int32" />
+          <Property Name="RequestTypeCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="DelegateeID" Type="Guid" />
+          <Property Name="TenantId" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_RequestMaster">
+          <Key>
+            <PropertyRef Name="MasterRequestID" />
+          </Key>
+          <Property Name="MasterRequestID" Type="Guid" Nullable="false" />
+          <Property Name="RequestTypeCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="MasterRequestCode" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TypeInfoID" Type="Guid" Nullable="false" />
+          <Property Name="UserID" Type="Guid" Nullable="false" />
+          <Property Name="PositionID" Type="Guid" Nullable="false" />
+          <Property Name="OrgUnitID" Type="Guid" Nullable="false" />
+          <Property Name="RequestTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OperatorID" Type="Guid" Nullable="false" />
+          <Property Name="OperatorPositionID" Type="Guid" Nullable="false" />
+          <Property Name="OperatorOUID" Type="Guid" Nullable="false" />
+          <Property Name="ApproveStatus" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BusinessStatus" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="IsNotifyResult" Type="Boolean" Nullable="false" />
+          <Property Name="WorkflowID" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ExtendFormID" Type="Guid" />
+          <Property Name="LastApprovedTime" Type="DateTime" Precision="3" />
+          <Property Name="LastApproverID" Type="Guid" />
+          <Property Name="Memo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_RequestType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="RequestTypeCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RequestGroup" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="RequestTypeName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Memo" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="BusinessId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VerifyView" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FormCode" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="FlowCode" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="FlowName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FolioRuleCode" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="WorkflowParam" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WorkflowRemark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CanBatchApproval" Type="Boolean" Nullable="false" />
+          <Property Name="CanCommonApproval" Type="Boolean" Nullable="false" />
+          <Property Name="TypeLevel" Type="Int32" Nullable="false" />
+          <Property Name="ParentTypeCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsHeadApproval" Type="Boolean" />
+          <Property Name="Text1" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Text2" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Text3" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Text4" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Text5" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ResState" Type="Int32" Nullable="false" />
+          <Property Name="Desc" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RoleType" Type="Int32" Nullable="false" />
+          <Property Name="AppFunctions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BizFunctions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InheritRoles" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LegalId" Type="Guid" />
+          <Property Name="TenantId" Type="Guid" Nullable="false" />
+          <Property Name="DataOwner" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DataScope" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Creator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Updator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="Kind" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="EnterpriseDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="HR_EMP_PostInformation" EntityType="Self.HR_EMP_PostInformation" />
+          <EntitySet Name="HR_ORG_Organization" EntityType="Self.HR_ORG_Organization" />
+          <EntitySet Name="HR_ORG_Position" EntityType="Self.HR_ORG_Position" />
+          <EntitySet Name="HR_ORG_PositionRoleList" EntityType="Self.HR_ORG_PositionRoleList" />
+          <EntitySet Name="SYS_Audittrail" EntityType="Self.SYS_Audittrail" />
+          <EntitySet Name="SYS_RequestMaster" EntityType="Self.SYS_RequestMaster" />
+          <EntitySet Name="SYS_RequestType" EntityType="Self.SYS_RequestType" />
+          <EntitySet Name="SYS_Role" EntityType="Self.SYS_Role" />
+          <EntitySet Name="HR_EMP_OfficeArea" EntityType="EnterpriseDbModel.HR_EMP_OfficeArea" />
+          <EntitySet Name="HR_EMP_SalaryLevel" EntityType="EnterpriseDbModel.HR_EMP_SalaryLevel" />
+          <EntitySet Name="HR_ORG_Job" EntityType="EnterpriseDbModel.HR_ORG_Job" />
+          <EntitySet Name="HR_ORG_JobLevel" EntityType="EnterpriseDbModel.HR_ORG_JobLevel" />
+          <EntitySet Name="HR_EMP_Address" EntityType="EnterpriseDbModel.HR_EMP_Address" />
+          <EntitySet Name="HR_EMP_BankCard" EntityType="EnterpriseDbModel.HR_EMP_BankCard" />
+          <EntitySet Name="HR_EMP_Education" EntityType="EnterpriseDbModel.HR_EMP_Education" />
+          <EntitySet Name="HR_EMP_EmployeeContract" EntityType="EnterpriseDbModel.HR_EMP_EmployeeContract" />
+          <EntitySet Name="HR_EMP_EmployeeFamily" EntityType="EnterpriseDbModel.HR_EMP_EmployeeFamily" />
+          <EntitySet Name="HR_EMP_WorkHistory" EntityType="EnterpriseDbModel.HR_EMP_WorkHistory" />
+          <EntitySet Name="HR_EMP_Employee" EntityType="EnterpriseDbModel.HR_EMP_Employee" />
+          <EntitySet Name="SYS_COM_BankBranch" EntityType="EnterpriseDbModel.SYS_COM_BankBranch" />
+          <EntitySet Name="HR_EMP_OtherContact" EntityType="EnterpriseDbModel.HR_EMP_OtherContact" />
+          <EntitySet Name="HR_ORG_LegalEntity" EntityType="EnterpriseDbModel.HR_ORG_LegalEntity" />
+          <EntitySet Name="SYS_User" EntityType="EnterpriseDbModel.SYS_User" />
+        </EntityContainer>
+        <EntityType Name="HR_EMP_OfficeArea">
+          <Key>
+            <PropertyRef Name="AreaID" />
+          </Key>
+          <Property Name="AreaID" Type="Guid" Nullable="false" />
+          <Property Name="AreaCode" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="AreaName" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsUse" Type="Boolean" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="District" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="OtherAddress" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="DetailAddress" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="Memo" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+          <Property Name="AreaSize" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="HR_EMP_SalaryLevel">
+          <Key>
+            <PropertyRef Name="SalaryLevelID" />
+          </Key>
+          <Property Name="SalaryLevelID" Type="Guid" Nullable="false" />
+          <Property Name="SalaryLevelName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="SalaryLevelValue" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="SalaryLevelType" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_Job">
+          <Key>
+            <PropertyRef Name="JobID" />
+          </Key>
+          <Property Name="JobID" Type="Guid" Nullable="false" />
+          <Property Name="JobCode" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="JobName" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="JobGroup" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_JobLevel">
+          <Key>
+            <PropertyRef Name="JobLevelID" />
+          </Key>
+          <Property Name="JobLevelID" Type="Guid" Nullable="false" />
+          <Property Name="JobLevelName" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="JobLevelNumber" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="Description" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_Address">
+          <Key>
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="AddressID" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeID" Type="Guid" Nullable="false" />
+          <Property Name="AddressType" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Province" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="District" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="AddressPhone" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_BankCard">
+          <Key>
+            <PropertyRef Name="BankID" />
+          </Key>
+          <Property Name="BankID" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeID" Type="Guid" Nullable="false" />
+          <Property Name="BankNumber" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="AccountName" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="BankName" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="BankCity" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsWageCard" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+          <Property Name="BankBranchCode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="HR_EMP_Education">
+          <Key>
+            <PropertyRef Name="EducationID" />
+          </Key>
+          <Property Name="EducationID" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeID" Type="Guid" Nullable="false" />
+          <Property Name="School" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Speciality" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EduBG" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="EduDegree" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="EduDegreeNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EduBeginDate" Type="DateTime" Precision="3" />
+          <Property Name="EduEndDate" Type="DateTime" Precision="3" />
+          <Property Name="IsHighestDiploma" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_EmployeeContract">
+          <Key>
+            <PropertyRef Name="EmployeeContractID" />
+          </Key>
+          <Property Name="EmployeeContractID" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeID" Type="Guid" Nullable="false" />
+          <Property Name="SignMode" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="SignApplicationID" Type="Guid" />
+          <Property Name="OriginalContractID" Type="Guid" />
+          <Property Name="ContractType" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeContractNumber" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeContractBeginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EmployeeContractEndDate" Type="DateTime" Precision="3" />
+          <Property Name="TrialBeginDate" Type="DateTime" Precision="3" />
+          <Property Name="TrialEndDate" Type="DateTime" Precision="3" />
+          <Property Name="AttachmentID" Type="Guid" />
+          <Property Name="SignDate" Type="DateTime" Precision="3" />
+          <Property Name="SignedTimes" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="IsUnfixedTerm" Type="Boolean" Nullable="false" />
+          <Property Name="IsAutoExpandDate" Type="Boolean" Nullable="false" />
+          <Property Name="HaveTrialDate" Type="Boolean" Nullable="false" />
+          <Property Name="ExpandDate" Type="DateTime" Precision="3" />
+          <Property Name="ContractEndDateWarnDate" Type="DateTime" Precision="3" />
+          <Property Name="TrialEndDateWarnDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_EmployeeFamily">
+          <Key>
+            <PropertyRef Name="FamilyMemberID" />
+          </Key>
+          <Property Name="FamilyMemberID" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Relationships" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="IDType" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="IDNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="ContactCellphone" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Precision="3" />
+          <Property Name="Job" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceStatus" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="InsuranceStartDate" Type="DateTime" Precision="3" />
+          <Property Name="InsuranceEndDate" Type="DateTime" Precision="3" />
+          <Property Name="IsEmergency" Type="Boolean" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_WorkHistory">
+          <Key>
+            <PropertyRef Name="WorkHistoryID" />
+          </Key>
+          <Property Name="WorkHistoryID" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeID" Type="Guid" Nullable="false" />
+          <Property Name="Company" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Department" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="JobDuty" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="WorkBeginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WorkEndDate" Type="DateTime" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_Employee">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeNameCN" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeNameEN" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="IDType" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="IDNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Precision="3" />
+          <Property Name="MaritalStatus" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="FirstWorkedDate" Type="DateTime" Precision="3" />
+          <Property Name="Nationality" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="OfficeAreaID" Type="Guid" />
+          <Property Name="HukouAddress" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="OnboardDate" Type="DateTime" Precision="3" />
+          <Property Name="TerminationDate" Type="DateTime" Precision="3" />
+          <Property Name="TerminationTypeName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeEMail" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="EmpStatus" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeStatus" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationID" Type="Guid" />
+          <Property Name="OrganizationCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="MainJobPositionID" Type="Guid" />
+          <Property Name="MainJobPostionName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentJobLevelName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentJobLevelValue" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="ExtCode" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="TeleCode" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalEmail" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Education" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalCellPhone" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="CPFAccount" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyCellPhone" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="FileTransferInDate" Type="DateTime" Precision="3" />
+          <Property Name="FileTransferOutDate" Type="DateTime" Precision="3" />
+          <Property Name="PoliticalStatus" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="TAG" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="MLAccount" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="TrialBeginDate" Type="DateTime" Precision="3" />
+          <Property Name="TrialEndDate" Type="DateTime" Precision="3" />
+          <Property Name="PhotoAttachmentID" Type="Guid" />
+          <Property Name="Ethnic" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="ProfessionalTitle" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="SupplHousingAccount" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="CostCenterMode" Type="Int32" />
+          <Property Name="CostCenterCode" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="ADAccount" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ADPassword" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ZYPolicyNo" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PartyJoinInDate" Type="DateTime" Precision="3" />
+          <Property Name="NCUserCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="NoTrial" Type="Boolean" />
+          <Property Name="SalaryLevelType" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="SalaryLevelID" Type="Guid" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_COM_BankBranch">
+          <Key>
+            <PropertyRef Name="BankBranchID" />
+          </Key>
+          <Property Name="BankBranchID" Type="Guid" Nullable="false" />
+          <Property Name="BankDictCode" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="BankBranchCode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="BankBranchName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="IsDisabled" Type="Boolean" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_EMP_OtherContact">
+          <Key>
+            <PropertyRef Name="OtherContactID" />
+          </Key>
+          <Property Name="OtherContactID" Type="Guid" Nullable="false" />
+          <Property Name="EmployeeID" Type="Guid" Nullable="false" />
+          <Property Name="Cellphone" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HR_ORG_LegalEntity">
+          <Key>
+            <PropertyRef Name="LegalEntityID" />
+          </Key>
+          <Property Name="LegalEntityID" Type="Guid" Nullable="false" />
+          <Property Name="ParentID" Type="Guid" />
+          <Property Name="LegalEntityName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LegalEntityCode" Type="String" Nullable="false" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="EnterpriseType" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="LegalRepresentativeName" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="UnifiedCreditRecord" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="BizBeginDate" Type="DateTime" Precision="3" />
+          <Property Name="BizEndDate" Type="DateTime" Precision="3" />
+          <Property Name="Province" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="BusinessAddress" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="PostNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="TelNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="FaxNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="BizScope" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="AccountBookNumber" Type="String" MaxLength="36" FixedLength="false" Unicode="true" />
+          <Property Name="LegalCodePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserID" Type="Guid" Nullable="false" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateUserID" Type="Guid" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="TenantID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SYS_User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="ResId" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LoginName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LoginId" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="InitPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RoleList" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserRoleList" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ResState" Type="Int32" Nullable="false" />
+          <Property Name="OrgId" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="PositionId" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="BelongOrg" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserLevel" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserPhotoId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DataSource" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Text1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Text2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Text3" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Text4" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Text5" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Text6" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Text7" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Text8" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LegalId" Type="Guid" />
+          <Property Name="TenantId" Type="Guid" Nullable="false" />
+          <Property Name="DataOwner" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DataScope" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Creator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Updator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="UpdateTime" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EnterpriseDbModelStoreContainer" CdmEntityContainer="EnterpriseDbEntities">
+          <EntitySetMapping Name="HR_EMP_PostInformation">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_PostInformation">
+              <MappingFragment StoreEntitySet="HR_EMP_PostInformation">
+                <ScalarProperty Name="PostInformationID" ColumnName="PostInformationID" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="IsFunctionPosition" ColumnName="IsFunctionPosition" />
+                <ScalarProperty Name="PositionID" ColumnName="PositionID" />
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="OfficeBeginDate" ColumnName="OfficeBeginDate" />
+                <ScalarProperty Name="OfficeEndDate" ColumnName="OfficeEndDate" />
+                <ScalarProperty Name="IsMain" ColumnName="IsMain" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_ORG_Organization">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_ORG_Organization">
+              <MappingFragment StoreEntitySet="HR_ORG_Organization">
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+                <ScalarProperty Name="OrganizationCode" ColumnName="OrganizationCode" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="CodePath" ColumnName="CodePath" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="OrganizationType" ColumnName="OrganizationType" />
+                <ScalarProperty Name="HeadPositionID" ColumnName="HeadPositionID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsEnableHeadCountPeriod" ColumnName="IsEnableHeadCountPeriod" />
+                <ScalarProperty Name="IsIndependentAccounting" ColumnName="IsIndependentAccounting" />
+                <ScalarProperty Name="AccountBookNumber" ColumnName="AccountBookNumber" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="CostCenterCode" ColumnName="CostCenterCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_ORG_Position">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_ORG_Position">
+              <MappingFragment StoreEntitySet="HR_ORG_Position">
+                <ScalarProperty Name="PositionID" ColumnName="PositionID" />
+                <ScalarProperty Name="PositionCode" ColumnName="PositionCode" />
+                <ScalarProperty Name="PositionName" ColumnName="PositionName" />
+                <ScalarProperty Name="IsFunctionPosition" ColumnName="IsFunctionPosition" />
+                <ScalarProperty Name="ReportToPositionID" ColumnName="ReportToPositionID" />
+                <ScalarProperty Name="PositionCodePath" ColumnName="PositionCodePath" />
+                <ScalarProperty Name="Headcount" ColumnName="Headcount" />
+                <ScalarProperty Name="IsAppraisal" ColumnName="IsAppraisal" />
+                <ScalarProperty Name="IsHead" ColumnName="IsHead" />
+                <ScalarProperty Name="IsPrincipal" ColumnName="IsPrincipal" />
+                <ScalarProperty Name="IsApprover" ColumnName="IsApprover" />
+                <ScalarProperty Name="IsApplier" ColumnName="IsApplier" />
+                <ScalarProperty Name="PositionDescription" ColumnName="PositionDescription" />
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+                <ScalarProperty Name="PositionLevelID" ColumnName="PositionLevelID" />
+                <ScalarProperty Name="IsUse" ColumnName="IsUse" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_ORG_PositionRoleList">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_ORG_PositionRoleList">
+              <MappingFragment StoreEntitySet="HR_ORG_PositionRoleList">
+                <ScalarProperty Name="PositionID" ColumnName="PositionID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_Audittrail">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.SYS_Audittrail">
+              <MappingFragment StoreEntitySet="SYS_Audittrail">
+                <ScalarProperty Name="AudittrailID" ColumnName="AudittrailID" />
+                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+                <ScalarProperty Name="Operation" ColumnName="Operation" />
+                <ScalarProperty Name="OperationName" ColumnName="OperationName" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="OperationTime" ColumnName="OperationTime" />
+                <ScalarProperty Name="ActivityName" ColumnName="ActivityName" />
+                <ScalarProperty Name="ActivityCode" ColumnName="ActivityCode" />
+                <ScalarProperty Name="OperatorID" ColumnName="OperatorID" />
+                <ScalarProperty Name="OperatorGUID" ColumnName="OperatorGUID" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="ActivityInstanceID" ColumnName="ActivityInstanceID" />
+                <ScalarProperty Name="RequestTypeCode" ColumnName="RequestTypeCode" />
+                <ScalarProperty Name="DelegateeID" ColumnName="DelegateeID" />
+                <ScalarProperty Name="TenantId" ColumnName="TenantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_RequestMaster">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.SYS_RequestMaster">
+              <MappingFragment StoreEntitySet="SYS_RequestMaster">
+                <ScalarProperty Name="MasterRequestID" ColumnName="MasterRequestID" />
+                <ScalarProperty Name="RequestTypeCode" ColumnName="RequestTypeCode" />
+                <ScalarProperty Name="MasterRequestCode" ColumnName="MasterRequestCode" />
+                <ScalarProperty Name="TypeInfoID" ColumnName="TypeInfoID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PositionID" ColumnName="PositionID" />
+                <ScalarProperty Name="OrgUnitID" ColumnName="OrgUnitID" />
+                <ScalarProperty Name="RequestTime" ColumnName="RequestTime" />
+                <ScalarProperty Name="OperatorID" ColumnName="OperatorID" />
+                <ScalarProperty Name="OperatorPositionID" ColumnName="OperatorPositionID" />
+                <ScalarProperty Name="OperatorOUID" ColumnName="OperatorOUID" />
+                <ScalarProperty Name="ApproveStatus" ColumnName="ApproveStatus" />
+                <ScalarProperty Name="BusinessStatus" ColumnName="BusinessStatus" />
+                <ScalarProperty Name="IsNotifyResult" ColumnName="IsNotifyResult" />
+                <ScalarProperty Name="WorkflowID" ColumnName="WorkflowID" />
+                <ScalarProperty Name="ExtendFormID" ColumnName="ExtendFormID" />
+                <ScalarProperty Name="LastApprovedTime" ColumnName="LastApprovedTime" />
+                <ScalarProperty Name="LastApproverID" ColumnName="LastApproverID" />
+                <ScalarProperty Name="Memo" ColumnName="Memo" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_RequestType">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.SYS_RequestType">
+              <MappingFragment StoreEntitySet="SYS_RequestType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RequestTypeCode" ColumnName="RequestTypeCode" />
+                <ScalarProperty Name="RequestGroup" ColumnName="RequestGroup" />
+                <ScalarProperty Name="RequestTypeName" ColumnName="RequestTypeName" />
+                <ScalarProperty Name="Memo" ColumnName="Memo" />
+                <ScalarProperty Name="BusinessId" ColumnName="BusinessId" />
+                <ScalarProperty Name="VerifyView" ColumnName="VerifyView" />
+                <ScalarProperty Name="FormCode" ColumnName="FormCode" />
+                <ScalarProperty Name="FlowCode" ColumnName="FlowCode" />
+                <ScalarProperty Name="FlowName" ColumnName="FlowName" />
+                <ScalarProperty Name="FolioRuleCode" ColumnName="FolioRuleCode" />
+                <ScalarProperty Name="WorkflowParam" ColumnName="WorkflowParam" />
+                <ScalarProperty Name="WorkflowRemark" ColumnName="WorkflowRemark" />
+                <ScalarProperty Name="CanBatchApproval" ColumnName="CanBatchApproval" />
+                <ScalarProperty Name="CanCommonApproval" ColumnName="CanCommonApproval" />
+                <ScalarProperty Name="TypeLevel" ColumnName="TypeLevel" />
+                <ScalarProperty Name="ParentTypeCode" ColumnName="ParentTypeCode" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsHeadApproval" ColumnName="IsHeadApproval" />
+                <ScalarProperty Name="Text1" ColumnName="Text1" />
+                <ScalarProperty Name="Text2" ColumnName="Text2" />
+                <ScalarProperty Name="Text3" ColumnName="Text3" />
+                <ScalarProperty Name="Text4" ColumnName="Text4" />
+                <ScalarProperty Name="Text5" ColumnName="Text5" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_Role">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.SYS_Role">
+              <MappingFragment StoreEntitySet="SYS_Role">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResId" ColumnName="ResId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ResState" ColumnName="ResState" />
+                <ScalarProperty Name="Desc" ColumnName="Desc" />
+                <ScalarProperty Name="RoleType" ColumnName="RoleType" />
+                <ScalarProperty Name="AppFunctions" ColumnName="AppFunctions" />
+                <ScalarProperty Name="BizFunctions" ColumnName="BizFunctions" />
+                <ScalarProperty Name="InheritRoles" ColumnName="InheritRoles" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="LegalId" ColumnName="LegalId" />
+                <ScalarProperty Name="TenantId" ColumnName="TenantId" />
+                <ScalarProperty Name="DataOwner" ColumnName="DataOwner" />
+                <ScalarProperty Name="DataScope" ColumnName="DataScope" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="Kind" ColumnName="Kind" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_OfficeArea">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_OfficeArea">
+              <MappingFragment StoreEntitySet="HR_EMP_OfficeArea">
+                <ScalarProperty Name="AreaSize" ColumnName="AreaSize" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Memo" ColumnName="Memo" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="DetailAddress" ColumnName="DetailAddress" />
+                <ScalarProperty Name="OtherAddress" ColumnName="OtherAddress" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="IsUse" ColumnName="IsUse" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+                <ScalarProperty Name="AreaCode" ColumnName="AreaCode" />
+                <ScalarProperty Name="AreaID" ColumnName="AreaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_SalaryLevel">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_SalaryLevel">
+              <MappingFragment StoreEntitySet="HR_EMP_SalaryLevel">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SalaryLevelType" ColumnName="SalaryLevelType" />
+                <ScalarProperty Name="SalaryLevelValue" ColumnName="SalaryLevelValue" />
+                <ScalarProperty Name="SalaryLevelName" ColumnName="SalaryLevelName" />
+                <ScalarProperty Name="SalaryLevelID" ColumnName="SalaryLevelID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_ORG_Job">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_ORG_Job">
+              <MappingFragment StoreEntitySet="HR_ORG_Job">
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="JobGroup" ColumnName="JobGroup" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="JobName" ColumnName="JobName" />
+                <ScalarProperty Name="JobCode" ColumnName="JobCode" />
+                <ScalarProperty Name="JobID" ColumnName="JobID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_ORG_JobLevel">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_ORG_JobLevel">
+              <MappingFragment StoreEntitySet="HR_ORG_JobLevel">
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="JobLevelNumber" ColumnName="JobLevelNumber" />
+                <ScalarProperty Name="JobLevelName" ColumnName="JobLevelName" />
+                <ScalarProperty Name="JobLevelID" ColumnName="JobLevelID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_Address">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_Address">
+              <MappingFragment StoreEntitySet="HR_EMP_Address">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="AddressPhone" ColumnName="AddressPhone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="AddressType" ColumnName="AddressType" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_BankCard">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_BankCard">
+              <MappingFragment StoreEntitySet="HR_EMP_BankCard">
+                <ScalarProperty Name="BankBranchCode" ColumnName="BankBranchCode" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsWageCard" ColumnName="IsWageCard" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="BankCity" ColumnName="BankCity" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+                <ScalarProperty Name="BankNumber" ColumnName="BankNumber" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="BankID" ColumnName="BankID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_Education">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_Education">
+              <MappingFragment StoreEntitySet="HR_EMP_Education">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsHighestDiploma" ColumnName="IsHighestDiploma" />
+                <ScalarProperty Name="EduEndDate" ColumnName="EduEndDate" />
+                <ScalarProperty Name="EduBeginDate" ColumnName="EduBeginDate" />
+                <ScalarProperty Name="EduDegreeNumber" ColumnName="EduDegreeNumber" />
+                <ScalarProperty Name="EduDegree" ColumnName="EduDegree" />
+                <ScalarProperty Name="EduBG" ColumnName="EduBG" />
+                <ScalarProperty Name="Speciality" ColumnName="Speciality" />
+                <ScalarProperty Name="School" ColumnName="School" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EducationID" ColumnName="EducationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_EmployeeContract">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_EmployeeContract">
+              <MappingFragment StoreEntitySet="HR_EMP_EmployeeContract">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="TrialEndDateWarnDate" ColumnName="TrialEndDateWarnDate" />
+                <ScalarProperty Name="ContractEndDateWarnDate" ColumnName="ContractEndDateWarnDate" />
+                <ScalarProperty Name="ExpandDate" ColumnName="ExpandDate" />
+                <ScalarProperty Name="HaveTrialDate" ColumnName="HaveTrialDate" />
+                <ScalarProperty Name="IsAutoExpandDate" ColumnName="IsAutoExpandDate" />
+                <ScalarProperty Name="IsUnfixedTerm" ColumnName="IsUnfixedTerm" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SignedTimes" ColumnName="SignedTimes" />
+                <ScalarProperty Name="SignDate" ColumnName="SignDate" />
+                <ScalarProperty Name="AttachmentID" ColumnName="AttachmentID" />
+                <ScalarProperty Name="TrialEndDate" ColumnName="TrialEndDate" />
+                <ScalarProperty Name="TrialBeginDate" ColumnName="TrialBeginDate" />
+                <ScalarProperty Name="EmployeeContractEndDate" ColumnName="EmployeeContractEndDate" />
+                <ScalarProperty Name="EmployeeContractBeginDate" ColumnName="EmployeeContractBeginDate" />
+                <ScalarProperty Name="EmployeeContractNumber" ColumnName="EmployeeContractNumber" />
+                <ScalarProperty Name="ContractType" ColumnName="ContractType" />
+                <ScalarProperty Name="OriginalContractID" ColumnName="OriginalContractID" />
+                <ScalarProperty Name="SignApplicationID" ColumnName="SignApplicationID" />
+                <ScalarProperty Name="SignMode" ColumnName="SignMode" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EmployeeContractID" ColumnName="EmployeeContractID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_EmployeeFamily">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_EmployeeFamily">
+              <MappingFragment StoreEntitySet="HR_EMP_EmployeeFamily">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsEmergency" ColumnName="IsEmergency" />
+                <ScalarProperty Name="InsuranceEndDate" ColumnName="InsuranceEndDate" />
+                <ScalarProperty Name="InsuranceStartDate" ColumnName="InsuranceStartDate" />
+                <ScalarProperty Name="InsuranceStatus" ColumnName="InsuranceStatus" />
+                <ScalarProperty Name="InsuranceNumber" ColumnName="InsuranceNumber" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="Job" ColumnName="Job" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="ContactCellphone" ColumnName="ContactCellphone" />
+                <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+                <ScalarProperty Name="IDType" ColumnName="IDType" />
+                <ScalarProperty Name="Relationships" ColumnName="Relationships" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="FamilyMemberID" ColumnName="FamilyMemberID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_WorkHistory">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_WorkHistory">
+              <MappingFragment StoreEntitySet="HR_EMP_WorkHistory">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="WorkEndDate" ColumnName="WorkEndDate" />
+                <ScalarProperty Name="WorkBeginDate" ColumnName="WorkBeginDate" />
+                <ScalarProperty Name="JobDuty" ColumnName="JobDuty" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="WorkHistoryID" ColumnName="WorkHistoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_Employee">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_Employee">
+              <MappingFragment StoreEntitySet="HR_EMP_Employee">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="SalaryLevelID" ColumnName="SalaryLevelID" />
+                <ScalarProperty Name="SalaryLevelType" ColumnName="SalaryLevelType" />
+                <ScalarProperty Name="NoTrial" ColumnName="NoTrial" />
+                <ScalarProperty Name="EmployeeType" ColumnName="EmployeeType" />
+                <ScalarProperty Name="NCUserCode" ColumnName="NCUserCode" />
+                <ScalarProperty Name="PartyJoinInDate" ColumnName="PartyJoinInDate" />
+                <ScalarProperty Name="ZYPolicyNo" ColumnName="ZYPolicyNo" />
+                <ScalarProperty Name="ADPassword" ColumnName="ADPassword" />
+                <ScalarProperty Name="ADAccount" ColumnName="ADAccount" />
+                <ScalarProperty Name="CostCenterCode" ColumnName="CostCenterCode" />
+                <ScalarProperty Name="CostCenterMode" ColumnName="CostCenterMode" />
+                <ScalarProperty Name="SupplHousingAccount" ColumnName="SupplHousingAccount" />
+                <ScalarProperty Name="ProfessionalTitle" ColumnName="ProfessionalTitle" />
+                <ScalarProperty Name="Ethnic" ColumnName="Ethnic" />
+                <ScalarProperty Name="PhotoAttachmentID" ColumnName="PhotoAttachmentID" />
+                <ScalarProperty Name="TrialEndDate" ColumnName="TrialEndDate" />
+                <ScalarProperty Name="TrialBeginDate" ColumnName="TrialBeginDate" />
+                <ScalarProperty Name="MLAccount" ColumnName="MLAccount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TAG" ColumnName="TAG" />
+                <ScalarProperty Name="PoliticalStatus" ColumnName="PoliticalStatus" />
+                <ScalarProperty Name="FileTransferOutDate" ColumnName="FileTransferOutDate" />
+                <ScalarProperty Name="FileTransferInDate" ColumnName="FileTransferInDate" />
+                <ScalarProperty Name="EmergencyCellPhone" ColumnName="EmergencyCellPhone" />
+                <ScalarProperty Name="CPFAccount" ColumnName="CPFAccount" />
+                <ScalarProperty Name="PersonalCellPhone" ColumnName="PersonalCellPhone" />
+                <ScalarProperty Name="Education" ColumnName="Education" />
+                <ScalarProperty Name="PersonalEmail" ColumnName="PersonalEmail" />
+                <ScalarProperty Name="TeleCode" ColumnName="TeleCode" />
+                <ScalarProperty Name="ExtCode" ColumnName="ExtCode" />
+                <ScalarProperty Name="CurrentJobLevelValue" ColumnName="CurrentJobLevelValue" />
+                <ScalarProperty Name="CurrentJobLevelName" ColumnName="CurrentJobLevelName" />
+                <ScalarProperty Name="MainJobPostionName" ColumnName="MainJobPostionName" />
+                <ScalarProperty Name="MainJobPositionID" ColumnName="MainJobPositionID" />
+                <ScalarProperty Name="OrganizationName" ColumnName="OrganizationName" />
+                <ScalarProperty Name="OrganizationCode" ColumnName="OrganizationCode" />
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="EmployeeStatus" ColumnName="EmployeeStatus" />
+                <ScalarProperty Name="EmpStatus" ColumnName="EmpStatus" />
+                <ScalarProperty Name="EmployeeEMail" ColumnName="EmployeeEMail" />
+                <ScalarProperty Name="TerminationTypeName" ColumnName="TerminationTypeName" />
+                <ScalarProperty Name="TerminationDate" ColumnName="TerminationDate" />
+                <ScalarProperty Name="OnboardDate" ColumnName="OnboardDate" />
+                <ScalarProperty Name="HukouAddress" ColumnName="HukouAddress" />
+                <ScalarProperty Name="OfficeAreaID" ColumnName="OfficeAreaID" />
+                <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+                <ScalarProperty Name="FirstWorkedDate" ColumnName="FirstWorkedDate" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="IDNumber" ColumnName="IDNumber" />
+                <ScalarProperty Name="IDType" ColumnName="IDType" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="EmployeeNameEN" ColumnName="EmployeeNameEN" />
+                <ScalarProperty Name="EmployeeNameCN" ColumnName="EmployeeNameCN" />
+                <ScalarProperty Name="EmployeeNumber" ColumnName="EmployeeNumber" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_COM_BankBranch">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.SYS_COM_BankBranch">
+              <MappingFragment StoreEntitySet="SYS_COM_BankBranch">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="BankBranchName" ColumnName="BankBranchName" />
+                <ScalarProperty Name="BankBranchCode" ColumnName="BankBranchCode" />
+                <ScalarProperty Name="BankDictCode" ColumnName="BankDictCode" />
+                <ScalarProperty Name="BankBranchID" ColumnName="BankBranchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_EMP_OtherContact">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_EMP_OtherContact">
+              <MappingFragment StoreEntitySet="HR_EMP_OtherContact">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Cellphone" ColumnName="Cellphone" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="OtherContactID" ColumnName="OtherContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HR_ORG_LegalEntity">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.HR_ORG_LegalEntity">
+              <MappingFragment StoreEntitySet="HR_ORG_LegalEntity">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserID" ColumnName="UpdateUserID" />
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LegalCodePath" ColumnName="LegalCodePath" />
+                <ScalarProperty Name="AccountBookNumber" ColumnName="AccountBookNumber" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="BizScope" ColumnName="BizScope" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="FaxNumber" ColumnName="FaxNumber" />
+                <ScalarProperty Name="TelNumber" ColumnName="TelNumber" />
+                <ScalarProperty Name="PostNumber" ColumnName="PostNumber" />
+                <ScalarProperty Name="BusinessAddress" ColumnName="BusinessAddress" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="BizEndDate" ColumnName="BizEndDate" />
+                <ScalarProperty Name="BizBeginDate" ColumnName="BizBeginDate" />
+                <ScalarProperty Name="UnifiedCreditRecord" ColumnName="UnifiedCreditRecord" />
+                <ScalarProperty Name="LegalRepresentativeName" ColumnName="LegalRepresentativeName" />
+                <ScalarProperty Name="EnterpriseType" ColumnName="EnterpriseType" />
+                <ScalarProperty Name="LegalEntityCode" ColumnName="LegalEntityCode" />
+                <ScalarProperty Name="LegalEntityName" ColumnName="LegalEntityName" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="LegalEntityID" ColumnName="LegalEntityID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SYS_User">
+            <EntityTypeMapping TypeName="EnterpriseDbModel.SYS_User">
+              <MappingFragment StoreEntitySet="SYS_User">
+                <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Updator" ColumnName="Updator" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="DataScope" ColumnName="DataScope" />
+                <ScalarProperty Name="DataOwner" ColumnName="DataOwner" />
+                <ScalarProperty Name="TenantId" ColumnName="TenantId" />
+                <ScalarProperty Name="LegalId" ColumnName="LegalId" />
+                <ScalarProperty Name="Text8" ColumnName="Text8" />
+                <ScalarProperty Name="Text7" ColumnName="Text7" />
+                <ScalarProperty Name="Text6" ColumnName="Text6" />
+                <ScalarProperty Name="Text5" ColumnName="Text5" />
+                <ScalarProperty Name="Text4" ColumnName="Text4" />
+                <ScalarProperty Name="Text3" ColumnName="Text3" />
+                <ScalarProperty Name="Text2" ColumnName="Text2" />
+                <ScalarProperty Name="Text1" ColumnName="Text1" />
+                <ScalarProperty Name="DataSource" ColumnName="DataSource" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="UserPhotoId" ColumnName="UserPhotoId" />
+                <ScalarProperty Name="UserNo" ColumnName="UserNo" />
+                <ScalarProperty Name="UserLevel" ColumnName="UserLevel" />
+                <ScalarProperty Name="UserStatus" ColumnName="UserStatus" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="BelongOrg" ColumnName="BelongOrg" />
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="ResState" ColumnName="ResState" />
+                <ScalarProperty Name="UserRoleList" ColumnName="UserRoleList" />
+                <ScalarProperty Name="RoleList" ColumnName="RoleList" />
+                <ScalarProperty Name="InitPassword" ColumnName="InitPassword" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+                <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ResId" ColumnName="ResId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

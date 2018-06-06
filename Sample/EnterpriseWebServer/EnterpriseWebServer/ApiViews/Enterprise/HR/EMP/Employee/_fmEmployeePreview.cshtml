@@ -1,0 +1,806 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+
+<div style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row" style="margin-top:10px;">
+                <div id="leftTabBox" class="col-md-1" style="padding-left: 5px; padding-right: 0;">
+                    <ul id="leftTab" class="nav nav-tabs tabs-left">
+                        <li id="liEmployee" class="active">
+                            <a href="#employee" data-toggle="tab" aria-expanded="true"> 基本信息 </a>
+                        </li>
+                        <li class="">
+                            <a href="#job" data-toggle="tab" data-bind="click:OnJobTabView" aria-expanded="false"> 任职信息 </a>
+                        </li>
+                        <li class="">
+                            <a href="#Contract" data-toggle="tab" data-bind="click:OnContractRefresh"> 合同信息 </a>
+                        </li>
+                        <li class="">
+                            <a href="#workHistory" data-toggle="tab" data-bind="click:OnWorkHistoryTabView" aria-expanded="false"> 工作履职 </a>
+                        </li>
+                        <li class="">
+                            <a href="#education" data-toggle="tab" data-bind="click:OnEducationTabView" aria-expanded="false"> 学历信息 </a>
+                        </li>
+                        <li class="">
+                            <a href="#familyMember" data-toggle="tab" data-bind="click:OnfamilyMemberTabView" aria-expanded="false"> 家庭成员 </a>
+                        </li>
+                        <li class="">
+                            <a href="#otherContact" data-toggle="tab" data-bind="click:OnOtherContactTabView" aria-expanded="false"> 联系方式 </a>
+                        </li>
+                        @*<li class="">
+                            <a href="#Training" data-toggle="tab" data-bind="click:OnTrainingRefresh"> 在司培训 </a>
+                        </li>*@
+                    </ul>
+                </div>
+                <div id="rightBox" class="col-md-11">
+                    <div class="tab-content">
+                        <div class="tab-pane in active" id="employee">
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        员工基本信息
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form form-horizontal">
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="row">
+                                                        <div class="col-md-7">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-4">员工工号</label>
+                                                                <div class="col-md-8">
+                                                                    <div class="input-group">
+                                                                        <span id="txtEmployeeNumber" class="form-control-static" data-bind="text:formdata.EmployeeNumber"></span>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5" style="padding-right: 0">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-6">婚姻状态</label>
+                                                                <div class="col-md-6">
+                                                                    <span data-bind="text:formdata.MaritalStatusName" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-7">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-4">员工姓名</label>
+                                                                <div class="col-md-8">
+                                                                    <span data-bind="text:formdata.EmployeeNameCN" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5" style="padding-right: 0">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-6">政治面貌</label>
+                                                                <div class="col-md-6">
+                                                                    <span data-bind="text:formdata.PoliticalStatusName" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-7">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-4">员工英文名</label>
+                                                                <div class="col-md-8">
+                                                                    <span data-bind="text:formdata.EmployeeNameEN" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-5" style="padding-right: 0">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-6">职称</label>
+                                                                <div class="col-md-6">
+                                                                    <span data-bind="text:formdata.ProfessionalTitleName" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-7">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-4">证件类型</label>
+                                                                <div class="col-md-8">
+                                                                    <span data-bind="text:formdata.IDTypeName" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5" style="padding-right: 0">
+                                                            <div class="form-group">
+                                                                <label class="control-label bold col-md-6">性别</label>
+                                                                <div class="col-md-6">
+                                                                    <span data-bind="text:formdata.GenderName" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div>
+                                                        <img data-bind="attr:{src:formdata.photoUrl}" style="width: 100%" onerror="this.src = '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Content/images/noman.gif")'" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">证件号码</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.IDNumber" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">出生日期</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.Birthday" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">民族</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.EthnicName" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">最高学历</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.Education" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">国籍</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.NationalityName" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">户口所在地</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.HukouAddress" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">参加工作日期</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.FirstWorkedDate" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">紧急联系电话</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.EmergencyCellPhone" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">手机号码</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.PersonalCellPhone" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">个人邮箱</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.PersonalEmail" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">入党/团时间</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.PartyJoinInDate" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*<div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">NC用户编码</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-group">
+                                                                <span data-bind="text:formdata.NCUserCode" class="form-control-static"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        工作信息
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form form-horizontal">
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label bold col-md-4">任职部门</label>
+                                                            <div class="col-md-8">
+                                                                <span data-bind="text:formdata.OrganizationName" class="form-control-static"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label bold col-md-4">职位名称</label>
+                                                            <div class="col-md-8">
+                                                                <span data-bind="text:formdata.MainJobPositionName" class="form-control-static"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">状态</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.EmpStatusName" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">员工身份</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.EmployeeStatusName" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">系统登录账号</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.UserName" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">员工类型</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.EmployeeTypeNames" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">入职日期</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.OnboardDate" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">薪资级别</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.SalaryLevelName" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">无试用期</label>
+                                                        <div class="col-md-8" style="margin-top: 8px;">
+                                                            <input type="checkbox" disabled data-bind="checked: formdata.NoTrial" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" data-bind="visible: !formdata.NoTrial()">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">试用开始日期</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.TrialBeginDate" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">试用结束日期</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.TrialEndDate" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">离职日期</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.TerminationDate" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">离职类型</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.TerminationTypeName" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">工作邮箱</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.EmployeeEMail" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">直线电话</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.TeleCode" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">办公区域</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.OFDetailAddress" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">分机号</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.ExtCode" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">公积金账号</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.CPFAccount" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">补充公积金账号</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.SupplHousingAccount" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">档案转入日期</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.FileTransferInDate" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">档案转出日期</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.FileTransferOutDate" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-2">标签</label>
+                                                        <div class="col-md-10">
+                                                            <span data-bind="text:formdata.TAG" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-2">备注</label>
+                                                        <div class="col-md-10">
+                                                            <span data-bind="html:((formdata.Description!=null && formdata.Description()!=null)?formdata.Description():'').replace(/\n/g,'<br/>')" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        家庭地址信息
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form form-horizontal">
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-2">联系住址</label>
+                                                        <div class="col-md-10">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <span data-bind="text:formdata.Country" class="form-control-static"></span>
+                                                                </div>
+                                                                <div class="col-md-7">
+                                                                    <span data-bind="text:formdata.Area" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top: 5px;">
+                                                                <div class="col-md-12">
+                                                                    <span data-bind="text:formdata.Address" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">住址邮编</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.ZipCode" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">住址家庭电话</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.AddressPhone" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-2">户籍地</label>
+                                                        <div class="col-md-10">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <span data-bind="text:formdata.HujiCountry" class="form-control-static"></span>
+                                                                </div>
+                                                                <div class="col-md-7">
+                                                                    <span data-bind="text:formdata.HujiArea" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top: 5px;">
+                                                                <div class="col-md-12">
+                                                                    <span data-bind="text:formdata.HujiAddress" class="form-control-static"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">户籍地邮编</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.HujiZipCode" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label bold col-md-4">户籍地电话</label>
+                                                        <div class="col-md-8">
+                                                            <span data-bind="text:formdata.HujiAddressPhone" class="form-control-static"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        工资银行卡信息
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="form form-horizontal">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label bold col-md-4">卡号</label>
+                                                    <div class="col-md-8">
+                                                        <span data-bind="text:formdata.BankNumber" class="form-control-static"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    @*<label class="control-label bold col-md-4">开户行</label>*@
+                                                    <label class="control-label bold col-md-4">银行名称</label>
+                                                    <div class="col-md-8">
+                                                        <span data-bind="text:formdata.BanksName" class="form-control-static"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label bold col-md-4">开户城市</label>
+                                                    <div class="col-md-8">
+                                                        <span data-bind="text:formdata.BankCity" class="form-control-static"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    @*<label class="control-label bold col-md-4">网点</label>*@
+                                                    <label class="control-label bold col-md-4">开户行</label>
+                                                    <div class="col-md-8">
+                                                        @*<span data-bind="text:formdata.BankAddress" class="form-control-static"></span>*@
+                                                        @*<span data-bind="text:formdata.BankBranchCode" class="form-control-static"></span>*@
+                                                        <span data-bind="text:formdata.BankBranchName" class="form-control-static"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label bold col-md-4">开户名</label>
+                                                    <div class="col-md-8">
+                                                        <span data-bind="text:formdata.AccountName" class="form-control-static"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*工作任职信息*@
+                        <div class="tab-pane" id="job"></div>
+                        @*工作履职信息*@
+                        <div class="tab-pane" id="workHistory"></div>
+                        @*学历信息*@
+                        <div class="tab-pane" id="education"></div>
+                        @*家庭成员信息*@
+                        <div class="tab-pane" id="familyMember"></div>
+                        @*其他联系方式*@
+                        <div class="tab-pane" id="otherContact"></div>
+
+                        @*在司培训信息*@
+                        <div class="tab-pane" id="Training"></div>
+                        @*合同信息*@
+                        <div class="tab-pane" id="Contract"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            //self.Action = 'new';
+            ////debugger;
+            //if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+            //    self.Action = 'edit';
+            //}
+            self.formdata = ko.mapping.fromJS(data.form);
+
+            self.formdata.photoUrl = ko.computed(function() {
+                if(self.formdata.PhotoAttachmentID!=null && self.formdata.PhotoAttachmentID() && self.formdata.PhotoAttachmentID()!='00000000-0000-0000-0000-000000000000')
+                    return global.GetActionUrl("_BizAttachmentService", "GetAttachment", { AttachmentId: self.formdata.PhotoAttachmentID()});
+                else {
+                    return '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Content/images/noman.gif")';
+                }
+            });
+
+            self.Init = function() {
+
+            };
+
+            self.OnContractRefresh = function() {
+                ko.cleanNode($('#Contract')[0]);
+                MainApp.LoadPartialView('Contract', self.ViewTool.GetActionUrl("Get", "EmpContractTabView", { resId: data.form.ResId, legalId: data.form.LegalEntityID, isView: 1 }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+
+            };
+
+            self.OnTrainingRefresh = function() {
+                //debugger;
+                MainApp.LoadPartialView('Training', self.ViewTool.GetActionUrl("Get", "EmpTrainingTabView", { resId: data.form.ResId,legalId: data.form.LegalEntityID, isView: 1 }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+                //$("#trainlist").datagrid('load');
+            }
+
+            self.OnJobTabView = function () {
+                ko.cleanNode($('#job')[0]);
+                MainApp.LoadPartialView('job', self.ViewTool.GetActionUrl("Get", "JobTabView", { resId: data.form.ResId,legalId: data.form.LegalEntityID, isView: 1 }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnWorkHistoryTabView = function () {
+                ko.cleanNode($('#workHistory')[0]);
+                MainApp.LoadPartialView('workHistory', self.ViewTool.GetActionUrl("Get", "WorkHistoryTabView", { resId: data.form.ResId,legalId: data.form.LegalEntityID, isView: 1 }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnEducationTabView = function () {
+                ko.cleanNode($('#education')[0]);
+                MainApp.LoadPartialView('education', self.ViewTool.GetActionUrl("Get", "EducationTabView", { resId: data.form.ResId ,legalId: data.form.LegalEntityID, isView: 1 }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnfamilyMemberTabView = function () {
+                ko.cleanNode($('#familyMember')[0]);
+                MainApp.LoadPartialView('familyMember', self.ViewTool.GetActionUrl("Get", "FamilyMemberTabView", { resId: data.form.ResId ,legalId: data.form.LegalEntityID, isView: 1 }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnOtherContactTabView = function () {
+                ko.cleanNode($('#otherContact')[0]);
+                MainApp.LoadPartialView('otherContact', self.ViewTool.GetActionUrl("Get", "OtherContactTabView", { resId: data.form.ResId ,legalId: data.form.LegalEntityID, isView: 1 }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            //self.uiSources = {
+            //    trainlist: {
+            //    ops: {
+            //            ClientPage: false,
+            //            ele: "#trainlist",
+            //            SizeOpt: {
+            //            pid: "#traindiv",
+            //            top: 411
+            //            }
+            //    },
+            //    sops: {
+            //        url: self.ViewTool.GetActionUrl("Post", "GetEducationList", { resId: data.form.ResId }),
+            //        fitColumns:true,
+            //        selectOnCheck: false,
+            //        checkOnSelect: false,
+            //        columns: [[
+            //        { field: 'School', title: '培训内容',sortable:true, width: 200 },
+            //        { field: 'EduDegreeNumber', title: '获得证书',sortable:true, width: 200 },
+            //        { field: 'EduBeginDate', title: '开始日期',sortable:true, width: 200 },
+            //        { field: 'EduEndDate', title: '结束日期',sortable:true, width: 200 },
+            //        { field: 'Speciality', title: '费用',sortable:true, width: 200 },
+            //        { field: 'EduBG', title: '备注',sortable:true, width: 200 }
+            //        ]]
+            //    }
+            //},
+            //};
+
+            self.OnRefresh = function () {
+                //var data = {
+                //    name: Pagecom.ViewModel.displaydata.name(),
+                //    number:Pagecom.ViewModel.displaydata.number(),
+                //    tag:Pagecom.ViewModel.displaydata.tag(),
+                //    empStatus:Pagecom.ViewModel.displaydata.empStatus(),
+                //    employeeStatus:Pagecom.ViewModel.displaydata.employeeStatus(),
+                //    dept:Pagecom.ViewModel.displaydata.dept(),
+                //    description:Pagecom.ViewModel.displaydata.description()
+                //};
+            };
+        };
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+        Pagecom.EditViewModel = viewModel;
+
+        ko.applyBindings(viewModel, $(eleId)[0]);
+        viewModel.Init();
+        MainApp.DialogCustomButton(eleId, '查看员工信息', 900, 650, [{ text: '关闭', cancel: true }]);
+        //MainApp.DialogModel(eleId,viewModel.Action == "new"? '查看员工信息' : '查看员工信息',1200,800,viewModel.OnSave);
+        viewModel.OnRefresh();
+
+    })(eleId, context, callback);
+</script>

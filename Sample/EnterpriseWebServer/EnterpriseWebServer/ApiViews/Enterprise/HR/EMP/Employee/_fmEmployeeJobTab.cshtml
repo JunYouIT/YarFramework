@@ -1,0 +1,96 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+    var isView = "1".Equals(context.Request["isView"]);
+}
+
+<div style="padding:0 5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row" style="">
+                <div>
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#ijob" data-toggle="tab" aria-expanded="true" data-bind="click:OnIJobTabView"> 职能职位 </a>
+                        </li>
+                        <li class="">
+                            <a href="#njob" data-toggle="tab" aria-expanded="false" data-bind="click:OnNJobTabView"> 非职能职位 </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-12" style="padding-right: 0; padding-left: 0;">
+                    <div class="tab-content">
+                        <div class="tab-pane in active" id="ijob"></div>
+                        <div class="tab-pane" id="njob">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+
+        //$.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+
+            if (context.ViewModel && context.ViewModel.BizName && context.ViewModel.SubBizName) {
+                self.ViewTool = new YarClient.ViewModel(context.ViewModel.BizName, "@tokenId");
+                self.BizName = context.ViewModel.BizName;
+                self.SubBizName = context.ViewModel.SubBizName;
+                self.DispMode = context.ViewModel.DispMode;
+            }
+            else {
+                self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            }
+
+            self.dataSources = data.dataSources;
+
+            self.Init = function() {
+                self.OnIJobTabView();
+            };
+
+            self.uiSources = {
+
+            };
+
+            self.OnRefresh = function () {
+                var data = {
+                };
+            };
+
+            self.OnIJobTabView = function () {
+                ko.cleanNode($('#ijob')[0]);
+                MainApp.LoadPartialView('ijob', self.ViewTool.GetActionUrl("Get", (self.SubBizName ? self.SubBizName + ".IJobTabView" : "IJobTabView"), { resId: data.form.empId ,legalId: data.form.legalId @(isView?", isView:1":"")}), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+
+            self.OnNJobTabView = function () {
+                ko.cleanNode($('#njob')[0]);
+                MainApp.LoadPartialView('njob', self.ViewTool.GetActionUrl("Get", (self.SubBizName ? self.SubBizName + ".NJobTabView" : "NJobTabView"), { resId: data.form.empId ,legalId: data.form.legalId @(isView?", isView:1":"")}), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+            };
+        };
+
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+        Pagecom.EditViewModel = viewModel;
+
+        ko.applyBindings(viewModel, $(eleId)[0]);
+        viewModel.Init();
+
+    })(eleId, context, callback);
+</script>

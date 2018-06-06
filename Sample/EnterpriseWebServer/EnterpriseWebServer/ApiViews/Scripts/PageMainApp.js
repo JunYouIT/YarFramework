@@ -71,10 +71,11 @@ var MainApp;
             //dialog
             elementId = 'f' + elementId;
             var eleId = "#" + elementId;
-
+            if (typeof App != 'undefined') App.blockUI();
             $.ajax({
                 url: viewPath,
                 success: function (data, status, xhr) {
+                    if (typeof App != 'undefined') App.unblockUI();
                     try {
                         var jsonObject = $.parseJSON(data);
                         if (jsonObject.StatusCode == 'Success') {
@@ -100,6 +101,7 @@ var MainApp;
 
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
+                    if (typeof App != 'undefined') App.unblockUI();
                     $.messager.alert('Message', jqXHR.responseText || errorThrown, 'error');
                 }
             });
@@ -153,8 +155,9 @@ var MainApp;
                 }
             });
         },
-        LoadPartialView: function (elementId, viewPath, context, callback) {
-            var eleId = "#" + elementId;
+        LoadPartialView: function (elementId, viewPath, context1, callback1,loadComplete) {
+            var eleId1 = "#" + elementId;
+            eval("var eleId = '#'+ arguments[0],context = arguments[2],callback = arguments[3]");
             $.ajax({
                 url: viewPath,
                 success: function (data, status, xhr) {
@@ -177,11 +180,17 @@ var MainApp;
                     var script = html.find('script');
                     var scriptStr = script.text();
                     script.remove();
-                    $(eleId).html(html.children());
+                    $(eleId1).html(html.children());
                     eval(scriptStr);
+                    if (loadComplete) {
+                        loadComplete();
+                    }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    $(eleId).html('<div>' + errorThrown + '</div>');
+                    $(eleId1).html('<div>' + errorThrown + '</div>');
+                    if (loadComplete) {
+                        loadComplete();
+                    }
                 }
             });
         },
@@ -216,7 +225,9 @@ var MainApp;
             }
 
         },
-        DialogModel: function (eleId, title, width, height, okcall, cancelcall) {
+        DialogModel: function (eleId, title, width, height, okcall, cancelcall, onshown) {
+            return $.Yar.Dialog.Show(eleId, title, width, height, okcall, cancelcall, onshown);
+            return;
             var closable = cancelcall ? false : true;
             if (typeof App != 'undefined') {
                 var client = App.getViewPort();
@@ -263,8 +274,15 @@ var MainApp;
                     $(eleId).window('destroy');
                 }
             });
+            $(eleId).slimScroll({
+                height: height,
+                alwaysVisible: false,
+                color: 'rgb(161, 178, 189)'
+            });
         },
-        DialogCustomButton: function (eleId, title, width, height, customButtons) {
+        DialogCustomButton: function (eleId, title, width, height, customButtons,onshown) {
+            return $.Yar.Dialog.ShowCustom(eleId, title, width, height, customButtons, onshown);
+            return;
             ///<summary>自定义对话框按钮</summary>
             ///<param name="customButtons" type="Array" >button array {cancel:true,text,icon,click,css}</param>
             ///cancel:true-取消行为,false-确定行为, text:按钮文本,css:按钮颜色css class,icon:按钮图标,click:按钮事件
@@ -294,7 +312,7 @@ var MainApp;
                     button.css = item.css;
                 } else {
                     if (item.cancel) {
-                        button.css = 'l-btn-warning';
+                        button.css = 'dialogcancel';
                     }
                     //                    else {
                     //                        button.css = 'dialogok';
@@ -342,6 +360,14 @@ var MainApp;
                     $(eleId).window('destroy');
                 }
             });
+            $(eleId).slimScroll({
+                height: height,
+                alwaysVisible: false,
+                color: 'rgb(161, 178, 189)'
+            });
+            if (typeof onshown === 'function') {
+                onshown();
+            }
         },
         Paste: function () {
             var ele = $('div[yar-layout="autoheight"]')[0];
@@ -590,7 +616,7 @@ var YarGrid = {
             gridOpts.sidePagination = "server";
             gridOpts.contentType = "application/x-www-form-urlencoded";
             if (gridOpts.pageSize === undefined) gridOpts.pageSize = 20;
-            gridOpts.pageList = [gridOpts.pageSize];
+            if (gridOpts.pageList === undefined) gridOpts.pageList = [gridOpts.pageSize];            
             gridOpts.queryParamsType = '';
             gridOpts.queryParams = function (params) {
                 return {
@@ -605,18 +631,25 @@ var YarGrid = {
             if (gridOpts.dataType === undefined) gridOpts.dataType = 'json';
             if (gridOpts.undefinedText === undefined) gridOpts.undefinedText = '';
             if (gridOpts.pagination === undefined) gridOpts.pagination = true;
-            if (gridOpts.paginationHAlign === undefined) gridOpts.paginationHAlign = true;
-            if (gridOpts.paginationDetailHAlign === undefined) gridOpts.paginationDetailHAlign = true;
-            if (gridOpts.paginationDetailHAlign === undefined) gridOpts.paginationDetailHAlign = true;
+            if (gridOpts.paginationHAlign === undefined) gridOpts.paginationHAlign = 'left';
+            if (gridOpts.paginationDetailHAlign === undefined) gridOpts.paginationDetailHAlign = 'right';
+            if (gridOpts.paginationPreText === undefined) gridOpts.paginationPreText = "<i class='fa fa-angle-left'></i>";
+            if (gridOpts.paginationNextText === undefined) gridOpts.paginationNextText = "<i class='fa fa-angle-right'></i>"; 
             $(option.ele).bootstrapTable(gridOpts);
         };
 
-        if (option.SizeOpt) {            
-            if (option.SizeOpt.interval) {
+        if (option.SizeOpt) {      
+            if (option.SizeOpt.top) {
                 $(window).resize(function () {
-                    $(option.ele).bootstrapTable('resetView', { height: document.documentElement.clientHeight - option.SizeOpt.interval });
+                    $(option.ele).bootstrapTable('resetView', { height: document.documentElement.clientHeight - option.SizeOpt.top });
                 });
-                $(option.ele).bootstrapTable('resetView', { height: document.documentElement.clientHeight - option.SizeOpt.interval });
+                $(option.ele).bootstrapTable('resetView', { height: document.documentElement.clientHeight - option.SizeOpt.top });
+            } 
+            else if (option.SizeOpt.topinterval) {
+                $(window).resize(function () {
+                    $(option.ele).bootstrapTable('resetView', { height: $('.page-content').height() - option.SizeOpt.interval });
+                });
+                $(option.ele).bootstrapTable('resetView', { height: $('.page-content').height() - option.SizeOpt.interval });
             } 
         };
     },
@@ -818,6 +851,8 @@ var YarClient;
                     else {
                         if (opts.IsWarning && data.Message)
                             $.messager.alert('错误', data.Message, 'error');
+                        if (opts.failed)
+                            opts.failed(data)
                     }
                 }
                 else {

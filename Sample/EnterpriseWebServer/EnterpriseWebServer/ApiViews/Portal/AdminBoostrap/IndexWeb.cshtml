@@ -195,7 +195,7 @@ if (nodes.Length > 0)
                             <a href="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Portal/Login.html")" class="dropdown-toggle">
                                 <span class="home-logout">a</span>
                             </a>
-                            
+
                         </li>
                         <li class="dropdown dropdown-quick-sidebar-toggler">
                             <a href="@Yar.Core.YarSystem.GetViewSitePath("PersonalHome")" class="dropdown-toggle">
@@ -208,46 +208,46 @@ if (nodes.Length > 0)
                 {
                     <text>
                         <li class="dropdown dropdown-user">
-                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"  data-close-others="true" aria-expanded="false">
-                                <img alt="" class="img-circle" id="userImg" >
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true" aria-expanded="false">
+                                <img alt="" class="img-circle" id="userImg">
                                 <span class="username username-hide-on-mobile">@user</span>
                             </a>
                             <ul></ul>
                             @*<ul class="dropdown-menu dropdown-menu-default">
-                                <li>
-                                    <a href="page_user_profile_1.html">
-                                        <i class="icon-user"></i> My Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="app_calendar.html">
-                                        <i class="icon-calendar"></i> My Calendar
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="app_inbox.html">
-                                        <i class="icon-envelope-open"></i> My Inbox
-                                        <span class="badge badge-danger"> 3 </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="app_todo_2.html">
-                                        <i class="icon-rocket"></i> My Tasks
-                                        <span class="badge badge-success"> 7 </span>
-                                    </a>
-                                </li>
-                                <li class="divider"> </li>
-                                <li>
-                                    <a href="page_user_lock_1.html">
-                                        <i class="icon-lock"></i> Lock Screen
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="page_user_login_1.html">
-                                        <i class="icon-key"></i> Log Out
-                                    </a>
-                                </li>
-                            </ul>*@
+                                    <li>
+                                        <a href="page_user_profile_1.html">
+                                            <i class="icon-user"></i> My Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="app_calendar.html">
+                                            <i class="icon-calendar"></i> My Calendar
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="app_inbox.html">
+                                            <i class="icon-envelope-open"></i> My Inbox
+                                            <span class="badge badge-danger"> 3 </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="app_todo_2.html">
+                                            <i class="icon-rocket"></i> My Tasks
+                                            <span class="badge badge-success"> 7 </span>
+                                        </a>
+                                    </li>
+                                    <li class="divider"> </li>
+                                    <li>
+                                        <a href="page_user_lock_1.html">
+                                            <i class="icon-lock"></i> Lock Screen
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="page_user_login_1.html">
+                                            <i class="icon-key"></i> Log Out
+                                        </a>
+                                    </li>
+                                </ul>*@
                         </li>
                         <li class="dropdown dropdown-quick-sidebar-toggler">
                             <a href="@Yar.Core.YarSystem.GetViewSitePath("/RestAPI/Permission/Logout?returnurl=/" + this.AppUrl + "&clientInfo=&token=" + tokenId)" class="dropdown-toggle">
@@ -255,10 +255,10 @@ if (nodes.Length > 0)
                             </a>
                         </li>
                         @*<li class="dropdown dropdown-quick-sidebar-toggler">
-                            <a href="@Yar.Core.YarSystem.GetViewSitePath("PersonalHome")" class="dropdown-toggle">
-                                <div class="home-return"></div>
-                            </a>
-                        </li>*@
+                                <a href="@Yar.Core.YarSystem.GetViewSitePath("PersonalHome")" class="dropdown-toggle">
+                                    <div class="home-return"></div>
+                                </a>
+                            </li>*@
                     </text>
                 }
 
@@ -275,67 +275,67 @@ if (nodes.Length > 0)
                 <div>
                     <ul class="page-sidebar-menu @(IsSidebarClosed ? "page-sidebar-menu-closed":"")" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
                         @foreach (var item in nodes)
-                    {
-                        if (string.IsNullOrEmpty(item.NodeType) || item.NodeType == "tab")
                         {
-                            if (item.children.Count > 0)
+                            if (string.IsNullOrEmpty(item.NodeType) || item.NodeType == "tab")
                             {
-                                var nodeContent = (Yar.Service.Model.NodeContent)Yar.Service.UIHelper.GetNodeContent(item.ResID);
-                                var icon = item.Icon;
-                                if (nodeContent != null)
+                                if (item.children.Count > 0)
                                 {
-                                    icon = nodeContent.GetItemValue("Icon");
-                                }
-                                var bSelected = CheckSelected(item, (string)Model.Action,nodeIdList);
+                                    var nodeContent = (Yar.Service.Model.NodeContent)Yar.Service.UIHelper.GetNodeContent(item.ResID);
+                                    var icon = item.Icon;
+                                    if (nodeContent != null)
+                                    {
+                                        icon = nodeContent.GetItemValue("Icon");
+                                    }
+                                    var bSelected = CheckSelected(item, (string)Model.Action, nodeIdList);
                                     <li class="@(bSelected ? "active open" :"")">
                                         <a href="javascript:;" class="nav-link nav-toggle">
                                             @if (icon != null)
-                                        {
+                                            {
                                                 <i class="@icon"></i>
-                                        }
+                                            }
                                             <span class="title">@item.Name @item.NodeType</span>
                                             @if (bSelected)
-                                        {
+                                            {
                                                 <span class="arrow open"></span>
-                                        }
-                                        else
-                                        {
+                                            }
+                                            else
+                                            {
                                                 <span class="arrow"></span>
-                                        }
+                                            }
                                         </a>
                                         @NodesHtml(item.children.ToArray(), tokenId, nodeIdList)
                                     </li>
-                            }
-                            else
-                            {
-                                var selected = (string)item.ResID == (string)Model.Action ? "active open" : "";
-                                var nodeContent = (Yar.Service.Model.NodeContent)Yar.Service.UIHelper.GetNodeContent(item.ResID);
-                                var icon = item.Icon;
-                                if (nodeContent != null)
-                                {
-                                    icon = nodeContent.GetItemValue("Icon");
                                 }
-                                <li class="@selected">
-                                    <a href="@item.ViewPath" class="nav-link nav-toggle">
+                                else
+                                {
+                                    var selected = (string)item.ResID == (string)Model.Action ? "active open" : "";
+                                    var nodeContent = (Yar.Service.Model.NodeContent)Yar.Service.UIHelper.GetNodeContent(item.ResID);
+                                    var icon = item.Icon;
+                                    if (nodeContent != null)
+                                    {
+                                        icon = nodeContent.GetItemValue("Icon");
+                                    }
+                                    <li class="@selected">
+                                        <a href="@item.ViewPath" class="nav-link nav-toggle">
 
-                                        @if (icon != null)
-                                        {
-                                            <i class="@icon"></i>
-                                        }
-                                        <span class="title">@item.Name</span>
-                                        @if (selected != "")
-                                        {
-                                            <span class="arrow open"></span>
-                                        }
-                                        else
-                                        {
-                                            <span class="arrow"></span>
-                                        }
-                                    </a>
-                                </li>
+                                            @if (icon != null)
+                                            {
+                                                <i class="@icon"></i>
+                                            }
+                                            <span class="title">@item.Name</span>
+                                            @if (selected != "")
+                                            {
+                                                <span class="arrow open"></span>
+                                            }
+                                            else
+                                            {
+                                                <span class="arrow"></span>
+                                            }
+                                        </a>
+                                    </li>
+                                }
                             }
                         }
-                    }
                     </ul>
                 </div>
             </div>
@@ -358,17 +358,20 @@ if (nodes.Length > 0)
     <!-- BEGIN FOOTER -->
 
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/jquery.min.js")" type="text/javascript"></script>
+    <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/jquery.json-2.4.min.js")" type="text/javascript"></script>
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap/bootstrap.min.js")" type="text/javascript"></script>
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/js.cookie.min.js")" type="text/javascript"></script>
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-hover-dropdown.min.js")" type="text/javascript"></script>
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-switch/bootstrap-switch.min.js")" type="text/javascript"></script>
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/jquery.slimscroll.min.js")" type="text/javascript"></script>
-    <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/jquery.blockui.min.js")" type="text/javascript"></script>   
+    <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/jquery.blockui.min.js")" type="text/javascript"></script>
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/sweetalert/sweetalert.min.js")" type="text/javascript"></script>
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/select2/select2.full.min.js")" type="text/javascript"></script>
-    <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/velocity/velocity.min.js")" type="text/javascript"></script>
-    <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/velocity/velocity.ui.min.js")" type="text/javascript"></script>
-    <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/BoostrapDialog/bootstrap-dialog.js")" type="text/javascript"></script>    
+
+    <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/BoostrapDialog/bootstrap-dialog.js")" type="text/javascript"></script>
+    <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/jquery.validator.js")" type="text/javascript"></script>
+    <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/local/zh-CN.js")" type="text/javascript"></script>
+
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/global.js")" type="text/javascript"></script>
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Portal/AdminBoostrap/Content/metronic.js")" type="text/javascript"></script>
     <script src="@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Portal/AdminBoostrap/Content/layout.js")" type="text/javascript"></script>

@@ -1,0 +1,226 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<div id="familyMember" style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>姓名</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.Name" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>关系</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="comboboxValue:formdata.Relationships,dataSource:dataSources.dsRelationships" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>性别</label>
+                        <div class="col-md-8">
+                            <input id="txtGender" type="text" data-bind="comboboxValue:formdata.Gender,dataSource:dataSources.dsGender" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>出生日期</label>
+                        <div class="col-md-8">
+                            <input id="txtBirthday" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.Birthday" data-options="required:true" placeholder="" />
+                            @*<input type="date" data-bind="datetimeboxValue:formdata.Birthday" data-options="required:true,validType:'length[0,36]'" class="easyui-numberbox" />*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>证件类型</label>
+                        <div class="col-md-8">
+                            <input id="txtIDType" type="text" data-bind="comboboxValue:formdata.IDType,dataSource:dataSources.dsIDType" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>证件号码</label>
+                        <div class="col-md-8">
+                            <input id="txtIDNumber" type="text" data-bind="textboxValue:formdata.IDNumber" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"></label>
+                        <div class="col-md-8">
+                            <label class="checkbox-inline bold">
+                                <input id="chkIsMain" type="checkbox" data-bind="checked:formdata.IsEmergency">设为紧急联系人
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>联系电话</label>
+                        <div class="col-md-8">
+                            <input id="txtContactCellphone" type="text" data-bind="textboxValue:formdata.ContactCellphone" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">工作单位</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.Company" data-options="validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">职业</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.Job" data-options="validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">保险状态</label>
+                        <div class="col-md-8">
+                            <span data-bind="text:formdata.InsuranceStatusName" class="form-control-static" ></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">保险编号</label>
+                        <div class="col-md-8">
+                            <span data-bind="text:formdata.InsuranceNumber" class="form-control-static"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+            self.Action = 'new';
+            //debugger;
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+                self.Action = 'edit';
+            }
+            self.formdata = ko.mapping.fromJS(data.form);
+
+            self.dataSources = data.dataSources;
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist",{id:data.form.ResId});
+            //debugger;
+            //var valid = String.format("cremote['{0}','name','名称已存在']", checkUrl);
+            //$("#legalname1").textbox({
+            //  required: true,
+            //  validType: ['length[0,100]',valid]
+            //});
+            self.Init = function()
+            {
+            };
+            self.OnSave = function (finishcall) {
+                //debugger;
+                var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+                if(MainApp.FormValidate(familyMember))
+                {
+                    var url = '';
+                    if(self.Action == 'new'){
+                        url = self.ViewTool.GetActionUrl("Post", "FamilyMemberCreate",{empId:data.form.empId,legalId: data.form.legalId});
+                    } else {
+                        url = self.ViewTool.GetActionUrl("Post", "FamilyMemberEdit",{resId:data.form.ResId});
+                    }
+                    YarClient.AjaxPost(url,postdata, {
+                        IsWarning: true,
+                        success : function(returnData) {
+                            if (self.formdata.IsEmergency()) {
+                                returnData.FamilyInfo = { phone: self.formdata.ContactCellphone() };
+                            }
+                            else if (data.form.IsEmergency) {
+                                returnData.FamilyInfo = { phone:'' };
+                            }
+                            finishcall(returnData,callback);
+                        }
+                    });
+                }
+                else {
+
+                }
+            };
+            self.OnIsEmergencyChange = function() {
+                if (self.formdata.IsEmergency()) {
+                    $("i.fa-req", $("#txtContactCellphone").parents(".form-group")).show();
+                    $("#txtContactCellphone").textbox({ required: true });
+                } else {
+                    $("i.fa-req", $("#txtContactCellphone").parents(".form-group")).hide();
+                    $("#txtContactCellphone").textbox({ required: false });
+                }
+            };
+            self.OnInsuranceStatusChange = function() {
+                if (self.formdata.InsuranceStatus()=='1|HR_EMP_FamilyInsuranceStatus') {
+                    $("i.fa-req", $("#txtInsuranceNumber").parents(".form-group")).show();
+                    $("#txtInsuranceNumber").textbox({ required: true });
+                } else {
+                    $("i.fa-req", $("#txtInsuranceNumber").parents(".form-group")).hide();
+                    $("#txtInsuranceNumber").textbox({ required: false });
+                }
+            };
+        };
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+
+        
+
+        MainApp.DialogModel(eleId, viewModel.Action == "new" ? '新增家庭成员信息' : '编辑家庭成员信息', 750, 320, viewModel.OnSave, null, function () {
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+            viewModel.OnIsEmergencyChange();
+            //viewModel.OnInsuranceStatusChange();
+
+            viewModel.formdata.IsEmergency.subscribe(function (newValue) {
+                viewModel.OnIsEmergencyChange();
+            });
+        //viewModel.formdata.InsuranceStatus.subscribe(function (newValue) {
+        //    viewModel.OnInsuranceStatusChange();
+        //});
+        });
+
+    })(eleId, context, callback);
+</script>

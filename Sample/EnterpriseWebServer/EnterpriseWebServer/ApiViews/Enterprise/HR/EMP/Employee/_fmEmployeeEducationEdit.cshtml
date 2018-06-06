@@ -1,0 +1,166 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<div id="education" style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>学校</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.School" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>专业</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.Speciality" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>学历</label>
+                        <div class="col-md-8">
+                            <input id="txtEduBG" type="text" data-bind="comboboxValue:formdata.EduBG,dataSource:dataSources.dsEduBG" data-options="required:true" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>学位</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="comboboxValue:formdata.EduDegree,dataSource:dataSources.dsEduDegree" data-options="required:true" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"></label>
+                        <div class="col-md-8">
+                            <label class="checkbox-inline bold">
+                                <input id="chkIsMain" type="checkbox" data-bind="checked:formdata.IsHighestDiploma">设为最高学历
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">学位证编号</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.EduDegreeNumber" data-options="validType:'length[0,36]'" class="easyui-textbox" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">开始日期</label>
+                        <div class="col-md-8">
+                            <input class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.EduBeginDate" placeholder="" />
+                            @*<input type="date" data-bind="datetimeboxValue:formdata.EduBeginDate" data-options="required:true" class="easyui-textbox" />*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">结束日期</label>
+                        <div class="col-md-8">
+                            <input class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.EduEndDate" placeholder="" />
+                            @*<input type="text" data-bind="datetimeboxValue:formdata.EduEndDate" data-options="required:true" class="easyui-textbox" />*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*</div>*@
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+            self.Action = 'new';
+            //debugger;
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+                self.Action = 'edit';
+            }
+
+            data.form.EduBeginDate = YarGrid.DateFormatter(data.form.EduBeginDate);
+            data.form.EduEndDate = YarGrid.DateFormatter(data.form.EduEndDate);
+            self.formdata = ko.mapping.fromJS(data.form);
+
+            self.dataSources = data.dataSources;
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist",{id:data.form.ResId});
+            //debugger;
+            //var valid = String.format("cremote['{0}','name','名称已存在']", checkUrl);
+            //$("#legalname1").textbox({
+            //  required: true,
+            //  validType: ['length[0,100]',valid]
+            //});
+            self.Init = function()
+            {
+            };
+            self.OnSave = function (finishcall) {
+                //debugger;
+                var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+                if(MainApp.FormValidate(eleId))
+                {
+                    var url = '';
+                    if(self.Action == 'new'){
+                        url = self.ViewTool.GetActionUrl("Post", "EducationCreate",{empId:data.form.empId,legalId: data.form.legalId});
+                    } else {
+                        url = self.ViewTool.GetActionUrl("Post", "EducationEdit",{resId:data.form.ResId});
+                    }
+                    YarClient.AjaxPost(url,postdata, {
+                        IsWarning: true,
+                        success : function(returnData) {
+                            if(self.formdata.IsHighestDiploma()){
+                                returnData.EduInfo = { name: $("#txtEduBG").combobox('getText') };
+                            }
+                            else if (data.form.IsHighestDiploma) {
+                                returnData.EduInfo = { name: '' };
+                            }
+                            finishcall(returnData,callback);
+                        }
+                    });
+                }
+                else {
+
+                }
+            };
+        };
+        //debugger;
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+        MainApp.DialogModel(eleId, viewModel.Action == "new" ? '新增学历信息' : '编辑学历信息', 750, 250, viewModel.OnSave, null, function () {
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+        });
+
+    })(eleId, context, callback);
+</script>

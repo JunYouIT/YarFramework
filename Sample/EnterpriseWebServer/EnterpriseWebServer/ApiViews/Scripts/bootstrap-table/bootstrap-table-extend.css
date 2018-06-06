@@ -1,6 +1,40 @@
 
 .bootstrap-table .table > thead > tr > th {
-    border-bottom: 0px solid #ddd;
+    border-bottom: 1px solid #e4eaec;
+}
+
+.bootstrap-table thead tr th {
+    font-weight: 400;
+}
+
+.bootstrap-table .table-striped > tbody > tr:nth-child(odd) {
+    background-color: transparent;
+}
+
+.bootstrap-table .table-striped > tbody > tr:nth-child(even) {
+    background-color: rgba(243,247,249,.3);
+}
+
+.bootstrap-table .table-hover > tbody > tr:hover {
+    background-color: #f3f7f9;
+}
+
+.bootstrap-table .pagination > li > a, bootstrap-table .pagination > li > span {
+    color: #76838f;
+}
+
+.bootstrap-table .pagination .page-next > a > i, .bootstrap-table .pagination .page-pre > a > i {
+    width: auto;
+}
+
+.bootstrap-table .pagination > li > a:hover, bootstrap-table .pagination > li > span:hover, bootstrap-table .pagination > li > a:focus, bootstrap-table .pagination > li > span:focus {
+    background-color: #f3f7f9;
+}
+
+.bootstrap-table .pagination .active > a, .bootstrap-table .pagination .active > a:hover {
+    border-color: #62a8ea;
+    background-color: #62a8ea;
+    color: #fff;
 }
 
 .fixed-table-container thead th {

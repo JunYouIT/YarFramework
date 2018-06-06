@@ -1,0 +1,147 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+<div style="padding: 5px 20px 5px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form form-horizontal">
+                <div class="form-body">
+                    <div class="form-group">
+
+                        <div style="margin: 1px;height:260px;">
+                            <table data-bind="grid:uiSources.gridList" id="positionList" style=""></table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+      $.parser.parse(eleId);
+      var ViewModel = function (data) {
+        var self = this;
+        self.ViewTool = new YarClient.ViewModel("_BizOrganizationService", "@tokenId");
+        self.uiSources = {
+          gridList: {
+            ops: {
+              ClientPage: true,
+              ele: "#positionList"
+            },
+            sops: {
+                url: self.ViewTool.GetActionUrl("Post", "Biz_Select_OrgPosition.GetUserPositionList"),
+              fit: true,
+              fitColumns: true,
+              selectOnCheck: false,
+              checkOnSelect: false,
+              pagination: false,
+              singleSelect: true,
+              columns: [[{
+                field: 'PosId',
+                title: '',
+                width: 30,
+                formatter: function (value, rowData, rowIndex) {
+                  if(rowData.IsMain){
+                   self.selectedIndex(rowIndex);
+                 }
+                 return '<input type="radio" name="selectRadio" id="selectRadio"' + rowIndex + ' value="' + value + '" />';
+               }
+             },
+             { field: 'PosName', title: '职位名称', width: 100 },
+             { field: 'PosCode', title: '职位编码', width: 100 },
+             { field: 'OrgName', title: '所属部门', width: 200 }
+             ]],
+             onClickRow:function(rowIndex, rowData){
+              var radio = $(eleId+" input[type='radio']")[rowIndex];
+              if(radio){
+                radio.checked = true;
+              }
+            },
+            onLoadSuccess: function (data) {
+              var rowIndex = self.selectedIndex() || 0;
+              $(this).datagrid("selectRow",rowIndex);
+              var radio = $(eleId+" input[type='radio']")[rowIndex];
+              if(radio){
+                radio.checked = true;
+              }
+            },
+          }
+        }
+      };
+
+      self.selectedIndex = ko.observable();
+
+      self.Init = function () {
+
+      };
+      self.OnRefresh = function () {
+        $('#positionList').datagrid('load', data);
+      };
+      self.OnOk = function (finishcall) {
+        var rows = $("#positionList").datagrid('getSelected');
+
+        if (rows) {
+          var results = { PosId: rows.PosId, PosName: rows.PosName, PosCode: rows.PosCode, OrgId: rows.OrgId, OrgName:rows.OrgName, OrgCode :rows.OrgCode };
+
+          finishcall(results, callback);
+        } else {
+
+          swal("请选择一个职位!");
+        }
+
+      };
+    };
+    $.ajax({
+        url: MainApp.GetUrl("_BizOrganizationService", "Post", "Biz_Select_OrgPosition.GetUserPositionList"),
+      type:"Post",
+      data:context
+    })
+    .success(function (positionList) {
+     var
+     posData = JSON.parse(positionList),
+     len     = posData.length;
+
+          // 职位数量大于1时，需要手动选择
+          if(len>1){
+            var viewModel = new ViewModel(context);
+           
+            MainApp.DialogModel(eleId, '选择职位', 700, 340, viewModel.OnOk, null, function () {
+                ko.applyBindings(viewModel, $(eleId)[0]);
+                viewModel.Init();
+                viewModel.OnRefresh();
+            });
+            
+
+          }
+          // 职位数量为1时，则跳过职位选择框，直接将默认职位带入申请页面
+          else if(len == 1){
+            var results = { PosId: posData[0].PosId, PosName: posData[0].PosName, PosCode: posData[0].PosCode, OrgId: posData[0].OrgId, OrgName:posData[0].OrgName, OrgCode :posData[0].OrgCode };
+            // MainApp.DialogModel(eleId, '选择职位', 700, 340, "");
+            // $(eleId).window('destroy');
+            var node = $(eleId)[0];
+            node.parentNode.removeChild(node);
+            callback(results, callback);
+
+          }
+          // 职位数量为0时，提示错误信息
+          else {
+              var node = $(eleId)[0];
+              node.parentNode.removeChild(node);
+              swal("很抱歉..", "您没有可申请职位！", "error");
+              
+          }
+
+        })
+    .error(function(){
+        swal("很抱歉..", "获取职位信息出错！", "error");
+        var node = $(eleId)[0];
+        node.parentNode.removeChild(node);
+    });
+
+  })(eleId, context, callback);
+</script>

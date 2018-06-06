@@ -1,0 +1,246 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+
+<style>
+    .modalContainer {
+        margin: 10px 10px 0 10px;
+    }
+
+    .row {
+        /*margin-bottom: 10px;*/
+    }
+</style>
+
+<div id="custombtn">
+    <div class="modalContainer">
+        <div class="portlet box blue" id="BasicInfo">
+            <div class="portlet-title">
+                <div class="caption">
+                    基本信息
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="form form-horizontal">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">创建人</label>
+                                    <div class="col-md-8">
+                                        <label class="control-label" data-bind="text:formdata.CreateUser" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">创建时间</label>
+                                    <div class="col-md-8">
+                                        <label class="control-label" data-bind="text:formdata.CreateTime" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">最后修改人</label>
+                                    <div class="col-md-8">
+                                        <label class="control-label" data-bind="text:formdata.UpdateUser" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">最后修改时间</label>
+                                    <div class="col-md-8">
+                                        <label class="control-label" data-bind="text:formdata.UpdateTime" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    办公区域信息
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="form form-horizontal">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">区域编号</label>
+                                    <div class="col-md-8">
+                                        @*<input type="text" id="AreaCode" data-bind="textboxValue:formdata.AreaCode" class="easyui-textbox" style="width: 100%;" placeholder="" />*@
+                                        <label class="control-label" data-bind="text:formdata.AreaCode" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">区域名称</label>
+                                    <div class="col-md-8">
+                                        @*<input type="text" id="CreateTime" data-bind="textboxValue:formdata.AreaName" class="easyui-textbox" style="width:100%;" placeholder="" />*@
+                                        <label class="control-label" data-bind="text:formdata.AreaName" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">办公面积</label>
+                                    <div class="col-md-8">
+                                        <label class="control-label" data-bind="text:formdata.AreaSize" /> m<sup>2</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="addressinfo">
+                            <div style="width:100%;height: 51px;">
+                                <label class="control-label col-md-4 bold" style="width:143px;">地址信息</label>
+                                <div style="width:100%;">
+                                    <div style="width:54px; float:left;border:0px none;margin-left: 15px;">
+                                        @*<input type="text" id="Country" data-bind="textboxValue:formdata.Country" class="easyui-textbox" style="width:100%;" placeholder="" />*@
+                                        <label class="control-label" data-bind="text:formdata.Country" />
+                                    </div>
+                                    <div class="col-md-8" style="width:253px;float:left; border:0px none;">
+                                        @*<input id="txtArea" type="text" data-bind="value:formdata.Province" data-options="validType:'length[0,128]'" disabled data-toggle="city-picker" data-level="" data-placeholder="请选择省市区/县" style="height: 34px; background-color: #FFFFE6; width: 100%;" />*@
+                                        <label class="control-label" data-bind="text:formdata.Province" /> <label class="control-label" data-bind="text:formdata.City" /><label class="control-label" data-bind="text:formdata.District" />
+                                    </div>
+                                    <div style="width:300px;float:left; border:0px none;">
+                                        @*<input type="text" id="" data-bind="textboxValue:formdata.Province" class="easyui-textbox" style="width:100%;" placeholder="" />
+                                            <input type="text" id="" data-bind="textboxValue:formdata.City" class="easyui-textbox" style="width:100%;" placeholder="" />
+                                            <input type="text" id="" data-bind="textboxValue:formdata.District" class="easyui-textbox" style="width:100%;" placeholder="" />*@
+                                        @*<input type="text" id="OtherAddress" data-bind="textboxValue:formdata.OtherAddress" class="easyui-textbox" style="width:100%;" data-placeholder="详细地址" />*@<label class="control-label" data-bind="text:formdata.OtherAddress" />
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">具体地址</label>
+                                    <div class="col-md-8" style="line-height:36px;">
+                                        @*<input type="text" id="DetailAddress" data-bind="textboxValue:formdata.DetailAddress" class="easyui-textbox" disabled style="width:100%;" placeholder="" />*@
+                                        <span id="DetailAddress" data-bind="text:formdata.DetailAddress"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">邮政编码</label>
+                                    <div class="col-md-8">
+                                        @*<input type="text" id="UpdateTime" data-bind="textboxValue:formdata.ZipCode" class="easyui-textbox" style="width:100%;" placeholder="" />*@<label class="control-label" data-bind="text:formdata.ZipCode" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">状态</label>
+                                    <div class="col-md-8">
+                                        @*<input type="text" data-bind="comboboxValue:formdata.IsUse,dataSource:dataSources.UseStatus" style="width: 100%;" class="easyui-combobox" data-options="" />*@<label class="control-label" data-bind="text:formdata.IsUse" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">启用时间</label>
+                                    <div class="col-md-8">
+                                        @*<input type="text" data-bind="dateboxValue:formdata.StartTime" style="width: 100%;" class="easyui-datebox" />*@<label class="control-label" data-bind="text:formdata.StartTime" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 bold">备注</label>
+                                    <div class="col-md-8">
+                                        @*<input type="text" data-bind="textboxValue:formdata.Memo" class="easyui-textbox" style="width:100%;" placeholder="" />*@<label class="control-label" data-bind="text:formdata.Memo" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+            self.Action = 'new';
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000' ){
+                $('#BasicInfo').show();
+                self.Action = 'edit';
+            }
+            self.IsEditMode = self.Action=='edit';
+            data.form.IsUse = data.form.IsUse?'可用':'不可用';
+            data.form.CreateTime=YarGrid.DatetimeFormatter(data.form.CreateTime);
+            data.form.UpdateTime=YarGrid.DatetimeFormatter(data.form.UpdateTime);
+            data.form.StartTime=YarGrid.DateFormatter(data.form.StartTime);
+            self.formdata = ko.mapping.fromJS(data.form);
+            //self.LegalEntities = data.LegalEntities;
+            self.dataSources = data.dataSources;
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+            self.Init = function () {
+
+            };
+            self.OnSave = function (finishcall) {
+                var postdata = { formdata: MainApp.GetDataChange(self.formdata, data.form, true) };
+                if (MainApp.FormValidate()) {
+                    var url = '';
+                    if (self.Action == 'new') {
+                        url = self.ViewTool.GetActionUrl("Post", "Create", { resId: data.form.ResId });
+                    } else {
+                        url = self.ViewTool.GetActionUrl("Post", "Edit", { resId: data.form.ResId });
+                    }
+                    YarClient.AjaxPost(url, postdata, {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            finishcall(returnData, callback);
+                        }
+                    });
+                }
+                else {
+
+                }
+            };
+        };
+        var data = @this.Raw(Model.Data);
+
+        var viewModel = new ViewModel(data);
+
+        MainApp.DialogCustomButton(eleId, '查看办公区域信息', 900, 600,
+            [{ text: '关闭', cancel: true }], function () {
+                ko.applyBindings(viewModel, $(eleId)[0]);
+                viewModel.Init();
+            });
+    })(eleId, context, callback);
+</script>

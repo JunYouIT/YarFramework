@@ -67,12 +67,12 @@
           };
           return Pagecom;
       })();
-	  
+
   function BizViewModel() {
       var self = this;
       var displaydata = { name: '', roleno: '' };
       self.displaydata = ko.mapping.fromJS(displaydata);
-      self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");    
+      self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
       self.uiSources = {
         gridList: {
           ops: {
@@ -80,7 +80,7 @@
             ele: "#gridlist",
             SizeOpt: {
                 pid: "#griddiv",
-                top: 312
+                top: @Yar.Service.UIHelper.GetMasterInterval(context) + 131
             }
           },
           sops: {
@@ -110,11 +110,11 @@
           var data = {
               name: Pagecom.ViewModel.displaydata.name(),
               roleno: Pagecom.ViewModel.displaydata.roleno(),
-            
+
           };
           $('#gridlist').datagrid('load',data);
       };
-      self.OnCreate = function () {	
+      self.OnCreate = function () {
 			//global.OpenWindow('/Admin/RoleDetail');
             global.OpenWindow('@urlPath/CreateView');
       };
@@ -132,7 +132,7 @@
               }
           });
       };
-	  
+
 	  self.RoleDetail = function (resId) {
 	      if (resId) {
 	                //global.OpenWindow("@Yar.Service.UIHelper.GetAppUrl(context)/HR_ORG_JL");
@@ -151,19 +151,11 @@
 </script>
 
 <script id="ContentInitCss" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/jquery.validator.css")']     
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
 </script>
 
 <script id="ContentInitScript" type="text">
-	['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
-	'@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/NiceValidator/jquery.validator.js?local=zh-CN")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	     	
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
 </script>

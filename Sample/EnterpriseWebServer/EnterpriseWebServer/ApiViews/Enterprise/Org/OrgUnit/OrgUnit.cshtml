@@ -100,7 +100,7 @@
                     ele: "#gridlist",
                     SizeOpt: {
                         pid: "#griddiv",
-                        top: 315
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 131
                     }
                 },
                 sops: {
@@ -133,8 +133,8 @@
                     } },
                     { field: 'OrganizationID', title: '功能',formatter: function(value, row, index){
 
-                        var s = String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.OrganizationID)+
-                        String.format('<a class="btn_default" href="#" title="{1}" onclick="Pagecom.ViewModel.OnCheckPosition(\'{0}\')"><i class="fa fa-eye"></i></a>',row.OrganizationID,"查看职位");
+                        var s = String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>', row.OrganizationID);
+                        //+String.format('<a class="btn_default" href="#" title="{1}" onclick="Pagecom.ViewModel.OnCheckPosition(\'{0}\')"><i class="fa fa-eye"></i></a>',row.OrganizationID,"查看职位");
                         @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnView(\'{0}\')"><i class="fa fa-eye"></i></a>',row.OrganizationID)+*@
                         @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnDelete(\'{0}\')"><i class="fa fa-trash-o"></i></a>',row.OrganizationID)+*@
                         @*String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnModifyIsDisableState(\'{0}\')">{1}</a>',row.OrganizationID,row.Disabled);*@
@@ -167,7 +167,7 @@
 
                 },
                 onSelect: function (node) {
-                    debugger;
+
                     var root = $('#hr_OrgUnit_OrgUnit_orgTree').tree("getRoot");
                     var data = {
                         name: Pagecom.ViewModel.displaydata.name(),
@@ -196,7 +196,7 @@
             $('#hr_OrgUnit_OrgUnit_orgTree').tree({
                 url: self.ViewTool.GetActionUrl("Post", "GetOrgTree"),
                 onLoadSuccess: function (node, data) {
-                    debugger;
+
                     if(OrgId)
                     {
                         var node = $('#hr_OrgUnit_OrgUnit_orgTree').tree('find', OrgId);
@@ -217,7 +217,7 @@
                     }
                     else
                     {
-                        debugger;
+      
                         var root = $('#hr_OrgUnit_OrgUnit_orgTree').tree("getRoot");
                         if (root) {
                             $('#hr_OrgUnit_OrgUnit_orgTree').tree("select", root.target);
@@ -232,7 +232,6 @@
 
         self.OnCreate = function () {
 
-            debugger;
             var node = $('#hr_OrgUnit_OrgUnit_orgTree').tree('getSelected');
             if (node) {
                 MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateView",{ code: node.code,idTreeNode:node.id }), { ViewModel: self, data: {} },
@@ -284,7 +283,7 @@
                     YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAll",{ ids: array.join(';') }), {
                         IsWarning: true,
                         success: function (returnData) {
-                            debugger;
+       
                             if(returnData.Result != null && returnData.Result.status == 'warning')
                             {
                                 swal(returnData.Result.message, "", "warning");
@@ -335,21 +334,12 @@
 </script>
 
 <script id="ContentInitCss" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")']
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
 </script>
 
 <script id="ContentInitScript" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
 </script>
 

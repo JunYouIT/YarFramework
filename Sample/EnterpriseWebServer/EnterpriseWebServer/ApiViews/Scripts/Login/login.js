@@ -44,7 +44,7 @@
             document.cookie = name + "=" + ";expires=" + expires.toUTCString() + path;
         },
         Login: function () {
-            debugger;
+            //debugger;
             if ($('#saveCookie').is(":checked")) {
                 this.setCookie(this.sysId + "_userName", $("#Username").val(), 24, "/");
             }

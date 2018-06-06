@@ -47,9 +47,10 @@
                                 };
                                 var data = @this.Raw(Model.Data);
                                 var viewModel = new ViewModel(data);
-                                ko.applyBindings(viewModel, $(eleId)[0]);
-                                viewModel.Init();
-                                MainApp.DialogModel(eleId, data.Name + '设定', 300, 80, viewModel.OnOk);
+                                MainApp.DialogModel(eleId, data.Name + '设定', 300, 80, viewModel.OnOk,null, function () {
+                                    ko.applyBindings(viewModel, $(eleId)[0]);
+                                    viewModel.Init();
+                                });
 
                             })(eleId, context, callback);
     </script>

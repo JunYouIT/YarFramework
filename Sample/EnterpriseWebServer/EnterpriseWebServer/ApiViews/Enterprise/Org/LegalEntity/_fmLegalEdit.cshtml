@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <label class="control-label bold col-md-4">上级法人公司</label>
                         <div class="col-md-8">
-                            <input type="text" data-bind="comboboxValue:formdata.ParentID,dataSource:dataSources.dsParent" data-options="" style="width: 100%; height: 34px;" class="easyui-combobox" />
+                            <input type="text" data-bind="comboboxValue:formdata.ParentID,dataSource:dataSources.dsParent" data-options="" style="width: 100%; height: 34px;" class="easyui-combobox" @(Yar.Enterprise.ServerVersionType.IsFree()? "disabled" : "")/>
                         </div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label bold col-md-4"><i class="fa fa-req" />公司编码</label>
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>公司编码</label>
                         <div class="col-md-8">
                             <input type="text" id="legalcode1" data-bind="textboxValue:formdata.LegalEntityCode" data-options="required:true,validType:'length[0,36]'" style="width: 100%;" class="easyui-textbox" placeholder="" />
                         </div>
@@ -38,9 +38,27 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label bold col-md-4"><i class="fa fa-req" />公司名称</label>
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>公司名称</label>
                         <div class="col-md-8">
                             <input type="text" id="legalname1" data-bind="textboxValue:formdata.LegalEntityName"  class="easyui-textbox" placeholder="" style="width: 100%;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>有效期开始日期</label>
+                        <div class="col-md-8">
+                            <input id="txtBizBeginDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.BizBeginDate" data-options="required:true" placeholder="" " />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>有效期结束日期</label>
+                        <div class="col-md-8">
+                            <input id="txtBizEndDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.BizEndDate" data-options="required:true" placeholder="" />
                         </div>
                     </div>
                 </div>
@@ -63,24 +81,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label bold col-md-4"><i class="fa fa-req"/>有效期开始日期</label>
-                        <div class="col-md-8">
-                            <input id="txtBizBeginDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.BizBeginDate" data-options="required:true" placeholder="" "/>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="control-label bold col-md-4"><i class="fa fa-req"/>有效期结束日期</label>
-                        <div class="col-md-8">
-                            <input id="txtBizEndDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.BizEndDate" data-options="required:true" placeholder="" />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -255,22 +256,26 @@
         //        console.log("the new value is " + newValue);
         //    });
 
-        ko.applyBindings(viewModel, $(eleId)[0]);
-        viewModel.Init();
-        MainApp.DialogModel(eleId, viewModel.Action == "new" ? '法人实体新增' : '法人实体修改', 900, 560, viewModel.OnSave);
 
-        $('[data-toggle="city-picker"]').citypicker();
+        MainApp.DialogModel(eleId, viewModel.Action == "new" ? '法人实体新增' : '法人实体修改', 900, 560, viewModel.OnSave, null, function () {
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+            $('[data-toggle="city-picker"]').citypicker();
 
-        $("#txtBizBeginDate").on("changeDate",function(sd) {
-            debugger;
-            var dateS = sd.date;
-            $('#txtBizEndDate').datepicker('setStartDate',dateS);  
-        }).datepicker('setDates');
+            $("#txtBizBeginDate").on("changeDate", function (sd) {
 
-        $("#txtBizEndDate").on("changeDate",function(ed){
-            var dateE = ed.date;
-            $('#txtBizBeginDate').datepicker('setEndDate',dateE);  
-        }).datepicker('setDates');
+                var dateS = sd.date;
+                $('#txtBizEndDate').datepicker('setStartDate', dateS);
+            }).datepicker('setDates');
+
+            $("#txtBizEndDate").on("changeDate", function (ed) {
+                var dateE = ed.date;
+                $('#txtBizBeginDate').datepicker('setEndDate', dateE);
+            }).datepicker('setDates');
+        });
+
+
+        
 
     })(eleId, context, callback);
 </script>

@@ -99,7 +99,7 @@
                     ele: "#gridlist",
                     SizeOpt: {
                         pid: "#griddiv",
-                        top: 360
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 180
                     }
                 },
                 sops: {
@@ -118,7 +118,7 @@
                         } else {
                             return '<a title="禁用"><i class="fa fa-ban font-red" style="font-size:18px;"></i></a>';
                         }
-                       
+
                     }},
                     { field: 'IsCache', title: '是否缓存',halign:'center',align:'center', formatter: function(value, row, index){
                         if(value){
@@ -126,7 +126,7 @@
                         } else {
                             return '<i class="fa fa-ban font-red" style="font-size:18px;"></i>';
                         }
-                       
+
                     }},
                     { field: 'CreateUser', title: '创建人', sortable: true, width: 100},
                     { field: 'CreateTime', title: '创建时间', sortable: true, width: 100},
@@ -208,7 +208,7 @@
                             }
                             else
                             {
-                                swal("删除成功!", "已删除.", "success");   
+                                swal("删除成功!", "已删除.", "success");
                             }
                         }
                     });
@@ -231,28 +231,11 @@
 </script>
 
 <script id="ContentInitCss" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload.css")']
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
 </script>
 
 <script id="ContentInitScript" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")', 
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.zh-CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.ui.widget.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload-process.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.fileupload-validate.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/jquery.iframe-transport.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/JQueryFileUpload/UploadHelper.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']	
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
 </script>

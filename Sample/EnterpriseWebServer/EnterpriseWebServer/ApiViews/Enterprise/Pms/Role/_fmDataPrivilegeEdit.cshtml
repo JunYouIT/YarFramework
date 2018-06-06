@@ -91,9 +91,10 @@
       var data = @this.Raw(Model.Data);
       var viewModel = new ViewModel(data);
 	  
-      ko.applyBindings(viewModel, $(eleId)[0]);
-      viewModel.Init();
-      $.Yar.Dialog.Show(eleId,viewModel.Action == "new" ? '数据权限新增' : '数据权限编辑',400,175,viewModel.OnSave);
+      $.Yar.Dialog.Show(eleId, viewModel.Action == "new" ? '数据权限新增' : '数据权限编辑', 400, 175, viewModel.OnSave, function () {
+          ko.applyBindings(viewModel, $(eleId)[0]);
+          viewModel.Init();
+      });
 
     })(eleId, context, callback);
 </script>

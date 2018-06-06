@@ -83,12 +83,14 @@ input:focus {
   padding: 0px;
   height: 100%;
   width: 100%;
-}			
+}
 
-#login{
-padding: 0;
-margin-left: auto; margin-right: auto;
-width: 400px;
+#login {
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    position: relative;
 }
 #login_wrapper{
 background-color: #ffffff;
@@ -300,6 +302,45 @@ overflow: hidden;
 }
 .checkbox-custom input[type=radio]:checked+label::after, .checkbox-custom input[type=checkbox]:checked+label::after {
     content: "\f14a";
+}
+#login .wechat {
+    position: absolute;
+    left: 402px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.brand-img {
+    vertical-align: middle;
+    border-style: none;
+    width: 122px;
+    height: 122px;
+}
+.footer {
+    position: fixed;
+    bottom: 0px;
+    height: 64px;
+    left: 50%;
+    width: 1000px;
+    margin-left: -490px;
+}
+
+    .footer .page-footer-inner {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        max-width: 430px;
+        color: #ccc;
+        font-size: 12px;
+        vertical-align: middle;
+    }
+    .footer a {
+        color: #e6e6e6;
+    }
+.footertext {
+    padding-left: 10px;
+    line-height: 38px;
 }
 
 @media (max-width: 440px) {

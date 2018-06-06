@@ -1,0 +1,62 @@
+﻿@{
+Yar.Service.BusinessContext context = Model.Context;
+var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+var bizId = Model.BizId;
+}
+<div style="padding: 5px 20px 5px;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form form-horizontal">
+        <div class="form-body">
+          <div class="form-group">
+
+            <div class="list-group" data-bind="foreach:pathList">
+              <a href="#" class="list-group-item" data-bind="css:{ active: $data.RequestTypeCode == $root.selectedPath().RequestTypeCode },click:$root.selectPath">
+              <h4 class="list-group-item-heading" data-bind="text:$data.RequestTypeName"></h4>
+              <p class="list-group-item-text" data-bind="text:$data.WorkflowRemark"></p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript">
+
+  (function (eleId, context, callback) {
+    $.parser.parse(eleId);
+
+    var ViewModel = function (data) {
+      var self = this;
+
+      self.pathList = ko.mapping.fromJS(data.form.requestTypes);
+
+      self.selectedPath = ko.observable();
+      self.selectPath = function(path){
+        self.selectedPath(path);
+      };
+
+      self.selectedPath(self.pathList()[0]);
+
+      self.OnSave = function(finishcall){
+
+       if (!self.selectedPath().RequestTypeCode() || self.selectedPath().RequestTypeCode()==""){
+         swal("警告", "请选择的申请!", "warning");
+         return false;
+       }
+       finishcall({ businessId: self.selectedPath().BusinessId(), requestType: self.selectedPath().RequestTypeCode()}, callback);
+    };
+
+    };
+    var
+        data = @this.Raw(Model.Data),
+        viewModel = new ViewModel(data);
+
+    MainApp.DialogModel(eleId, '申请', 450, 400, viewModel.OnSave, null, function () {
+        ko.applyBindings(viewModel, $(eleId)[0]);
+    });
+
+})(eleId, context, callback);
+</script>

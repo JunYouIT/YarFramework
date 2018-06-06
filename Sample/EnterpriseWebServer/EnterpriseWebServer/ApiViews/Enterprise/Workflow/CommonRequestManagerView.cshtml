@@ -1,0 +1,337 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;    
+}
+
+
+<div class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+
+    <div class="row" style="display: block;">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        <lable id="titleInfo"></lable>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">申请单号</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="textboxValue:displaydata.masterRequestCode" style="width: 100%; height: 34px;" class="easyui-textbox" data-options="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">申请状态</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="comboboxValue:displaydata.approveStatus,dataSource:dataSources.dsApproveStatus" style="width: 100%; height: 34px;" class="easyui-combobox" data-options="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">申请时间</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input id="dds" type="text" data-provide="datepicker" data-date-orientation="bottom" data-date-format="yyyy-mm-dd" class="form-control" data-bind="value:displaydata.requestTimeS">
+                                                <div class="input-group-addon">至</div>
+                                                <input id="dde" type="text" data-provide="datepicker" data-date-orientation="bottom" data-date-format="yyyy-mm-dd" class="form-control" data-bind="value:displaydata.requestTimeE">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div style="float: right; display: inline-block;">
+                                        <a class="gt2_btn_search" href="javascript:;" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+
+    <a class="gt2_btn_add" href="javascript:;" data-bind="click:OnCreateNewOne"><i class="fa fa-plus-circle"></i> 申请 </a>                                        
+                                        <a class="gt2_btn_delete" href="javascript:;" data-bind="click:OnDeleteAll"><i class="fa fa-trash-o"></i> 删除 </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div style="" id="griddiv">
+                        <table data-bind="grid:uiSources.gridList" id="gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ContentInit" src="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    Pagecom = (function () {
+        function Pagecom() {
+        }
+
+        Pagecom.FormatterDateTime = function (value, row, index) {
+            if (value && value != null) {
+                var t = new Date(Date.parse(value.replace(/-/g, "/")));
+                return t.Format("yyyy-MM-dd hh:mm:ss");
+            }
+
+            return value;
+        };
+
+        Pagecom.Operation = function (value, rowData, rowIndex) {
+            var opts = {
+                requestID: rowData.Id,
+                requestCode: rowData.MasterRequestCode,
+                bizID: rowData.BusinessId,
+                procStatus: rowData.ApproveStatus,
+                auditID: rowData.AudittrailID,
+                activityCode: rowData.ActivityCode
+            };
+            var link = '';
+            if (rowData.Actions) {
+                for (var j = 0; j < rowData.Actions.length; j++) {
+                    if (rowData.Actions[j].Enable) {
+                        var black = "&nbsp;&nbsp;";
+                        var linkcss = "";
+                        if (rowData.Actions[j].LinkCss) {
+                            linkcss = "class='" + rowData.Actions[j].LinkCss + "'";
+                            black = "";
+                        }
+                        var displayvalue = rowData.Actions[j].Name;
+                        if (rowData.Actions[j].IconCss) {
+                            displayvalue = String.format("<i class='{0}' title='{1}'></i>", rowData.Actions[j].IconCss, rowData.Actions[j].Name);
+                        }
+                        link += String.format("{4}<a href='javascript:void(0)' {3} onclick='Pagecom.OnAction(\"{0}\",\"{1}\");'>{2}</a>", encodeURI(JSON.stringify(opts)), encodeURI(JSON.stringify(rowData.Actions[j])), displayvalue, linkcss, black);
+                    }
+                }
+            }
+
+            return link;
+        };
+        Pagecom.OnAction = function (workflowstring, actionstring) {
+            var workflowData = JSON.parse(decodeURI(workflowstring));
+            var actionData = JSON.parse(decodeURI(actionstring));
+            if (actionData.ActionType == "dialog") {
+                var businessId = actionData.BusinessId;
+                var businessAction = actionData.BusinessAction;
+                var bAction = actionData.BusinessAction;
+                if (businessAction.indexOf('.') > 0) {
+                    var index = businessAction.indexOf('.');
+                    businessId = businessAction.substr(0, index);
+                    bAction = businessAction.substr(index + 1);
+                }
+                MainApp.ShowDialog(
+                    global.GetActionUrl(businessId, bAction,
+                        { resId: workflowData.requestID, businessId: actionData.BusinessId, workflowAction: actionData.Action }),
+                    {},
+                    function (data) {
+                        Pagecom.ViewModel.OnRefresh();
+                    });
+            } else if (actionData.ActionType == "operate") {
+                global.AjaxPost(global.GetActionUrl("_BizWorkflowService", "ApproveWorkflow"),
+                    {
+                        resId: workflowData.requestID,
+                        audittrailId: workflowData.auditID,
+                        action: actionData.Action,
+                        comment: ''
+                    }
+                    , {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            Pagecom.ViewModel.OnRefresh();
+                        }
+                    });
+            }
+
+        };
+
+        return Pagecom;
+    })();
+
+    var ViewModel = function (data) {
+        var self = this;
+
+        self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+        var displaydata = {
+            requestTimeS:'',
+            requestTimeE:'',
+            approveStatus:'' ,
+            masterRequestCode:''
+        };
+
+        self.displaydata = ko.mapping.fromJS(displaydata);
+        self.formdata = ko.mapping.fromJS(data.form);
+        self.dataSources = data.dataSources;
+
+        if (self.formdata.title()) {
+            $('#titleInfo').text(String.format('{0}列表', self.formdata.title()));
+        }
+
+        self.uiSources = {
+            gridList: {
+                ops: {
+                    ClientPage: false,
+                    ele: "#gridlist",
+                    SizeOpt: {
+                        pid: "#griddiv",
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 175
+                    }
+                },
+                sops: {
+                    url: self.ViewTool.GetActionUrl("Post", "GetResourceList", { requestTypeCode: self.formdata.requestTypeCode() }),
+                    fitColumns:true,
+                    striped:true,
+                    selectOnCheck: false,
+                    checkOnSelect: false,
+                    onLoadSuccess:function(){ $("[data-toggle='tooltip']").tooltip(); },
+                    columns: [[
+                    { field: 'ck', checkbox:true },
+                    { field: 'MasterRequestCode', title: '申请单号',  sortable:true,width:100 ,formatter: function(value, row, index){
+                        var n = String.format('<a class="" href="#" title="{1}" data-toggle="tooltip" data-placement="top" onclick="Pagecom.ViewModel.OnView(\'{0}\',\'{2}\')">{1}</a>', row.Id, value, row.BusinessId)
+                        return n;
+                    }},
+                    { field: 'RequestTypeName', title: '申请类型',  sortable:true,width:100 },
+                    { field: 'RequestTime', title: '申请时间',  sortable:true,width:100},
+                    { field: 'Name', title: '申请人',  sortable:true,width:100 },
+                    { field: 'ApproveStatus', title: '申请状态',  sortable:true,width:100 },
+                    { field: 'BusinessStatus', title: '业务状态', sortable:true,width:100 },
+                    {
+                        field: 'Id', title: '功能', formatter: Pagecom.Operation
+                    }]]
+                }
+            }
+        };
+
+        self.OnView = function (id,businessId) {
+            MainApp.ShowDialog(global.GetActionUrl("_BizWorkflowService", "ApproveWorkflowView", { resId: id, businessId: businessId, workflowAction: '', viewAction: 'PreviewView' }), {});
+        };
+
+        self.OnEdit = function (id, masterRequestCode) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditView", { masterRequestID: id, masterRequestCode: masterRequestCode }), { MasterRequestCode: masterRequestCode, selectedPos: {}, ViewModel: self }, function (data) {
+                self.OnRefresh();
+            });
+        };
+
+        self.OnRefresh = function () {
+            var data = {
+                requestTimeS:  Pagecom.ViewModel.displaydata.requestTimeS(),
+                requestTimeE:  Pagecom.ViewModel.displaydata.requestTimeE(),
+                approveStatus: Pagecom.ViewModel.displaydata.approveStatus(),
+                masterRequestCode: Pagecom.ViewModel.displaydata.masterRequestCode()
+            };
+            $('#gridlist').datagrid('load', data);
+        };
+
+        self.OnCreateNewOne = function () {
+
+            MainApp.ShowDialog(self.ViewTool.GetActionUrl("Get", "GetRequestTypesView"), {}, function (returndata) {
+                MainApp.ShowPartialView(YarClient.NewGuid(), MainApp.GetUrl(returndata.businessId, "Get", "CreateView", {}),
+                    {
+                        ViewModel: Pagecom.ViewModel
+                    },
+                    function (data) {
+                        Pagecom.ViewModel.OnRefresh();
+                    })
+            });
+        };
+
+        self.OnDeleteAll = function () {
+            var rows = $("#gridlist").datagrid('getChecked');
+            var array = [];
+            var array_name=[];//统计名称
+            var candelete=0;//是否能删除
+
+            if(rows && rows.length > 0){
+                rows.each(function (value, index) {
+                    //array.push(value.MasterRequestCode);
+                    //array_name.push(value.MasterRequestCode);//统计名称
+                    if(value.ApproveStatus==="草稿"){
+                        array.push(value.Id);
+                        array_name.push(value.MasterRequestCode);//统计名称
+                        candelete+=1;
+                    }
+                });
+
+                if(candelete===0){
+                    swal("删除失败", "只能删除申请状态为草稿的申请", "warning");
+                    return;
+                }
+
+                swal({
+                    title: "您是否确认删除以下申请?",//添加删除提示
+                    text: array_name.join('、'),
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的, 删除!",
+                    closeOnConfirm: false
+                },
+                function(){
+                    YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAll", { ids: array.join(';') }), {
+                        IsWarning: true,
+                        success: function (returnData) {
+                            self.OnRefresh();
+                            swal("删除成功!", "申请单已批量删除.", "success");
+                        }
+                    });
+                });
+            }
+            else{
+                swal({
+                    title: "请选择要删除的申请！",//添加删除提示
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确认",
+                    closeOnConfirm: false
+                });
+            }
+        };
+
+        $("#dds").datepicker().on('changeDate', function(ev) {
+            var val = $("#dds").val();
+
+            $('#dde').datepicker('setStartDate',val==""?false:val);
+        });
+
+        $("#dde").datepicker().on('changeDate', function(ev) {
+            var val = $("#dde").val();
+            $('#dds').datepicker('setEndDate',val==""?false:val);
+        });
+    };
+
+    // Model.Data是后台GetViewData方法中返回的数据
+    var data = @this.Raw(Model.Data);
+    var viewModel = new ViewModel(data);
+
+    Pagecom.ViewModel = viewModel;
+
+    ko.applyBindings(viewModel);
+
+    viewModel.OnRefresh();
+</script>
+
+<script id="ContentInitCss" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
+</script>
+
+<script id="ContentInitScript" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
+</script>

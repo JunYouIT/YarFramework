@@ -1,0 +1,306 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+
+
+<div class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+
+    <div class="row" style="display: block;">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>
+                        办公区域信息列表
+                    </div>
+                    <div class="tools">
+                        @*<a href="javascript:;" class="collapse"> </a>*@
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">区域名称</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="textboxValue:displaydata.areaname" class="easyui-textbox" data-options="" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">具体地址</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="textboxValue:displaydata.detailaddress" class="easyui-textbox" data-options="" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">状态</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="comboboxValue:displaydata.usestatus,dataSource:dataSources.dsType" class="easyui-combobox" data-options="" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">启用时间</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input id="dds" type="text" data-provide="datepicker" class="form-control" data-bind="value:displaydata.starttime_start">
+                                                <div class="input-group-addon">至</div>
+                                                <input id="dde" type="text" data-provide="datepicker" class="form-control" data-bind="value:displaydata.starttime_end">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">办公面积</label>
+                                        <div class="col-md-8">
+                                            <div style="width:100%">
+                                                <div style="width:45%; float:left">
+                                                    <input id="AreaSize_start" type="text" class="easyui-numberbox" data-bind="numberboxValue:displaydata.AreaSize_start" value="0.00" data-options="min:0,precision:2" style="width:100%">
+                                                </div>
+                                                <div style="float:left;width:10%;text-align:center;height:32px;line-height:30px;">至</div>
+                                                <div style="width:45%;float:left">
+                                                    <input id="AreaSize_end" type="text" class="easyui-numberbox" data-bind="numberboxValue:displaydata.AreaSize_end" value="0.00" data-options="min:0,precision:2" style="width:100%">
+                                                </div>
+                                            </div>
+                                            @*<input type="text" data-bind="textboxValue:displaydata.AreaSize" class="easyui-numberbox" value="0.00" data-options="min:0,precision:2" />*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">删除状态</label>
+                                        <div class="col-md-8">
+                                            <input type="text" data-bind="comboboxValue:displaydata.deletetatus,dataSource:dataSources.dsDeleteStatus" class="easyui-combobox" data-options="" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div style="float: right;display: inline-block;">
+                                        <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+                                        <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnCreate"><i class="fa fa-plus-circle"></i> 新增 </a>
+                                        <a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnDeleteall"><i class="fa fa-trash-o"></i> 删除 </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:5px;" id="griddiv">
+                        <table data-bind="grid:uiSources.gridList" id="gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script id="ContentInit" type="text/javascript" src="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    Pagecom = (function () {
+
+        function Pagecom() {
+        }
+
+        @*//双日期控件
+
+    $('#StartTime_Search').daterangepicker({
+
+        format: 'YYYY-MM-DD',
+
+        startDate: '2013-01-01',
+
+        endDate: '2013-12-31'
+
+    }, function(start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+    });*@
+
+
+        Pagecom.FormatterDateTime = function (value, row, index) {
+            if (value && value != null) {
+                var t = new Date(Date.parse(value.replace(/-/g, "/")));
+                return t.Format("M/d/yyyy");
+            }
+            return value;
+        };
+        return Pagecom;
+    })();
+
+    var ViewModel = function (data) {
+        var self         = this;
+        self.ViewTool    = new YarClient.ViewModel("@bizId", "@tokenId");
+        var displaydata  = { areaname: '',detailaddress:'',starttime_start:'',starttime_end:'',usestatus:'',AreaSize_start:'',AreaSize_end:'',deletetatus:'-1'};
+        self.displaydata = ko.mapping.fromJS(displaydata);
+
+        // 订阅搜索条件-开始日期的变化
+        self.displaydata.starttime_start.subscribe(function(val){
+            $('#dde').datepicker('setStartDate',val==""?false:val);
+        });
+
+        // 订阅搜索条件-结束日期的变化
+        self.displaydata.starttime_end.subscribe(function(val){
+            $('#dds').datepicker('setEndDate',val==""?false:val);
+        });
+
+        self.dataSources = data.dataSources;
+        self.uiSources = {
+            gridList: {
+                ops: {
+                    ClientPage: false,
+                    ele: "#gridlist",
+                    SizeOpt: {
+                        pid: "#griddiv",
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 210
+                    }
+                },
+                sops: {
+                    url: self.ViewTool.GetActionUrl("Post", "GetResourceList"),
+                    fitColumns:true,
+                    striped:true,
+                    selectOnCheck: false,
+                    checkOnSelect: false,
+                    //remoteSort: false,
+                    columns: [[
+                    { field: 'ck', checkbox:true },
+                    { field: 'AreaCode', title: '区域编码',sortable:true, width: 120 },
+                    @*{ field: 'AreaName', title: '区域名称', width: 200 },*@
+                    { field: 'AreaName', title: '区域名称',sortable:true, width: 140 ,formatter: function(value, row, index){
+                        var n = String.format('<a class="" href="#" title="{1}" data-toggle="tooltip" data-placement="top" onclick="Pagecom.ViewModel.OnView(\'{0}\')">{1}</a>',row.Id,value)
+                        return n;
+                    }},
+                    { field: 'DetailAddress', title: '具体地址', width: 340, formatter: function(value, row, index){
+                        return String.format('<span title="{0}" data-toggle="tooltip">{0}</span>', value);
+                    }  },
+                    { field: 'StartTime', title: '启用时间', sortable:true,width: 100,formatter:function(value, row, index){
+                        return YarGrid.DateFormatter(value);
+                    }
+                    },
+                    { field: 'AreaSize', title: '办公面积',sortable:true },
+                    { field: 'IsUse', title: '状态',sortable:true },
+                    { field: 'IsDeleted', title: '删除状态',sortable:true },
+                    { field: 'Id', title: '功能',
+                        formatter: function(value, row, index){
+                            return String.format('<a href="#" class="btn_default" title="编辑" onclick="Pagecom.ViewModel.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.Id);
+                        }
+                    }]]
+                }
+            }
+        };
+
+        self.OnRefresh = function () {
+            var data = {
+                areaname: Pagecom.ViewModel.displaydata.areaname(),
+                detailaddress: Pagecom.ViewModel.displaydata.detailaddress(),
+                starttime_start: Pagecom.ViewModel.displaydata.starttime_start(),
+                starttime_end: Pagecom.ViewModel.displaydata.starttime_end(),
+                usestatus: Pagecom.ViewModel.displaydata.usestatus(),
+                AreaSize_start: Pagecom.ViewModel.displaydata.AreaSize_start(),
+                AreaSize_end: Pagecom.ViewModel.displaydata.AreaSize_end(),
+                deletetatus: Pagecom.ViewModel.displaydata.deletetatus(),
+            };
+            //debugger;
+            $('#gridlist').datagrid('load', data);
+        };
+        self.OnCreate = function () {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateView"), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefresh();
+                });
+        };
+        self.OnEdit = function (Id) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditView", { resId: Id }), { ViewModel: self, data: {} },
+                function (data) {
+                    self.OnRefresh();
+                });
+        };
+        self.OnView = function (Id) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "PreviewView", { resId: Id }), { ViewModel: self, data: {} },
+                function (data) {
+
+                });
+        };
+        self.OnDeleteall = function () {
+            var rows = $("#gridlist").datagrid('getChecked');
+            var array = [];
+            var array_name=[];//统计名称
+            if(rows && rows.length > 0){
+                rows.each(function (value, index) {
+                    array.push(value.Id);
+                    array_name.push(value.AreaName);//统计名称
+                });
+
+                swal({
+                    title: "您将删除"+array_name.join('、')+"等办公区域信息,确认删除么?",//添加删除提示
+                    text: "删除之后将不能还原！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "是的, 删除!",
+                    closeOnConfirm: false
+                },
+        function(){
+            YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAll",{ ids: array.join(';') }), {
+                IsWarning: true,
+                success: function (returnData) {
+                    self.OnRefresh();
+                    swal("删除成功!", "办公区域信息已删除.", "success");
+                }
+            });
+        })  ;
+            }else{
+                swal({
+                    title: "请选择要删除的办公区域信息！",//添加删除提示
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确认",
+                    closeOnConfirm: false
+                })  ;
+                //$.messager.alert('提示信息', '请选择需要删除的区域信息！', 'warning');
+            }
+        };
+
+
+    };
+    // Model.Data是后台GetViewData方法中返回的数据
+    var data = @this.Raw(Model.Data);
+    var viewModel = new ViewModel(data);
+    Pagecom.ViewModel = viewModel;
+    ko.applyBindings(viewModel);
+    viewModel.OnRefresh();
+
+</script>
+
+
+<script id="ContentInitCss" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss"),
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/css/city-picker.css")']
+</script>
+
+<script id="ContentInitScript" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs"),
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/js/city-picker.data.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/js/city-picker.js")']
+</script>

@@ -1,0 +1,123 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+<div style="padding: 5px 20px 5px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form form-horizontal">
+                <div class="form-body">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 bold">区域编码</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="areacode"   />
+                        </div>
+                        <label class="control-label col-md-2 bold">区域名称</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" id="areaname"   />
+                        </div>
+                        <div class="col-md-2">
+                            <div class="" style="float: right;display: inline-block;">
+                                <a href="javascript:;" class="gt2_btn_search" data-bind="click:OnRefresh"><i class="fa fa-search"></i> 搜索 </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin: 1px;height:260px;" id="fm_selectfm_mj_gridlist_container">
+                        <table data-bind="grid:uiSources.gridList" id="fm_selectfm_mj_gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        
+
+        var ViewModel = function (data) {
+            var self = this;
+            self.ViewTool = new YarClient.ViewModel("BizHRService", "@tokenId");
+            var displaydata = { areaname: '', areacode: '' };
+            self.displaydata = ko.mapping.fromJS(displaydata);
+            self.uiSources = {
+                gridList: {
+                    ops: {
+                        ClientPage: true,
+                        ele: "#fm_selectfm_mj_gridlist",
+                    },
+                    sops: {
+                        url: self.ViewTool.GetActionUrl("Post", "Biz_Select_OfficeArea.GetOfficeAreaData"),
+                        fit: true,
+                        fitColumns: true,
+                        selectOnCheck: false,
+                        checkOnSelect: false,
+                        pagination: false,
+                        singleSelect: true,
+                        columns: [[{
+                            field: 'AreaID',
+                            title: '选择',
+                            width: 30,
+                            formatter: function (value, rowData, rowIndex) {
+                                return '<input type="radio" name="selectRadio" id="selectRadio"' + rowIndex + ' value="' + rowData.AreaID + '" />';
+                            }
+                        },
+                            //{ field: 'ck', checkbox: true },
+                          { field: 'AreaName', title: '区域名称', width: 100 },
+                          { field: 'AreaCode', title: '区域编码', width: 100 },
+                          { field: 'DetailAddress', title: '具体地址', width: 200 }
+                        ]],
+                        onClickRow: function (rowIndex, rowData) {
+
+                            var radio = $("#fm_selectfm_mj_gridlist_container input[type='radio']")[rowIndex];
+                            if (radio) {
+                                $("#fm_selectfm_mj_gridlist_container input[type='radio']")[rowIndex].checked = true;
+                            }
+                        }
+                    }
+                }
+            };
+            self.Init = function () {
+
+            };
+            self.OnRefresh = function () {
+                var data = {
+                    //areaname: self.displaydata.areaname(),
+                    //areacode: self.displaydata.areacode()
+                    areaname: $("#areaname").val(),
+                    areacode: $("#areacode").val()
+                };
+                $('#fm_selectfm_mj_gridlist').datagrid('load', data);
+            };
+            self.OnOk = function (finishcall) {
+                var rows = $("#fm_selectfm_mj_gridlist").datagrid('getSelected');
+                //if (rows.length > 0) {
+                //    var results = [];
+                //    for (var i = 0; i < rows.length; i++) {
+                //        results.push({ Id: rows[i].AreaID, Name: rows[i].AreaName, Code: rows[i].AreaCode, DetailAddress: rows[i].DetailAddress });
+                //    }
+                //    finishcall(results, callback);
+                //}
+                if (rows) {
+                    var results = { Id: rows.AreaID, Name: rows.AreaName, Code: rows.AreaCode, DetailAddress: rows.DetailAddress };
+                    //results.push({ Id: rows.AreaID, Name: rows.AreaName, Code: rows.AreaCode, DetailAddress: rows.DetailAddress });
+                    finishcall(results, callback);
+                } else {
+                    //提示未选择区域
+                }
+
+            };
+        };
+        var viewModel = new ViewModel({});
+        MainApp.DialogModel(eleId, '选择区域', 700, 340, viewModel.OnOk, null, function () {
+            $.parser.parse(eleId);
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+            viewModel.OnRefresh();
+        });
+
+    })(eleId, context, callback);
+</script>

@@ -277,7 +277,6 @@
 
             self.legalId        = data.legalId;
             self.requestType    = data.requestType;
-            self.pageType       = data.pageType;
             self.audittrailId   = data.audittrailId;
 
             self.action         = ko.observable();
@@ -285,7 +284,7 @@
             self.attachmentList = ko.observableArray();
 
             self.onAction = function(bizAction){
-                debugger;
+                //debugger;
 
                 self.showApproveModal();
                 self.action(bizAction);
@@ -326,7 +325,7 @@
             };
 
             self.submitApprove = function(){
-                debugger;
+                //debugger;
 
                 global.AjaxPost(global.GetActionUrl("_BizWorkflowService", "ApproveWorkflow"),
                     {
@@ -346,10 +345,9 @@
             };
 
         };
-        debugger;
+        //debugger;
         var
         resId        = "@Model.ResId",
-        pageType     = "@Model.PageType",
         legalId      = '@Model.LegalId',
         requestType  = '@Model.RequestType',
         audittrailId = '@Model.AudittrailId',
@@ -358,12 +356,12 @@
         basicData    = @this.Raw(Model.BasicInfo),
         approveData  = @this.Raw(Model.ApproveInfo),
         actionList   = @this.Raw(Model.ActionList),
-        audittrail   = @this.Raw(Model.Audittrail),
-        viewModel    = new ViewModel({resId:resId,basicData:basicData,approveData:approveData,pageType:pageType,legalId:legalId,requestType:requestType,audittrailId:audittrailId});
+        audittrail = @this.Raw(Model.Audittrail),
+        workflowActionName = "@Model.WorkFlowActionName",
+        viewModel    = new ViewModel({resId:resId,basicData:basicData,approveData:approveData,legalId:legalId,requestType:requestType,audittrailId:audittrailId});
 
         Pagecom.approveVM = viewModel;
         // 绑定ko
-        ko.applyBindings(viewModel, $(eleId)[0]);
 
         var btnArray = new Array();
 
@@ -398,19 +396,15 @@
 
         btnArray.push({text:'关闭',cancel:true});
 
-        var titleActionName;
+        var titleActionName = workflowActionName;
 
-        if(pageType=="preview"){
-            titleActionName = "查看";
-        }
-        else{
-            titleActionName = "审批";
-        }        
         MainApp.DialogCustomButton(eleId,
            titleActionName+basicData.AppType+"(单号:"+basicData.AppCode+")",
            900,650,
-           btnArray
-           );
+            btnArray, function () {
+                ko.applyBindings(viewModel, $(eleId)[0]);
+                viewModel.Init();
+            });
 
         var
            divBasic      = $("#divBasic"),
@@ -492,7 +486,7 @@
             offColor:"primary",
             labelText:"点击切换"
         }).on("switchChange.bootstrapSwitch", function(event, state) {
-            debugger;
+            //debugger;
             if(state){
                 $.Velocity.RunSequence(seqClick);
                 Pagecom.approveVM.IsActiveBizView(true);

@@ -1,0 +1,164 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var resid = Model.RawData.form.ResId;
+    var bizId = Model.BizId;
+}
+<div id="workHistory" style="padding:5px;    background-color: #fff;">
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2"><span style="color: red;">*</span>工作单位</label>
+                        <div class="col-md-10">
+                            <input type="text" data-bind="textboxValue:formdata.Company" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>所在部门</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.Department" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>职务</label>
+                        <div class="col-md-8">
+                            <input type="text" data-bind="textboxValue:formdata.JobDuty" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4"><span style="color: red;">*</span>开始日期</label>
+                        <div class="col-md-8">
+                            <input id="txtWorkBeginDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.WorkBeginDate" data-options="required:true" placeholder="" />
+                            @*<input type="date" data-bind="datetimeboxValue:formdata.WorkBeginDate" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-4">结束日期</label>
+                        <div class="col-md-8">
+                            <input id="txtWorkEndDate" class="form-control easyui-validatebox" data-provide="datepicker" type="text" data-bind="value:formdata.WorkEndDate" placeholder="" />
+                            @*<input type="date" data-bind="datetimeboxValue:formdata.WorkEndDate" data-options="required:true,validType:'length[0,36]'" class="easyui-textbox" style="height: 34px; background-color: #FFFFE6; width: 100%;" placeholder="" />*@
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label bold col-md-2">备注</label>
+                        <div class="col-md-10">
+                            <input type="text" data-bind="textboxValue:formdata.Description" data-options="validType:'length[0,500]',multiline:true" class="easyui-textbox" style="height: 80px; background-color: #FFFFE6; width: 100%;" placeholder="" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    (function (eleId, context, callback) {
+        //debugger;
+        $.parser.parse(eleId);
+
+        var ViewModel = function (data) {
+            var self = this;
+            self.Action = 'new';
+            //debugger;
+            if(data.form.ResId && data.form.ResId != '' && data.form.ResId != '00000000-0000-0000-0000-000000000000'){
+                self.Action = 'edit';
+            }
+
+            self.formdata = ko.mapping.fromJS(data.form);
+
+            self.dataSources = data.dataSources;
+            self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+            var checkUrl = self.ViewTool.GetActionUrl("Post", "CheckNoExist",{id:data.form.ResId});
+            //debugger;
+            //var valid = String.format("cremote['{0}','name','名称已存在']", checkUrl);
+            //$("#legalname1").textbox({
+            //  required: true,
+            //  validType: ['length[0,100]',valid]
+            //});
+            self.Init = function()
+            {
+            };
+            self.OnSave = function (finishcall) {
+     
+                self.formdata.WorkBeginDate($("#txtWorkBeginDate").val());
+                self.formdata.WorkEndDate($("#txtWorkEndDate").val());
+
+                if (!self.formdata.Company() ||
+                    !self.formdata.Department() ||
+                    !self.formdata.JobDuty() ||
+                    !self.formdata.WorkBeginDate()) {
+                    swal("提示！", "请输入必要的数据，然后再次提交！", "warning");
+
+                    return false;
+                }
+
+                if(self.formdata.WorkEndDate() != ''){
+                    var dtStart = new Date(self.formdata.WorkBeginDate());
+                    var dtEnd = new Date(self.formdata.WorkEndDate());
+
+                    if (dtStart > dtEnd) {
+                        swal("提示！", "工作开始日期和结束日期有误！", "warning");
+
+                        return false;
+                    }
+                }
+                var postdata = {formdata : MainApp.GetDataChange(self.formdata,data.form,true)};
+
+                //alert($("#txtWorkBeginDate").val());
+                if(MainApp.FormValidate(workHistory))
+                {
+                    var url = '';
+
+                    if(self.Action == 'new'){
+                        url = self.ViewTool.GetActionUrl("Post", "WorkHistoryCreate",{empId:data.form.empId,legalId: data.form.legalId});
+                    } else {
+                        url = self.ViewTool.GetActionUrl("Post", "WorkHistoryEdit",{resId:data.form.ResId});
+                    }
+
+                    YarClient.AjaxPost(url,postdata, {
+                        IsWarning: true,
+                        success : function(returnData) {
+                            finishcall(returnData,callback);
+                        }
+                    });
+                }
+                else {
+
+                }
+            };
+        };
+        var data = @this.Raw(Model.Data);
+        var viewModel = new ViewModel(data);
+
+        MainApp.DialogModel(eleId, viewModel.Action == "new" ? '新增工作履职信息' : '编辑工作履职信息', 750, 280, viewModel.OnSave, null, function () {
+            ko.applyBindings(viewModel, $(eleId)[0]);
+            viewModel.Init();
+        });
+
+    })(eleId, context, callback);
+</script>

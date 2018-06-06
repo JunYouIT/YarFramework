@@ -1,0 +1,530 @@
+﻿@{
+    Yar.Service.BusinessContext context = Model.Context;
+    var tokenId = (context == null || context.Credential == null) ? "" : context.Credential.TokenId;
+    var bizId = Model.BizId;
+}
+<div class="content">
+    @Yar.Service.UIHelper.RenderPatial(@"Enterprise\Common\_pageHead.cshtml", Model)
+
+    <div class="row" style="display: block;">
+        <div class="col-md-3" style="padding-right: 0;">
+            <div class="portlet box blue" style="margin-bottom:2px;">
+                <div class="portlet-title">
+                    <div class="caption">
+                        组织机构
+                    </div>
+                </div>
+                <div class="portlet-body" style="overflow:auto; height: 680px;">
+                    <ul id="hr_userlist_orgTree"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-tag"></i>员工信息列表
+                        <span data-bind="text:displaydata.selectedOrgName"></span>
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="expand" title="更多查询条件"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="form form-horizontal">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">员工姓名</label>
+                                        <div class="col-md-8" style="padding-right: 0;padding-left: 0">
+                                            <input type="text" data-bind="textboxValue:displaydata.name" class="easyui-textbox" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">员工工号</label>
+                                        <div class="col-md-8" style="padding-left: 0">
+                                            <input type="text" data-bind="textboxValue:displaydata.number" class="easyui-textbox" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-md-12" style="margin-left: 5px;">
+                                            <label><input type="checkbox" data-bind="checked:displaydata.showChild" />&nbsp;显示下属机构人员</label>
+                                            <label><input type="checkbox" data-bind="checked:displaydata.showSideline" />&nbsp;显示兼职人员</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row search-more">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">入职日期</label>
+                                        <div class="col-md-8" style="padding-right: 0; padding-left: 0">
+                                            <div class="input-group">
+                                                <input type="text" data-bind="value:displaydata.onboarddate_min" data-provide="datepicker" class="form-control" />
+                                                <span class="input-group-addon">至</span>
+                                                <input type="text" data-bind="value:displaydata.onboarddate_max" data-provide="datepicker" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">员工状态</label>
+                                        <div class="col-md-8" style="padding-left: 0">
+                                            <input type="text" data-bind="comboboxValue:displaydata.empStatus,dataSource:dataSources.dsEmpStatus" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row search-more">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">员工身份</label>
+                                        <div class="col-md-8" style="padding-right: 0;padding-left: 0">
+                                            <input type="text" data-bind="comboboxValue:displaydata.employeeStatus,dataSource:dataSources.dsEmployeeStatus" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-4">员工标签</label>
+                                        <div class="col-md-8" style="padding-left: 0">
+                                            <input type="text" data-bind="textboxValue:displaydata.tag" class="easyui-textbox" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row search-more">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label bold col-md-2">备注信息</label>
+                                        <div class="col-md-10" style="padding-left: 0">
+                                            <input type="text" data-bind="textboxValue:displaydata.description" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: right;">
+                                    @*<a href="javascript:;" class="btn btn-sm btn-success " ><i class="fa"></i> 批量变更主职位 </a>*@
+                                    <a href="javascript:;" class="gt2_btn_search" data-bind="click:function(event) { OnRefresh(false) }"><i class="fa fa-search"></i> 搜索 </a>
+                                    <a href="javascript:;" class="gt2_btn_add" data-bind="click:OnCreate"><i class="fa fa-plus-circle"></i> 新增 </a>
+                                    <a href="javascript:;" class="gt2_btn_delete" data-bind="click:OnDeleteall"><i class="fa fa-trash-o"></i> 删除 </a>
+@if (!Yar.Enterprise.ServerVersionType.IsFree())
+{
+    <a href="javascript:;" class="gt2_btn_refresh" data-bind="click:OnShowModalFieldSelection"><i class="fa fa-download"></i> 导出 </a>
+}
+                                    
+                                    <form id="hidden-excel-form" method="post" style="display:none">
+                                        @Yar.Service.UIHelper.CsrfToken(context)
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:5px;" id="griddiv">
+                        <table data-bind="grid:uiSources.gridList" id="gridlist" style=""></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalFieldSelection" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" style="width: 520px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">选择导出字段</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12" style="margin-top: 0px;">
+                                <input type="text" id="cmbFieldSelection" class="easyui-combobox" data-options="valueField: 'ID', textField: 'Name', multiple: true,multiline: true,editable: false" style="width: 100%; height: 80px;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bind="click: OnSelectAllFields">全部选择</button>
+                <button type="button" class="btn btn-success" data-bind="click: OnCleanAllFields">全部清除</button>
+                <button type="button" class="btn btn-primary" data-bind="click: OnConfirmFieldSelection">确定</button>
+                <button type="button" class="btn btn-warning" data-bind="click: function () { $('#myModalFieldSelection').modal('hide'); }">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ContentInit" type="text/javascript" src="">
+    MainApp.ViewSite = '@Yar.Core.YarSystem.Current.ViewSite';
+
+    $.ajaxSetup({
+        cache: false
+    });
+
+    Pagecom = (function () {
+        function Pagecom() {
+        };
+
+        Pagecom.DetailLink = function (value, rowData, rowIndex) {
+            return String.format("<a href='#' onclick='Pagecom.ViewModel.DetailLink(\"{0}\")'>{1}</a>", rowData.ResId,value);
+        };
+
+        Pagecom.FormatterDateTime = function (value, row, index) {
+            if (value && value != null) {
+                var t = new Date(Date.parse(value.replace(/-/g, "/")));
+                return t.Format("M/d/yyyy");
+            }
+            return value;
+        };
+
+        return Pagecom;
+    })();
+
+    var ViewModel = function (data) {
+        var self = this;
+
+        self.ViewTool = new YarClient.ViewModel("@bizId", "@tokenId");
+
+        var displaydata = {
+            selectedOrgName:    '',
+            showChild:          true,
+            showSideline:       false,
+            name:               '',
+            number:             '',
+            tag:                '',
+            empStatus:          'default',
+            employeeStatus:     '',
+            onboarddate_min:    '',
+            onboarddate_max:    '',
+            description:        ''
+        };
+
+        self.displaydata = ko.mapping.fromJS(displaydata);
+        self.dataSources = data.dataSources;
+
+        self.uiSources = {
+            gridList: {
+                ops: {
+                    ClientPage: false,
+                    ele: "#gridlist",
+                    pageSize:20,
+                    SizeOpt: {
+                        pid: "#griddiv",
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 205
+                    }
+                },
+                sops: {
+                    url: self.ViewTool.GetActionUrl("Post", "GetResourceList"),
+                    fitColumns:true,
+                    pageSize:20,
+                    selectOnCheck: true,
+                    checkOnSelect: false,
+                    singleSelect: false,
+                    columns: [[
+                    { field: 'ck', checkbox:true },
+                    { field: 'EmployeeNumber', title: '员工工号',sortable:true, width: 200 },
+                    { field: 'EmployeeNameCN', title: '员工姓名',sortable:true, width: 260 ,formatter: function(value, row, index){
+                        var n = String.format('<a class="" href="#" title="{1}" data-toggle="tooltip" data-placement="top" onclick="Pagecom.ViewModel.OnView(\'{0}\')">{1}</a>',row.EmployeeID,value)
+                        return n;
+                    }},
+                    { field: 'OrganizationName', title: '部门',sortable:true, width: 250, formatter: function(value, row, index){
+                        var s = String.format('<span title="{0}" data-toggle="tooltip">{1}</span>',row.OrganizationName,row.OrganizationName);
+                        return s;
+                    } },
+                    { field: 'PostionName', title: '职位',sortable:true, width: 200,formatter: function(value, row, index) {
+                        var s = value;
+                        if (!row.IsMain)
+                            s += '<span class="label label-info">兼任</span>';
+                        return s;
+                    } },
+                    { field: 'EmpStatus', title: '状态',sortable:true, width: 150 },
+                    { field: 'EmployeeStatus', title: '身份',sortable:true, width: 200 },
+                    { field: 'OnboardDate', title: '入职日期',sortable:true, width: 200 ,formatter: YarGrid.DateFormatter},
+                    { field: 'EmployeeID', title: '功能',formatter: function(value, row, index){
+
+                        var s = String.format('<a class="btn_default" href="#" onclick="Pagecom.ViewModel.OnEdit(\'{0}\')"><i class="fa fa-edit"></i></a>',row.EmployeeID);
+
+
+                        return s;
+                    }
+                    }
+                    ]]
+                }
+            }
+        };
+
+        self.Init = function () {
+
+            $("#cmbFieldSelection").combobox({
+                valueField: 'ID',
+                textField:  'Name'
+            });
+            $("#cmbFieldSelection").combobox("loadData", self.dataSources.dsFieldSelections);
+        };
+
+        self.OnRefresh = function (isReload) {
+            var data = {
+                showChild:self.displaydata.showChild(),
+                showSideline:self.displaydata.showSideline(),
+                name: self.displaydata.name(),
+                number:self.displaydata.number(),
+                tag:self.displaydata.tag(),
+                empStatus:self.displaydata.empStatus(),
+                employeeStatus:self.displaydata.employeeStatus(),
+                onboarddate_min:self.displaydata.onboarddate_min(),
+                onboarddate_max:self.displaydata.onboarddate_max(),
+                description:self.displaydata.description(),
+                orgId:'',
+                orgcode:''
+            };
+
+            var node = $('#hr_userlist_orgTree').tree('getSelected');
+            if (node) {
+                data.orgId = node.id;
+                data.orgCode = node.code;
+            }
+            if(isReload){
+                $('#gridlist').datagrid('reload',data);
+            } else {
+                $('#gridlist').datagrid('load',data);
+            }
+        };
+
+        self.loadTree = function() {
+            $('#hr_userlist_orgTree').tree({
+                url: self.ViewTool.GetActionUrl("Post", "GetOrgTree"),
+                onLoadSuccess: function(node, data) {
+                    $('#hr_userlist_orgTree').tree("collapseAll");
+                    var th = $('#hr_userlist_orgTree').parent().height();
+                    var gh = $('#griddiv').height() + 150;
+                    $('#hr_userlist_orgTree').parent().css({ height: gh + "px" });
+
+                    var root = $('#hr_userlist_orgTree').tree("getRoot");
+                    if (root) {
+                        $('#hr_userlist_orgTree').tree("select", root.target);
+                        $('#hr_userlist_orgTree').tree("expand",root.target);
+                    }
+                    self.refreshHeadCount();
+                    //alert(JSON.stringify(data));
+                    //'<span class="tree-hc">（<span class="tree-hc-num">' + item.HeadCount.ToString() + '</span>）</span>'
+                },
+                onSelect: function(node) {
+                    self.displaydata.selectedOrgName('[' + node.text + ']');
+                    self.OnRefresh();
+                    //$('#gridlist').datagrid('load', {
+                    //    orgId: node.id,
+                    //    orgCode: node.code
+                    //});
+                }
+            });
+            $(window).resize(function () {
+                var th = $('#hr_userlist_orgTree').parent().height();
+                var gh = $('#griddiv').height() + 150;
+
+                $('#hr_userlist_orgTree').parent().css({ height: gh + "px" });
+            });
+        };
+
+        self.refreshHeadCount=function() {
+            YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "GetOrgHeadCount", { }), {
+                IsWarning: true,
+                success: function (returnData) {
+                    if(returnData && returnData.Result) {
+                        for (var i = 0; i < returnData.Result.length; i++) {
+                            var item = returnData.Result[i];
+                            var node = $('#hr_userlist_orgTree').tree('find', item.OrgId);
+                            if(node) {
+                                $(".tree-hc", node.target).remove();
+                                $('.tree-title', node.target).append('<span class="tree-hc">（<span class="tree-hc-num">' + item.HeadCount + '</span>）</span>');
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        self.GetSelectedOrgId=function() {
+            var node= $('#hr_userlist_orgTree').tree('getSelected');
+            if (node)
+                return node.id;
+            else {
+                swal('请选择组织单元');
+            }
+        }
+
+        self.OnCreate = function () {
+            //debugger;
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "CreateEmployeeView",{orgId:self.GetSelectedOrgId()}), { ViewModel: self, data: {} },
+            function (data) {
+                self.refreshHeadCount();
+                self.OnRefresh();
+            });
+        };
+
+        self.OnView = function (empId) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "PreviewView", { resId: empId }), { ViewModel: self, data: {} },
+            function (data) {
+                //self.OnRefresh();
+            });
+
+        };
+
+        self.OnEdit = function (empId) {
+            MainApp.ShowPartialView(YarClient.NewGuid(), self.ViewTool.GetActionUrl("Get", "EditView", { resId: empId }), { ViewModel: self, data: {} },
+            function (data) {
+                self.refreshHeadCount();
+                self.OnRefresh(true);
+            });
+        };
+
+        self.OnDeleteall = function () {
+            var rows = $("#gridlist").datagrid('getChecked');
+            var array = [];
+            var names = [];
+            //debugger;
+            if(rows && rows.length > 0){
+                rows.each(function (value, index) {
+                    array.push(value.EmployeeID);
+                    names.push(value.EmployeeNameCN);
+                });
+                swal({
+                    title: "你是否确认删除如下信息?",
+                    text: names.join('、'),
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    confirmButtonText:'是的，删除！'
+                },  function () {
+
+                        //alert(array.join(';'));
+                        YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAll",{ ids: array.join(';') }), {
+                            IsWarning: true,
+                            success: function (returnData) {
+                                self.refreshHeadCount();
+                                self.OnRefresh();
+                                swal("删除成功", "", "success");
+                            }
+                        });
+                });
+            } else {
+                swal("请选中需要删除的数据", "", "warning");
+            }
+
+        };
+
+        self.OnExportEmployee = function(fields) {
+            var data = {
+                showChild:      self.displaydata.showChild(),
+                showSideline:   self.displaydata.showSideline(),
+                name:           self.displaydata.name(),
+                number:         self.displaydata.number(),
+                tag:            self.displaydata.tag(),
+                empStatus:      self.displaydata.empStatus(),
+                employeeStatus: self.displaydata.employeeStatus(),
+                onboarddate_min:self.displaydata.onboarddate_min(),
+                onboarddate_max:self.displaydata.onboarddate_max(),
+                description:    self.displaydata.description(),
+                orgId:          '',
+                orgcode:        ''
+            };
+
+            var node = $('#hr_userlist_orgTree').tree('getSelected');
+
+            if (node) {
+                data.orgId = node.id;
+                data.orgCode = node.code;
+            }
+
+
+            data.fields = fields.join();
+
+            $('#hidden-excel-form').form('submit', {
+                url: self.ViewTool.GetActionUrl("Post", "ExportEmployee", data),
+                dataType : 'json',
+                onSubmit: function(){
+
+                },
+                success: function(data){
+
+                    var resp = eval("(" + data + ")");
+
+                    if (resp.StatusCode && resp.StatusCode != "") {
+                        swal("导出错误!", resp.Message, "warning");
+                    }
+                }
+            });
+        }
+
+        self.OnShowModalFieldSelection = function () {
+            $("#cmbFieldSelection").combobox("setValues", []);
+            $("#myModalFieldSelection").modal('show');
+        };
+
+        self.OnConfirmFieldSelection = function () {
+            var fields = $("#cmbFieldSelection").combobox("getValues");
+
+            if (!fields || fields.length == 0) {
+                swal("提示！", "请至少选择一个字段用于导出数据文件！", "warning");
+                return false;
+            }
+
+            $("#myModalFieldSelection").modal('hide');
+
+            self.OnExportEmployee(fields);
+        };
+
+        self.OnSelectAllFields = function () {
+            var datum = $("#cmbFieldSelection").combobox("getData");
+            if (datum) {
+                var fieldIDs = [];
+
+                $.each(datum, function (index, item) {
+                    fieldIDs.push(item.ID);
+                });
+
+                if (fieldIDs) {
+                    $("#cmbFieldSelection").combobox("setValues", fieldIDs);
+                }
+            }
+        };
+
+        self.OnCleanAllFields = function () {
+            $("#cmbFieldSelection").combobox("setValues", []);
+        };
+    };
+
+    var data = @this.Raw(Model.Data);
+    var viewModel = new ViewModel(data);
+
+    Pagecom.ViewModel = viewModel;
+
+    ko.applyBindings(viewModel);
+
+    viewModel.Init();
+    viewModel.loadTree();
+    //viewModel.OnRefresh();
+</script>
+
+<script id="ContentInitCss" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss"),
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/css/city-picker.css")']
+</script>
+
+<script id="ContentInitScript" type="text">
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs"),
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/js/city-picker.data.js")',
+    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/CityPicker/js/city-picker.js")']
+</script>

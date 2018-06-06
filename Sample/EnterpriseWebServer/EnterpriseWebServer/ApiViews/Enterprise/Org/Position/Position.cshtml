@@ -105,7 +105,7 @@
                     ele: "#gridlist",
                     SizeOpt: {
                         pid: "#griddiv",
-                        top: 340
+                        top: @Yar.Service.UIHelper.GetMasterInterval(context) + 160
                     }
                 },
                 sops: {
@@ -132,7 +132,7 @@
                     {
                         field: 'IsFunctionPosition', title: '职位类型', sortable: true, width: 200, formatter: function (value, row, index) {
                             if (value) return '职能类';
-                            return '非职能类';                            
+                            return '非职能类';
                         }
                     },
                     { field: 'IsDisabled', title: '状态',sortable:true, width: 200, formatter: function(value, row, index){
@@ -175,7 +175,7 @@
 
                 },
                 onSelect: function (node) {
-                    debugger;
+                    //debugger;
                     var data = {
                         name: Pagecom.ViewModel.displaydata.name(),
                         type:Pagecom.ViewModel.displaydata.type(),
@@ -198,7 +198,7 @@
             $('#hr_position_position_orgTree').tree({
                 url: self.ViewTool.GetActionUrl("Post", "GetOrgTree"),
                 onLoadSuccess: function (node, data) {
-                    debugger;
+                    //debugger;
 
                     if(OrgId)
                     {
@@ -217,7 +217,7 @@
                     }
                     else
                     {
-                        debugger;
+                        //debugger;
                         var root = $('#hr_position_position_orgTree').tree("getRoot");
                         if (root) {
                             $('#hr_position_position_orgTree').tree("select", root.target);
@@ -241,7 +241,7 @@
             }
             else
             {
-                debugger;
+                //debugger;
                 var root = $('#hr_position_position_orgTree').tree("getRoot");
                 if (root) {
                     $('#hr_position_position_orgTree').tree("select", root.target);
@@ -315,7 +315,7 @@
                     YarClient.AjaxGet(self.ViewTool.GetActionUrl("Get", "DeleteAll",{ ids: array.join(';') }), {
                         IsWarning: true,
                         success: function (returnData) {
-                            debugger;
+                            //debugger;
                             if(returnData.Result != null && returnData.Result.status == 'warning')
                             {
                                 swal(returnData.Result.message, "", "warning");
@@ -360,21 +360,12 @@
 </script>
 
 <script id="ContentInitCss" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/themes/bootstrap/easyui.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.css")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/css/bootstrap-datepicker.css")']
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonCss")]
 </script>
 
 <script id="ContentInitScript" type="text">
-    ['@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout-3.4.1.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockout.mapping.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/jquery.easyui.min.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyui-1.5.1/locale/easyui-lang-zh_CN.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/bootstrap-datepicker/js/bootstrap-datepicker.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Common.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/Yar.Dialog.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/easyuiextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/knockoutextend.js")',
-    '@Yar.Core.YarSystem.GetViewSitePath("/ApiViews/Scripts/PageMainApp.js")']
+    [@Yar.Service.BundleRender.RenderFormat("~/PageCommonJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageJs"),
+    @Yar.Service.BundleRender.RenderFormat("~/PageMainJs")]
 </script>
 
